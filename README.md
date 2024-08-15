@@ -32,6 +32,7 @@
 
 ## روابط
 
-(هنا يمكن إضافة روابط للموقع أو لوثائق أخرى ذات صلة)
-
+[**UML**](https://lucid.app/lucidchart/566d5d2f-53a4-45f2-85d3-477f8365f300/edit?viewport_loc=-1654,301,3711,2179,0_0&invitationId=inv_a016bf16-c877-4d50-a945-6510cafc5d5b)
+[**Wireframe**](https://www.figma.com/design/QxLt3GpRwJxYDObixVxoX2/%D8%AF%D9%84%D9%8A%D9%84--%D8%A7%D9%84%D8%AD%D8%B6%D8%A7%D9%86%D8%A7%D8%AANurseries-Guide-Wireframe?node-id=0-1&t=xfhU7FILRp5FPgk0-1)
+[**Project Document**](https://docs.google.com/document/d/1rMbqmUtWs6gClRSVkbW4WRuW3ZkFqu23ZkY4T7FcPC4/edit?usp=sharing)
 </div>
