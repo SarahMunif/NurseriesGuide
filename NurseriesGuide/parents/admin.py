@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import parentProfile
+from .models import Parent
 
 
-admin.site.register(parentProfile)
+admin.site.register(Parent)

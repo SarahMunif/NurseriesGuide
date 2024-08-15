@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-class parentProfile(models.Model):
+class Parent(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     phone_number = models.CharField(max_length=13) # 9665555555555 
@@ -12,7 +12,7 @@ class parentProfile(models.Model):
         return f"{self.user.username} profile"
     
 
-class child(models.Model):
+class Child(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
@@ -29,5 +29,5 @@ class child(models.Model):
     birth_date = models.DateField()
     national_id = models.CharField(max_length=10)
     about = models.TextField(default= None)
-    parent = models.ForeignKey(parentProfile)
+    parent = models.ForeignKey(Parent,on_delete=models.CASCADE)
     photo = models.ImageField(upload_to="images/", default="images/default.jpg")

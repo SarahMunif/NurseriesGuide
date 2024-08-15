@@ -1,6 +1,6 @@
 from django.db import models
 from nurseries.models import Nursery
-from parents.models import Child, Parent
+from parents.models import Child,Parent
 
 
 
