@@ -7,6 +7,8 @@ from django.core.paginator import Paginator
 
 # Create your views here.
 
+# nursery model views 
+
 def nurseries_view(request:HttpRequest):
     pass
 
@@ -21,7 +23,7 @@ def update_nursery(request:HttpRequest):
 def detail_nursery(request:HttpRequest):
     pass
 
-
+# activity model views 
 
 def add_activity(request:HttpRequest):
     pass
@@ -33,5 +35,14 @@ def update_activity(request:HttpRequest):
     pass
 
 
+# staff model views 
 
+def add_staff(request:HttpRequest):
+    pass
+
+def delete_staff(request:HttpRequest):
+    pass
+
+def update_staff(request:HttpRequest):
+    pass
 
