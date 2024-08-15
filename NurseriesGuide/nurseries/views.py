@@ -8,7 +8,7 @@ from django.core.paginator import Paginator
 # Create your views here.
 
 # nursery model views 
-
+#
 def nurseries_view(request:HttpRequest):
     pass
 
