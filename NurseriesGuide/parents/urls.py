@@ -11,3 +11,4 @@ urlpatterns = [
     path('update/child/', views.update_child, name="update_child"),
 
 ]
+

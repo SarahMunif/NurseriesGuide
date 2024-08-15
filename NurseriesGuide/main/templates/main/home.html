@@ -1,0 +1,68 @@
+{% extends "main/base.html" %}
+
+{% block content %}
+<div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img src="nursery_image.jpg" class="d-block w-100" alt="Nursery">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>Welcome to Our Nursery</h5>
+            </div>
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+<section class="container my-5">
+    <h2 class="text-center mb-4">الحضانات</h2>
+    <div class="d-flex justify-content-center">
+        <button class="btn btn-dark me-2">البحث</button>
+        <button class="btn btn-outline-dark">تصفية</button>
+    </div>
+</section>
+
+<section class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <img src="placeholder1.png" class="card-img-top" alt="Nursery 1">
+                <div class="card-body">
+                    <h5 class="card-title">حضانه 1</h5>
+                    <p class="card-text">Lorem ipsum dolor sit amet...</p>
+                    <a href="#" class="btn btn-primary">المزيد</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <img src="placeholder2.png" class="card-img-top" alt="Nursery 2">
+                <div class="card-body">
+                    <h5 class="card-title">حضانه 2</h5>
+                    <p class="card-text">Lorem ipsum dolor sit amet...</p>
+                    <a href="#" class="btn btn-primary">المزيد</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav>
+        <ul class="pagination justify-content-center">
+            <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1">1</a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">...</a></li>
+            <li class="page-item"><a class="page-link" href="#">67</a></li>
+            <li class="page-item"><a class="page-link" href="#">68</a></li>
+        </ul>
+    </nav>
+</section>
+{% endblock %}
