@@ -18,7 +18,7 @@ def delete_nursery(request:HttpRequest):
 def update_nursery(request:HttpRequest):
     pass
 
-def nursery_detail(request:HttpRequest):
+def detail_nursery(request:HttpRequest):
     pass
 
 
