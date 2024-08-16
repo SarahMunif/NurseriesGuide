@@ -1,4 +1,9 @@
 from django.contrib import admin
-from .models import Nursery
+from .models import Nursery ,Staff,Gallery,Activity ,City,Neighborhood
 # Register your models here.
 admin.site.register(Nursery)
+admin.site.register(Staff)
+admin.site.register(Gallery)
+admin.site.register(Activity)
+admin.site.register(City)
+admin.site.register(Neighborhood)

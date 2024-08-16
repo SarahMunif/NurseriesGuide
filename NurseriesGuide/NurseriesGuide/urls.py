@@ -22,7 +22,7 @@ from . import settings
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('', include("main.urls")),
-    path('nursery', include("nurseries.urls")),
+    path('nurseries/', include("nurseries.urls")),
     path('parent/', include("parents.urls")),
     path('registration/', include("registrations.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
