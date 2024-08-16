@@ -12,6 +12,7 @@ from django.contrib import messages
 #
 def nurseries_view(request:HttpRequest):
     nurseries = Nursery.objects.all() 
+    neighborhoods = Neighborhood.objects.all()
 
     # Check if a search was made
     searched = request.GET.get('searched', '')
@@ -22,10 +23,14 @@ def nurseries_view(request:HttpRequest):
     page_number = request.GET.get("page", 1)
     paginator = Paginator(nurseries, 6)
     nurseries = paginator.get_page(page_number)   
+    if request.user.is_staff:
+     return render(request, "nurseries/nurseries_view.html", {"nurseries" : nurseries,"search_term": searched,"neighborhoods":neighborhoods})
+    if not request.user.is_staff:
+      return render(request, "nurseries/user_nurseries_view.html", {"nurseries" : nurseries ,"search_term": searched })
 
-    return render(request, "nurseries/nurseries_view.html", {"nurseries" : nurseries,
-                                                             "search_term": searched,})
 def add_nursery(request:HttpRequest):
+        neighborhoods = Neighborhood.objects.all()
+
         if request.method=="POST":
          nurseryForm=NurseryForm(request.POST,request.FILES)
          if nurseryForm.is_valid():
@@ -36,7 +41,7 @@ def add_nursery(request:HttpRequest):
             for field, errors in nurseryForm.errors.items():
                  for error in errors:
                      messages.error(request, f"{field}: {error}",'alert-danger')
-        return render(request, "nurseries/add_nursery.html",{"nurseryForm":nurseryForm})  
+        return render(request, "nurseries/nurseries_view.html",{"nurseryForm":nurseryForm,"neighborhoods":neighborhoods})  
     
 def delete_nursery(request:HttpRequest,nursery_id:int):
     nursery = Nursery.objects.get(pk=nursery_id)
