@@ -28,7 +28,7 @@ def signup_manager(request:HttpRequest):
 
         try:
             with transaction.atomic():
-                new_manager = User.objects.create_user(username=request.POST["username"],password=request.POST["password"],email=request.POST["email"], first_name=request.POST["first_name"], last_name=request.POST["last_name"])
+                new_manager = User.objects.create_user(username=request.POST["username"],password=request.POST["password"],email=request.POST["email"], first_name=request.POST["first_name"], last_name=request.POST["last_name"],is_staff=True  )
                 new_manager.save()
 
                 login(request, new_manager)
