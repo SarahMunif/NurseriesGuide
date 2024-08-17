@@ -14,8 +14,6 @@ class Parent(models.Model):
 
 class Child(models.Model):
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-
     class GenderChoices(models.TextChoices):
         
         FEMALE = "F", "انثى"
