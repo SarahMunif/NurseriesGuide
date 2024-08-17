@@ -5,12 +5,15 @@ class ActivityForm(forms.ModelForm):
     class Meta:
         model = Activity
         fields = "__all__"
+        exclude = ['nursery'] 
 
 class StaffForm(forms.ModelForm):
 
     class Meta:
         model = Staff
         fields = "__all__"
+        exclude = ['nursery'] 
+
 class NurseryForm(forms.ModelForm):
 
     class Meta:

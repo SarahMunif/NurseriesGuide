@@ -1,0 +1,264 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}{{nursery.name}}{% endblock %}
+{% block content %}
+<link href="{% static 'css/main.css' %}?v=1.1" rel="stylesheet" />
+<style>
+    .rounded-card {
+        border-radius: 1.5rem; /* This will apply rounded corners to the entire card */
+        overflow: hidden; /* Ensures that the background and content inside respect the border-radius */
+    }
+    .color-activty {
+        background-color: #FFF3F4; /* Background color applied directly to card-body */
+    }
+</style>
+<br>
+<h1>{{nursery.name}}</h1>
+<br>
+<div class="row align-items-center">
+    <div class="col-auto">
+        <!-- icon -->
+    </div>
+    <div class="d-flex align-items-center mb-3">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt" viewBox="0 0 16 16">
+            <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A32 32 0 0 1 8 14.58a32 32 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10"/>
+            <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4m0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+          </svg>
+        <h6 class="mb-0">{{ nursery.neighborhood }}</h6>
+        <div style="width: 100px;"></div> <!-- Custom spacer -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-arms-up mx-2" viewBox="0 0 16 16">
+            <path d="M8 3a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"/>
+            <path d="m5.93 6.704-.846 8.451a.768.768 0 0 0 1.523.203l.81-4.865a.59.59 0 0 1 1.165 0l.81 4.865a.768.768 0 0 0 1.523-.203l-.845-8.451A1.5 1.5 0 0 1 10.5 5.5L13 2.284a.796.796 0 0 0-1.239-.998L9.634 3.84a.7.7 0 0 1-.33.235c-.23.074-.665.176-1.304.176-.64 0-1.074-.102-1.305-.176a.7.7 0 0 1-.329-.235L4.239 1.286a.796.796 0 0 0-1.24.998l2.5 3.216c.317.316.475.758.43 1.204Z"/>
+        </svg>
+        <span>{{ min }} - {{ max }}</span>
+        <div style="width: 100px;"></div> <!-- Custom spacer -->
+        {% if nursery.accepts_special_needs %}
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-wheelchair" viewBox="0 0 16 16">
+            <path d="M12 3a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3m-.663 2.146a1.5 1.5 0 0 0-.47-2.115l-2.5-1.508a1.5 1.5 0 0 0-1.676.086l-2.329 1.75a.866.866 0 0 0 1.051 1.375L7.361 3.37l.922.71-2.038 2.445A4.73 4.73 0 0 0 2.628 7.67l1.064 1.065a3.25 3.25 0 0 1 4.574 4.574l1.064 1.063a4.73 4.73 0 0 0 1.09-3.998l1.043-.292-.187 2.991a.872.872 0 1 0 1.741.098l.206-4.121A1 1 0 0 0 12.224 8h-2.79zM3.023 9.48a3.25 3.25 0 0 0 4.496 4.496l1.077 1.077a4.75 4.75 0 0 1-6.65-6.65z"/>
+          </svg>
+          {% endif %}
+    </div>
+
+
+    <!-- activites view -->
+<p class="mt-3">{{nursery.description}}</p>
+<h1 class="mt-3  ">أنشطتنا</h1>
+<div class="row ">
+    <div class="col-12 ">
+        <div class="d-flex justify-content-end">
+            <a href="{% url 'nurseries:add_activity' nursery.id %}" class="btn btn-light btn-lg rounded-pill shadow-sm" style="font-weight: bold; background-color:#FFFFFF;" data-bs-toggle="modal" data-bs-target="#addActivityModal"><h6>أضافة نشاط</h6></a>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid px-lg-5">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-auto">
+            <a class=" mb-3" href="#activityCarousel" role="button" data-bs-slide="prev">
+                <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>
+                  </svg>
+            </a>
+        </div>
+        <div class="col-lg-8">
+            <div id="activityCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    {% for activity in activities %}
+                        {% if forloop.counter0|divisibleby:3 %}
+                            <div class="carousel-item {% if forloop.counter0 == 0 %}active{% endif %}">
+                                <div class="container">
+                                    <div class="row">
+                        {% endif %}
+                                        <div class="col-md-4 col-sm-6 mb-4">
+                                            <div class="card  rounded-card">
+                                                <div class="card-body color-activty">
+                                                    <h5 class="card-title mb-1">
+                                                       {{ activity.name }}
+                                                    </h5>
+                                                    <p class="mb-1">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-arms-up mx-2" viewBox="0 0 16 16">
+                                                            <path d="M8 3a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"/>
+                                                            <path d="m5.93 6.704-.846 8.451a.768.768 0 0 0 1.523.203l.81-4.865a.59.59 0 0 1 1.165 0l.810 4.865a.768.768 0 0 0 1.523-.203l-.845-8.451A1.5 1.5 0 0 1 10.5 5.5L13 2.284a.796.796 0 0 0-1.239-.998L9.634 3.84a.7.7 0 0 1-.33.235c-.23.074-.665.176-1.304.176-.64 0-1.074-.102-1.305-.176a.7.7 0 0 1-.329-.235L4.239 1.286a.796.796 0 0 0-1.24.998l2.5 3.216c.317.316.475.758.43 1.204Z"/>
+                                                        </svg>
+                                                        <span>{{ activity.age_min }} - {{ activity.age_max }}</span>
+                                                    </p>
+                                                    <p class="card-text">
+                                                       {{ activity.description }}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                        {% if forloop.counter|divisibleby:3 or forloop.last %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="col-auto">
+            <a class=" mb-3" href="#activityCarousel" role="button" data-bs-slide="next">
+                <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/>
+                  </svg>
+            </a>
+        </div>
+    </div>
+</div>
+
+    <!-- staff  -->
+
+    <h1 class="mt-4">كادرنا التعليمي</h1>
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-end">
+                <a href="{% url 'nurseries:add_staff' nursery.id %}" class="btn btn-light btn-lg rounded-pill shadow-sm" style="font-weight: bold; background-color:#FFFFFF;" data-bs-toggle="modal" data-bs-target="#addStaffModal"><h6>أضافة عضو</h6></a>
+            </div>
+        </div>
+    </div>
+<!-- all staff view -->
+<div class="container-fluid px-lg-5">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-auto">
+            <a class="mb-3" href="#staffCarousel" role="button" data-bs-slide="prev">
+                <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>
+                </svg>
+            </a>
+        </div>
+        <div class="col-lg-8">
+            <div id="staffCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    {% for staff in staffs %}
+                        {% if forloop.counter0|divisibleby:3 %}
+                            <div class="carousel-item {% if forloop.counter0 == 0 %}active{% endif %}">
+                                <div class="container">
+                                    <div class="row">
+                        {% endif %}
+                                        <div class="col-md-4 col-sm-6 mb-4">
+                                            <div class="card bg-transparent border-0">
+                                                <div class="card-body text-center">
+                                                    <img src="{{ staff.image.url }}" alt="Staff Image" class="rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+                                                    <h5 class="card-title mb-1">
+                                                       {{ staff.first_name }} {{ staff.last_name }}
+                                                    </h5>
+                                                    <p class="text-muted">
+                                                        {{ staff.specializations }}
+                                                    </p>
+                                                    <p class="small">
+                                                       {{ staff.experience }}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                        {% if forloop.counter|divisibleby:3 or forloop.last %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="col-auto">
+            <a class="mb-3" href="#staffCarousel" role="button" data-bs-slide="next">
+                <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/>
+                </svg>
+            </a>
+        </div>
+    </div>
+</div>
+</div>  
+
+
+
+<!-- Modal for Adding Activity -->
+<div class="modal fade" id="addActivityModal" tabindex="-1" aria-labelledby="addActivityModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addActivityModalLabel">أضف نشاط</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="{% url 'nurseries:add_activity' nursery.id %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-container">
+                        <div class="mb-3">
+                            <label for="activity-name" class="form-label">اسم النشاط</label>
+                            <input type="text" class="form-control" id="activity-name" name="name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="activity-description" class="form-label">وصف النشاط</label>
+                            <textarea class="form-control" id="activity-description" name="description" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="activity-age-min" class="form-label">العمر الأدنى</label>
+                            <input type="number" class="form-control" id="activity-age-min" name="age_min" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="activity-age-max" class="form-label">العمر الأقصى</label>
+                            <input type="number" class="form-control" id="activity-age-max" name="age_max" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="activity-image" class="form-label">صورة النشاط</label>
+                            <input type="file" class="form-control" id="activity-image" name="image">
+                        </div>
+                        <div class="mb-3">
+                            <button type="submit" class="btn btn-primary">أضف 
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>         
+<h1 class="mt-4 mb-4">باقاتنا </h1>
+
+<h1 class="mt-4">الموقع </h1>
+
+<!-- Modal for Adding Staff -->
+<div class="modal fade" id="addStaffModal" tabindex="-1" aria-labelledby="addStaffModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addStaffModalLabel">أضف عضو هيئة التدريس</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="{% url 'nurseries:add_staff' nursery.id %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-container">
+                        <div class="mb-3">
+                            <label for="staff-first-name" class="form-label">الاسم الأول</label>
+                            <input type="text" class="form-control" id="staff-first-name" name="first_name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="staff-last-name" class="form-label">اسم العائلة</label>
+                            <input type="text" class="form-control" id="staff-last-name" name="last_name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="staff-image" class="form-label">صورة</label>
+                            <input type="file" class="form-control" id="staff-image" name="image">
+                        </div>
+                        <div class="mb-3">
+                            <label for="staff-specializations" class="form-label">التخصصات</label>
+                            <textarea class="form-control" id="staff-specializations" name="specializations" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="staff-experience" class="form-label">الخبرة</label>
+                            <textarea class="form-control" id="staff-experience" name="experience" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <button type="submit" class="btn btn-primary">أضف عضو هيئة التدريس</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>                                
+{% endblock %}

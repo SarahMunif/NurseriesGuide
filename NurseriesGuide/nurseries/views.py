@@ -5,6 +5,8 @@ from django.contrib import messages
 from nurseries.models import Activity,City,Neighborhood,Nursery,Gallery,Staff
 from django.core.paginator import Paginator
 from django.contrib import messages 
+from django.db.models import Avg,Sum,Max,Min
+
 
 # Create your views here.
 
@@ -14,6 +16,7 @@ def nurseries_view(request:HttpRequest):
     nurseries = Nursery.objects.all() 
     neighborhoods = Neighborhood.objects.all()
 
+    
     # Check if a search was made
     searched = request.GET.get('searched', '')
     if searched:
@@ -71,8 +74,23 @@ def update_nursery(request:HttpRequest,nursery_id:int):
 
 def detail_nursery(request:HttpRequest,nursery_id:int):
     nursery = Nursery.objects.get(pk=nursery_id)
-    return render(request, "doctors/doctor_detail.html",{"nursery": nursery})
-
+    staffs=nursery.staff_set.all() 
+    # this calculate the min and max age the nursery takes based on the activities it offers
+    activities = nursery.activity_set.all() 
+    min = activities.aggregate(Min('age_min'))  # This will return a dictionary
+    max = activities.aggregate(Max('age_max'))  
+    
+    min = min['age_min__min']  # Extract the  age from the dictonary for a better disply in the web bage
+    max = max['age_max__max']  
+    
+    # Pass the nursery and the calculated ages to the template
+    return render(request, "nurseries/nursery_detail.html", {
+        "nursery": nursery,
+        "min": min,
+        "max": max,
+        "activities":activities,
+        "staffs":staffs
+    })
 # activity model views 
 
 def add_activity(request:HttpRequest,nursery_id:int):
@@ -82,7 +100,8 @@ def add_activity(request:HttpRequest,nursery_id:int):
         activityForm = ActivityForm(request.POST, request.FILES)
         if activityForm.is_valid():
             activity = activityForm.save(commit=False)  # Get the unsaved Activity instance
-            activity.nursery = nursery  # Set the nursery for this activity
+            activity.nursery=nursery  # Set the nursery for this activity            
+            print(nursery)
             activity.save()  # Now save the Activity instance into the database
             messages.success(request, 'Activity added successfully!', 'alert-success')
             # return redirect('nurseries:detail_nursery', nursery_id=nursery.id)
@@ -93,7 +112,7 @@ def add_activity(request:HttpRequest,nursery_id:int):
     else:
         activityForm = ActivityForm()
 
-    return render(request, 'nurseries/add_activity.html', {'activityForm': activityForm, 'nursery': nursery})
+    return render(request, 'nurseries/nursery_detail.html', {'activityForm': activityForm, 'nursery': nursery})
 
 def delete_activity(request:HttpRequest, activity_id:int):
     activity = Activity.objects.get(pk=activity_id)
@@ -118,7 +137,7 @@ def update_activity(request:HttpRequest, activity_id:int):
     else:
         activityForm = ActivityForm(instance=activity)
     
-    return render(request, 'nurseries/update_activity.html', {'activityForm': activityForm, 'activity': activity})
+    return render(request, 'nurseries/detail_nursery.html', {'activityForm': activityForm, 'activity': activity})
 
 # staff model views 
 
@@ -131,7 +150,6 @@ def add_staff(request: HttpRequest, nursery_id: int):
             staff.nursery = nursery
             staff.save()
             messages.success(request, 'Staff member added successfully!', 'alert-success')
-            return redirect('nurseries:detail_nursery', nursery_id=nursery.id)
         else:
             for field, errors in staffForm.errors.items():
                 for error in errors:
@@ -139,7 +157,7 @@ def add_staff(request: HttpRequest, nursery_id: int):
     else:
         staffForm = StaffForm()
 
-    return render(request, 'nurseries/add_staff.html', {'staffForm': staffForm, 'nursery': nursery})
+    return render(request, 'nurseries/nursery_detail.html', {'staffForm': staffForm, 'nursery': nursery})
 
 def delete_staff(request: HttpRequest, staff_id: int):
     staff = Staff.objects.get(pk=staff_id)

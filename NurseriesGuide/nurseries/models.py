@@ -13,7 +13,7 @@ class Neighborhood(models.Model):
     city = models.ForeignKey(City, related_name='neighborhoods', on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.name}, {self.city.name}"
+        return f"{self.city.name},{self.name}"
 
 
 # Nursery Model
@@ -26,7 +26,7 @@ class Nursery(models.Model):
     accepts_special_needs = models.BooleanField(default=False)
     verified = models.BooleanField(default=False)
     neighborhood = models.ForeignKey(Neighborhood, on_delete=models.CASCADE, related_name='nurseries')
-
+    
     def __str__(self):
         return self.name
 #Activity Model 
@@ -36,7 +36,7 @@ class Activity(models.Model):
     age_min = models.IntegerField(default=2)
     age_max = models.IntegerField(default=5)
     image = models.ImageField(upload_to='images/', default="images/default.jpg")  
-    nursery = models.ForeignKey(Nursery, on_delete=models.CASCADE, related_name='activities')
+    nursery = models.ForeignKey(Nursery, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -54,9 +54,9 @@ class Gallery(models.Model):
 class Staff(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
-    image = models.ImageField(upload_to='images/', default="images/default.jpg")
+    image = models.ImageField(upload_to='images/', default="images/profile_default.jpg")
     specializations = models.TextField()
     experience=models.TextField()
     nursery = models.ForeignKey(Nursery, on_delete=models.CASCADE)
     def __str__(self):
-        return self.name
+        return f"{self.first_name} {self.last_name}"
