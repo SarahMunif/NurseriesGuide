@@ -9,6 +9,13 @@ def home(request):
     return render(request, 'main/home.html')
 
 
+def about_us(request):
+    return render(request, 'main/about_us.html')
+
+def contact_us(request):
+    return render(request, 'main/contact_us.html')
+
+
 
 def staff_dashboard(request):
     if not request.user.is_staff:

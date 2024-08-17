@@ -1,0 +1,16 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>My Registrations</h2>
+    <ul class="list-group">
+        {% for registration in registrations %}
+            <li class="list-group-item">
+                <a href="{% url 'registrations:registration_detail' registration.pk %}">
+                    {{ registration.child.first_name }} - {{ registration.status }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

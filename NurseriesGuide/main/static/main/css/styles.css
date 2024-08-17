@@ -1,0 +1,208 @@
+body {
+    font-family: 'Cairo', sans-serif;
+}
+
+.navbar-brand img {
+    width: 230px;
+    height: 100px;
+    object-fit: cover;
+}
+
+.navbar-nav .nav-link {
+    margin-right: 15px;
+}
+
+.hero-section {
+    background-image: url('/static/main/images/hero.jpg');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    text-align: center;
+    padding: 100px 0;
+    position: relative;
+    width: 100%;
+    height: 700px;
+    overflow: hidden;
+}
+
+.hero-image img {
+    width: 100%;
+    height: 500px;
+    object-fit: cover;
+    filter: blur(5px); 
+}
+
+.hero-section .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.5); 
+}
+
+.hero-content {
+    color: white;
+    text-align: center;
+}
+
+.hero-content h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+.hero-content .btn {
+    margin: 5px;
+    font-size: 1.2rem;
+    padding: 10px 20px;
+}
+
+
+.stats-section {
+    text-align: center;
+    padding: 50px 0;
+}
+
+.stats-section h5 {
+    margin-bottom: 20px;
+}
+
+.stats-section .col-md-4 {
+    margin-bottom: 30px;
+}
+
+.nursery-section {
+    padding: 50px 0;
+    text-align: center;
+}
+
+.nursery-section h2 {
+    margin-bottom: 40px;
+}
+
+.nursery-cards img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.reviews-section {
+    background-color: #F28B82;
+    text-align: center;
+    position: relative;
+    padding: 100px 0;
+    overflow: hidden;
+}
+
+.reviews-section h2 {
+    margin-top: 3rem;
+}
+
+.img-shapper {
+    padding: 0 0;
+    margin-top: 0px;
+    width: 1000px;
+    object-fit:cover;
+    
+}
+
+.wave-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-bottom: 250px;
+    width: 100%;
+    height: 150px;
+    background: url('/static/main/images/shaper.png') no-repeat;
+    background-size: cover;
+}
+
+.wave-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding-top: 50px;
+    width: 100%;
+    height: 150px;
+    background: url('/static/main/images/pur-b.png') no-repeat;
+    background-size: cover;
+}
+
+.footer {
+    background-color: #343779;
+    color: white;
+    padding: 40px 0;
+}
+
+
+
+.footer .quick-links a,
+.footer .contact-info {
+    color: white;
+    display: block;
+    margin-bottom: 10px;
+}
+
+
+
+.nav-underline {
+display: flex;                
+justify-content: center; 
+padding: 10px 0;             
+}
+
+.nav-underline .nav-link {
+    color: #555;
+    border-bottom: 2px solid transparent; 
+    padding: 10px 15px;  
+}
+
+.nav-underline .nav-link:hover {
+    border-color: #F5888E;
+}
+
+.nav-underline .nav-link.active {
+    border-color: #F5888E;
+}
+
+
+
+.stats-section {
+    text-align: center;
+    padding: 50px 0;
+}
+
+.stats-section h5 {
+    margin-bottom: 20px;
+}
+
+.stats-section .col-md-4 {
+    margin-bottom: 30px;
+}
+
+.nursery-section {
+    padding: 50px 0;
+    text-align: center;
+}
+
+.nursery-section h2 {
+    margin-bottom: 40px;
+}
+
+.nursery-cards img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.reviews-section {
+    background-color: #F28B82;
+    padding-top: 150px;
+    padding-bottom: 200px;
+    text-align: center;
+    max-width: 100vw;
+}
+
+
+

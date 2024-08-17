@@ -14,6 +14,40 @@
     }
 </style>
 <br>
+<div id="galleryCarousel" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+        {% for item in gallery_items %}
+        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+            {% if item.type == 'video' %}
+            <video class="bd-placeholder-img" width="100%" height="100%" controls>
+                <source src="{{ item.url }}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            {% else %}
+            <img src="{{ item.image.url }}" class="d-block w-100" alt="Gallery Image">
+            {% endif %}
+
+        </div>
+        {% endfor %}
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#galleryCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" style="color: ;" type="button" data-bs-target="#galleryCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+
+<div class="row mt-4">
+    <div class="col-12 ">
+        <div class="d-flex justify-content-end">
+            <a href="{% url 'nurseries:add_gallery' nursery.id %}" class="btn btn-light btn-lg rounded-pill shadow-sm" style="font-weight: bold; background-color:#FFFFFF;" data-bs-toggle="modal" data-bs-target="#addGalleryModal"><h6>أضافة صور، مقاطع</h6></a>
+        </div>
+    </div>
+</div>
 <h1>{{nursery.name}}</h1>
 <br>
 <div class="row align-items-center">
@@ -218,8 +252,9 @@
 </div>         
 <h1 class="mt-4 mb-4">باقاتنا </h1>
 
-<h1 class="mt-4">الموقع </h1>
-
+<h1 class="mt-4 mb-4">الموقع </h1>
+<iframe class="mt-4 mb-4" src="{{ nursery.address }}" width="1300" height="800" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+ 
 <!-- Modal for Adding Staff -->
 <div class="modal fade" id="addStaffModal" tabindex="-1" aria-labelledby="addStaffModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -260,5 +295,36 @@
             </div>
         </div>
     </div>
-</div>                                
+</div>    
+
+<!-- Modal for Adding Gallery Items -->
+<div class="modal fade" id="addGalleryModal" tabindex="-1" aria-labelledby="addGalleryModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addGalleryModalLabel">أضف صورة للمعرض</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="{% url 'nurseries:add_gallery' nursery.id %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-container">
+                        <div class="mb-3">
+                            <label for="gallery-image" class="form-label">صورة</label>
+                            <input type="file" class="form-control" id="gallery-image" name="image" accept="image/*" >
+                        </div>
+                        <!-- Optional video upload -->
+                        <div class="mb-3">
+                            <label for="gallery-video" class="form-label">فيديو (اختياري)</label>
+                            <input type="file" class="form-control" id="gallery-video" name="video" accept="video/*">
+                        </div>
+                        <div class="mb-3">
+                            <button type="submit" class="btn btn-primary">أضف إلى المعرض</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

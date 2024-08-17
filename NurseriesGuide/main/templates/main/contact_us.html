@@ -1,0 +1,32 @@
+{% extends "main/base.html" %}
+
+{% block title %}تواصل معنا{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="text-center my-4">تواصل معنا</h1>
+    <p>إذا كان لديك أي استفسار أو سؤال، لا تتردد في التواصل معنا عبر التفاصيل التالية:</p>
+    <ul>
+        <li>رقم الهاتف: 123-456-789</li>
+        <li>البريد الإلكتروني: info@nursery.com</li>
+        <li>العنوان: شارع النور، المدينة، الدولة</li>
+    </ul>
+
+    <h2 class="mt-5">نموذج التواصل</h2>
+    <form>
+        <div class="mb-3">
+            <label for="name" class="form-label">الاسم</label>
+            <input type="text" class="form-control" id="name" placeholder="أدخل اسمك">
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">البريد الإلكتروني</label>
+            <input type="email" class="form-control" id="email" placeholder="أدخل بريدك الإلكتروني">
+        </div>
+        <div class="mb-3">
+            <label for="message" class="form-label">رسالتك</label>
+            <textarea class="form-control" id="message" rows="4" placeholder="أدخل رسالتك هنا"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">إرسال</button>
+    </form>
+</div>
+{% endblock %}

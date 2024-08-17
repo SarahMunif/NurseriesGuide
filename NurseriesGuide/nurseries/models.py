@@ -19,7 +19,7 @@ class Neighborhood(models.Model):
 # Nursery Model
 class Nursery(models.Model):
     name = models.CharField(max_length=255)
-    address = models.CharField(max_length=255)
+    address = models.URLField(max_length=3000)  # Changed from CharField to URLField
     contact_number = models.CharField(max_length=15)
     email = models.EmailField()
     description = models.TextField()
@@ -43,12 +43,12 @@ class Activity(models.Model):
 
 #Gallery Model 
 
+from django.db import models
+
 class Gallery(models.Model):
     image = models.ImageField(upload_to='images/', default="images/default.jpg")
-    vedio=models.FileField(upload_to='vedios/')
-    nursery = models.ForeignKey(Nursery, on_delete=models.CASCADE)
-    def __str__(self):
-        return self.name
+    video = models.FileField(upload_to='videos/', blank=True, null=True)
+    nursery = models.ForeignKey('Nursery', on_delete=models.CASCADE)
 
 #Staff Model 
 class Staff(models.Model):

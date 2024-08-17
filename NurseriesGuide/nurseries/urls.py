@@ -19,4 +19,6 @@ urlpatterns = [
     path("add/<int:nursery_id>/staff",views.add_staff,name="add_staff"),
     path("update/<int:activity_id>/",views.update_staff,name="update_staff"),
     path("delete/<int:activity_id>/",views.delete_staff,name="delete_staff"),
+
+    path("add/<int:nursery_id>/gallery/", views.add_gallery, name="add_gallery"),
 ]

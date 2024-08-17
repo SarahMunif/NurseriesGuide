@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.http import HttpRequest,HttpResponse
-from .forms import NurseryForm,ActivityForm,StaffForm
+from .forms import NurseryForm,ActivityForm,StaffForm,GalleryForm
 from django.contrib import messages 
 from nurseries.models import Activity,City,Neighborhood,Nursery,Gallery,Staff
 from django.core.paginator import Paginator
@@ -75,6 +75,7 @@ def update_nursery(request:HttpRequest,nursery_id:int):
 def detail_nursery(request:HttpRequest,nursery_id:int):
     nursery = Nursery.objects.get(pk=nursery_id)
     staffs=nursery.staff_set.all() 
+    gallery_items=nursery.gallery_set.all() 
     # this calculate the min and max age the nursery takes based on the activities it offers
     activities = nursery.activity_set.all() 
     min = activities.aggregate(Min('age_min'))  # This will return a dictionary
@@ -89,7 +90,8 @@ def detail_nursery(request:HttpRequest,nursery_id:int):
         "min": min,
         "max": max,
         "activities":activities,
-        "staffs":staffs
+        "staffs":staffs,
+        "gallery_items":gallery_items
     })
 # activity model views 
 
@@ -183,3 +185,22 @@ def update_staff(request: HttpRequest, staff_id: int):
 
     return render(request, 'nurseries/update_staff.html', {'staffForm': staffForm, 'staff': staff})
 
+from django.shortcuts import redirect
+
+def add_gallery(request: HttpRequest, nursery_id: int):
+    nursery = Nursery.objects.get(pk=nursery_id)
+    if request.method == 'POST':
+        galleryForm = GalleryForm(request.POST, request.FILES)
+        if galleryForm.is_valid():
+            gallery = galleryForm.save(commit=False)
+            gallery.nursery = nursery  # Assuming the Gallery model has a ForeignKey to Nursery
+            gallery.save()
+            messages.success(request, 'Gallery image added successfully!', 'alert-success')
+        else:
+            for field, errors in galleryForm.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field}: {error}", 'alert-danger')
+    else:
+        galleryForm = GalleryForm()
+
+    return render(request, 'nurseries/nursery_detail.html', {'galleryForm': galleryForm, 'nursery': nursery})
