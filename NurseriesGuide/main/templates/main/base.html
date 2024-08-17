@@ -1,74 +1,85 @@
+{% load static %}
+
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-    <style>html, body {
-        height: 100%; 
-        margin: 0; 
-    }
-    
-    body {
-        display: flex;
-        flex-direction: column; 
-    }
-    
-    main {
-        flex: 1; 
-    }</style>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="{% static 'main/css/styles.css' %}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 
 
-
-    <header class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#"><img src="logo.png" alt="Logo" /></a>
+    <header class="sticky-top navbar nav-underline navbar-expand-lg navbar-light bg-white">
+        <a class="navbar-brand" href="{% url 'main:home' %}"><img src="{% static '/main/images/logo.png' %}" alt="Logo" /></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="#">الرئيسية</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">حضاناتنا</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">طلباتي</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">من نحن</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">تواصل معنا</a></li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'main:home' %}">الرئيسية</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'nurseries_view' %}active{% endif %}" href="{% url 'nurseries:nurseries_view' %}">حضاناتنا</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'about_us' %}active{% endif %}" href="{% url 'main:about_us' %}">من نحن</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'contact_us' %}active{% endif %}" href="{% url 'main:contact_us' %}">تواصل معنا</a>
+                </li>
+            </ul>
+        </div>
+        <div class="nav-item dropdown px-5">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                حسابي
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                    <li><a class="dropdown-item" href='#'>تسجيل الدخول</a></li>
+                    <li><a class="dropdown-item" href='#'>تسجيل</a></li>
+
             </ul>
         </div>
     </header>
 
 
+    {% block hero %}
 
-
+    {% endblock %}
 
     <main class="container mt-4">
         {% if messages %}
-          {% for message in messages %}
-          <div class="alert {{message.tags}} alert-dismissible fade show" role="alert">
-            {{message}}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-          {% endfor %}
+            {% for message in messages %}
+            <div class="alert {{message.tags}} alert-dismissible fade show" role="alert">
+                {{message}}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
         {% endif %}
+
+
         {% block content %}
+        
         {% endblock %}
-      </main>
+    </main>
 
+    {% block reviews %}
+    {% endblock %}
 
-
-
-
-    <footer class="footer bg-dark text-white text-center py-4">
+    <footer class="footer background-color text-white text-center py-5">
         <div class="container">
             <div class="row">
                 <div class="col-md-4">
                     <h5>روابط سريعة</h5>
                     <ul class="list-unstyled">
-                        <li><a href="#" class="text-white">الرئيسية</a></li>
-                        <li><a href="#" class="text-white">حضاناتنا</a></li>
+                        <li><a href="{% url 'main:home' %}" class="text-white">الرئيسية</a></li>
+                        <li><a href="{% url 'nurseries:nurseries_view' %}" class="text-white">حضاناتنا</a></li>
                         <li><a href="#" class="text-white">طلباتي</a></li>
                     </ul>
                 </div>
