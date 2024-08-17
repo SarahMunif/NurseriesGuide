@@ -16,9 +16,28 @@
     </div>
 </div>
 <div class="container-fluid">
-    <br>
-   <h1>test</h1>
-</div>
+
+    {% for nursery in nurseries %}
+    <div class="col-md-4 col-sm-6 mb-4">
+        <div class="card shadow-lg">
+            <div class="card-body">
+                <h5 class="card-title">{{ nursery.name }}</h5>
+                      
+                   </div>
+
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <p>No doctors available.</p>
+    </div>
+    {% endfor %}</div>
+
+
+
+
+
+
 <!-- Modal for Adding Nursery -->
 <div class="modal fade" id="addNurseryModal" tabindex="-1" aria-labelledby="addNurseryModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
