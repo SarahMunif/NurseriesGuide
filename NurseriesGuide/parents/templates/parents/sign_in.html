@@ -1,0 +1,32 @@
+{% extends 'main/base.html'%}
+
+
+{% block title %} تسجيل دخول{% endblock %}
+
+{% block content %}
+<div class="container d-flex flex-column justify-content-center align-items-center gap-3">
+
+    <h2>تسجيل الدخول</h2>
+    <form class="d-flex flex-column gap-3 w-50 mb-3" action="{% url 'parents:signin' %}{% if 'next' in request.GET %}?next={{request.GET.next}}{% endif %}" method="POST">
+        {% csrf_token %}
+        
+
+        <div class="form-floating">
+            <input type="text" class="form-control" id="floatingInput" placeholder="username" name="username">
+            <label for="floatingInput">اسم المستخدم</label>
+        </div>
+
+
+        <div class="form-floating">
+          <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password">
+          <label for="floatingPassword">كلمة المرور</label>
+        </div>
+    
+
+        <button class="btn btn-primary w-100 py-2" type="submit">سجل الدخول</button>
+      </form>
+      <h5>لديك حساب ؟ <a href="{% url 'parents:signup_parent' %}"> سجل كولي امر</a> او <a
+        href="{% url 'parents:signup_manager' %}"> سجل كمالك حضانة</a></h5>
+    </div>
+
+{% endblock %}
