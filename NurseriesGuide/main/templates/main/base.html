@@ -20,29 +20,52 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'main:home' %}">الرئيسية</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {% if request.resolver_match.url_name == 'nurseries_view' %}active{% endif %}" href="{% url 'nurseries:nurseries_view' %}">حضاناتنا</a>
-                </li>
+                <li class="nav-item"><a class="nav-link" href="#">الرئيسية</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">حضاناتنا</a></li>
+                {% if request.user.is_authenticated %}
 
+                <li class="nav-item"><a class="nav-link" href="#">طلباتي</a></li>
+                {% endif %}
+
+                <li class="nav-item"><a class="nav-link" href="#">من نحن</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">تواصل معنا</a></li>
                 <li class="nav-item">
-                    <a class="nav-link {% if request.resolver_match.url_name == 'about_us' %}active{% endif %}" href="{% url 'main:about_us' %}">من نحن</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {% if request.resolver_match.url_name == 'contact_us' %}active{% endif %}" href="{% url 'main:contact_us' %}">تواصل معنا</a>
-                </li>
+
+
+                    {% if request.user.is_authenticated %}
+                    <div class="d-flex gap-1 align-items-center">
+                      <a  class="nav-link" href="{% url 'parents:log_out'%}?next={{request.path}}">Log out</a>
+                    </div>
+                    {% else %}
+                    <div class="dropdown bg-transparent">
+                      <a class="btn nav-link dropdown-toggle p-2" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Sign up/ Sign in
+                      </a>
+                    <ul class="dropdown-menu p-3">
+                      <li><a class="dropdown-item" href="{% url 'parents:signup_parent' %}?next={{request.path}}">Sign up</a></li>
+                      <li><a class="dropdown-item" href="{% url 'parents:signin' %}?next={{request.path}}">Sign in</a></li>
+                    </ul>
+                  </div>
+                    {% endif %}
+      
+      
+      
+                  </li>
             </ul>
         </div>
+                     {% if request.user.is_authenticated %}
+                    <div class="d-flex gap-1 align-items-center">
+                      <a  class="nav-link" href="{% url 'parents:log_out'%}?next={{request.path}}"> تسجيل خروج</a>
+                    </div>
+                    {% else %}
         <div class="nav-item dropdown px-5">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 حسابي
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
 
-                    <li><a class="dropdown-item" href='#'>تسجيل الدخول</a></li>
-                    <li><a class="dropdown-item" href='#'>تسجيل</a></li>
+                    <li><a class="dropdown-item" href='{% url 'parents:signin' %}?next={{request.path}}'>تسجيل الدخول</a></li>
+                    <li><a class="dropdown-item" href='{% url 'parents:signup_parent' %}?next={{request.path}}'>تسجيل</a></li>
 
             </ul>
         </div>
