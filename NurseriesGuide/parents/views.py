@@ -7,11 +7,27 @@ from django.db import IntegrityError , transaction
 from django.contrib.auth.models import User
 from nurseries.models import Nursery
 from .models import Parent
-
+from .models import Child
+from .forms import ChildForm
 
 
 def add_child(request:HttpRequest):
-    pass
+
+    parent = Parent.objects.get(user=request.user)
+
+    if request.method == 'POST':
+        print("im here in add child")
+        form = ChildForm(request.POST, request.FILES)
+        if form.is_valid():
+            child = form.save(commit=False)
+            child.parent = parent
+            child.save()
+            messages.success(request, "تم إضافة الطفل بنجاح", "alert-success")
+            return redirect('parents:parent_profile', user_id=request.user.id)
+    else:
+        form = ChildForm()
+
+    return render(request, 'parents/profile.html')
 
 def update_parent(request:HttpRequest):
     pass
@@ -100,16 +116,13 @@ def log_out(request: HttpRequest):
     return redirect(request.GET.get("next", "/"))
 
 def parent_profile(request:HttpRequest, user_id):
-    try:
 
-        user = User.objects.get(id=user_id)
-
-    except Exception as e:
-        print("Error",e)
-
+    # user = User.objects.get(id=user_id)
     
+    children = Child.objects.filter(parent=user_id)
 
-    return render(request, 'parents/profile.html', {"user":user })
+
+    return render(request, 'parents/profile.html', {"children":children , "gender":Child.GenderChoices.choices})
 
 
 
