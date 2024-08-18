@@ -2,6 +2,10 @@ body {
     font-family: 'Cairo', sans-serif;
 }
 
+main{
+    min-height: calc(100vh - 395px);
+}
+
 .navbar-brand img {
     width: 230px;
     height: 100px;
@@ -10,6 +14,26 @@ body {
 
 .navbar-nav .nav-link {
     margin-right: 15px;
+}
+
+.nav-underline {
+    display: flex;                
+    justify-content: center; 
+    padding: 10px 0;             
+}
+    
+.nav-underline .nav-link {
+    color: #555;
+    border-bottom: 2px solid transparent; 
+    padding: 10px 15px;  
+}
+
+.nav-underline .nav-link:hover {
+    border-color: #F5888E;
+}
+
+.nav-underline .nav-link.active {
+    border-color: #F5888E;
 }
 
 .hero-section {
@@ -144,30 +168,6 @@ body {
     display: block;
     margin-bottom: 10px;
 }
-
-
-
-.nav-underline {
-display: flex;                
-justify-content: center; 
-padding: 10px 0;             
-}
-
-.nav-underline .nav-link {
-    color: #555;
-    border-bottom: 2px solid transparent; 
-    padding: 10px 15px;  
-}
-
-.nav-underline .nav-link:hover {
-    border-color: #F5888E;
-}
-
-.nav-underline .nav-link.active {
-    border-color: #F5888E;
-}
-
-
 
 .stats-section {
     text-align: center;

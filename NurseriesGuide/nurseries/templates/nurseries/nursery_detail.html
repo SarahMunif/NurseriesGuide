@@ -19,14 +19,12 @@
         {% for item in gallery_items %}
         <div class="carousel-item {% if forloop.first %}active{% endif %}">
             {% if item.type == 'video' %}
-            <video class="bd-placeholder-img" width="100%" height="100%" controls>
-                <source src="{{ item.url }}" type="video/mp4">
-                Your browser does not support the video tag.
+            <video class="d-block w-100" controls>
+                <source src="{{ item.video.url }}" type="video/mp4">
             </video>
             {% else %}
             <img src="{{ item.image.url }}" class="d-block w-100" alt="Gallery Image">
             {% endif %}
-
         </div>
         {% endfor %}
     </div>
@@ -34,7 +32,7 @@
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Previous</span>
     </button>
-    <button class="carousel-control-next"  type="button" data-bs-target="#galleryCarousel" data-bs-slide="next">
+    <button class="carousel-control-next" type="button" data-bs-target="#galleryCarousel" data-bs-slide="next">
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Next</span>
     </button>
@@ -109,6 +107,21 @@
                                                 <div class="card-body color-activty">
                                                     <h5 class="card-title mb-1">
                                                        {{ activity.name }}
+                                                        <!-- update icon -->
+                                                        <a data-bs-toggle="modal" data-bs-target="#updateModal-{{ activity.id }}" href="#">
+
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil me-3" viewBox="0 0 16 16">
+                                                                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                                                            </svg>
+                                                        </a>
+                                                        <!-- delete icon -->
+
+                                                        <a data-bs-toggle="modal" data-bs-target="#deleteModal-{{ activity.id }}" href="#">
+
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3 me-3" viewBox="0 0 16 16">
+                                                                <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
+                                                            </svg>
+                                                        </a>                                                       
                                                     </h5>
                                                     <p class="mb-1">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-arms-up mx-2" viewBox="0 0 16 16">
@@ -128,6 +141,59 @@
                                 </div>
                             </div>
                         {% endif %}
+                        <!-- Modal for Update activity Form -->
+                            <div class="modal fade" id="updateModal-{{ activity.id }}" tabindex="-1" aria-labelledby="updateModalLabel-{{ activity.id }}" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="updateModalLabel-{{ activity.id }}"> تعديل بيانات النشاط</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>                                        
+                                        <div class="modal-body">
+                                            <form method="post" action="{% url 'nurseries:update_activity' activity.id %}" enctype="multipart/form-data">
+                                                {% csrf_token %}
+                                                <label for="activity-name-{{ activity.id }}" class="form-label">اسم النشاط</label>
+                                                <input type="text" class="form-control mb-3" id="activity-name-{{ activity.id }}" name="name" value="{{ activity.name }}" required>
+
+                                                <label for="activity-description-{{ activity.id }}" class="form-label">نبذة</label>
+                                                <textarea class="form-control mb-3" id="activity-description-{{ activity.id }}" name="description" required> {{ activity.description }}</textarea>
+
+                                                <label for="activity-age_min-{{ activity.id }}" class="form-label"> العمر الادنى</label>
+                                                <input type="number" class="form-control mb-3" id="activity-age_min-{{ activity.id }}" name="age_min" value="{{ activity.age_min }}" required>
+
+                                                <label for="activity-age_max-{{ activity.id }}" class="form-label">العمر الاقصى </label>
+                                                <input type="number" class="form-control mb-3" id="activity-age_max-{{ activity.id }}" name="age_max" value="{{ activity.age_max }}" required>
+
+                                                <label for="activity-image-{{ activity.id }}" class="form-label">صوره</label>
+                                                <input type="file" class="form-control mb-3" id="activity-image-{{ activity.id }}" name="image" accept="image/*">
+
+                                                <button type="submit" class="btn btn-primary">أحفظ التعديلات </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        <!-- Modal for activity Deletion Confirmation -->
+                            <div class="modal fade" id="deleteModal-{{ activity.id }}" tabindex="-1" aria-labelledby="deleteModalLabel-{{ activity.id }}" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="deleteModalLabel-{{ activity.id }}">تأكيد الحذف </h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                           هل انت متاكد من حذف 
+                                           "{{ activity.name }}"
+                                           ؟
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">تراجع</button>
+                                            <a href="{% url 'nurseries:delete_activity' activity.id %}" class="btn btn-danger">حذف</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                     {% endfor %}
                 </div>
             </div>
@@ -175,8 +241,22 @@
                                             <div class="card bg-transparent border-0">
                                                 <div class="card-body text-center">
                                                     <img src="{{ staff.image.url }}" alt="Staff Image" class="rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
-                                                    <h5 class="card-title mb-1">
+                                                    <h5 class="card-title mb-1"> 
                                                        {{ staff.first_name }} {{ staff.last_name }}
+                                                        <!-- update staff icon -->
+                                                        <a data-bs-toggle="modal" data-bs-target="#updateStaffModal-{{ staff.id }}" href="#">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil me-3" viewBox="0 0 16 16">
+                                                                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                                                            </svg>
+                                                        </a>
+                                                        <!-- delete staff icon -->
+
+                                                        <a data-bs-toggle="modal" data-bs-target="#deleteStaffModal-{{ staff.id }}" href="#">
+
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3 me-3" viewBox="0 0 16 16">
+                                                                <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
+                                                            </svg>
+                                                        </a>                                                       
                                                     </h5>
                                                     <p class="text-muted">
                                                         {{ staff.specializations }}
@@ -192,6 +272,69 @@
                                 </div>
                             </div>
                         {% endif %}
+                        <!-- Modal for staff Update Form -->
+                        <div class="modal fade" id="updateStaffModal-{{ staff.id }}" tabindex="-1" aria-labelledby="updateStaffModalLabel-{{ staff.id }}" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="updateStaffModalLabel-{{ staff.id }}">تعديل معلومات {{ staff.first_name }}</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form method="post" action="{% url 'nurseries:update_staff' staff.id %}" enctype="multipart/form-data">
+                                            {% csrf_token %}
+                                            <div class="mb-3">
+                                                <label for="staff-first_name-{{ staff.id }}" class="form-label"> الاسم الأول</label>
+                                                <input type="text" class="form-control" id="staff-first_name-{{ staff.id }}" name="first_name" value="{{ staff.first_name }}" required>
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label for="staff-last_name-{{ staff.id }}" class="form-label">اسم العائلة </label>
+                                                <input type="text" class="form-control" id="staff-last_name-{{ staff.id }}" name="last_name" value="{{ staff.last_name }}" required>
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label for="staff-image-{{ staff.id }}" class="form-label">صورة</label>
+                                                <input type="file" class="form-control" id="staff-image-{{ staff.id }}" name="image" accept="image/*">
+                                               <br>
+                                                الصورة الحالية : <img src="{{ staff.image.url }}" alt="" width="10%">
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label for="staff-specializations-{{ staff.id }}" class="form-label">تخصصات</label>
+                                                <textarea class="form-control" id="staff-specializations-{{ staff.id }}" name="specializations" required>{{ staff.specializations }}</textarea>
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label for="staff-experience-{{ staff.id }}" class="form-label">سنوات الخبره</label>
+                                                <textarea class="form-control" id="staff-experience-{{ staff.id }}" name="experience" required>{{ staff.experience }}</textarea>
+                                            </div>
+
+                                            <button type="submit" class="btn btn-primary">أحفظ التعديلات  </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Modal for staff Deletion Confirmation -->
+                            <div class="modal fade" id="deleteStaffModal-{{ staff.id }}" tabindex="-1" aria-labelledby="deleteStaffModalLabel-{{ staff.id }}" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="deleteStaffModalLabel-{{ staff.id }}">تأكيد الحذف </h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            هل انت متاكد من حذف 
+                                            {{ staff.first_name }} {{ staff.last_name }}؟
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">تراجع</button>
+                                            <a href="{% url 'nurseries:delete_staff' staff.id %}" class="btn btn-danger">حذف</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                     {% endfor %}
                 </div>
             </div>
@@ -253,7 +396,7 @@
 <h1 class="mt-4 mb-4">باقاتنا </h1>
 
 <h1 class="mt-4 mb-4">الموقع </h1>
-<iframe class="mt-4 mb-4" src="{{ nursery.address }}" width="1300" height="800" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+<!-- <iframe class="mt-4 mb-4" src="{{ nursery.address }}" width="1300" height="800" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe> -->
  
 <!-- Modal for Adding Staff -->
 <div class="modal fade" id="addStaffModal" tabindex="-1" aria-labelledby="addStaffModalLabel" aria-hidden="true">

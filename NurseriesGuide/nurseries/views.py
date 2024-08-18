@@ -113,7 +113,7 @@ def add_activity(request:HttpRequest,nursery_id:int):
             print(nursery)
             activity.save()  # Now save the Activity instance into the database
             messages.success(request, 'Activity added successfully!', 'alert-success')
-            # return redirect('nurseries:detail_nursery', nursery_id=nursery.id)
+            return redirect('nurseries:nursery_detail', nursery_id=nursery_id)
         else:
             for field, errors in activityForm.errors.items():
                 for error in errors:
@@ -128,7 +128,7 @@ def delete_activity(request:HttpRequest, activity_id:int):
     nursery_id = activity.nursery.id  
     activity.delete()
     messages.success(request, 'Activity deleted successfully!', 'alert-success')
-    return redirect('nurseries:detail_nursery', nursery_id=nursery_id)
+    return redirect('nurseries:nursery_detail', nursery_id=nursery_id)
 
 
 def update_activity(request:HttpRequest, activity_id:int):
@@ -138,7 +138,7 @@ def update_activity(request:HttpRequest, activity_id:int):
         if activityForm.is_valid():
             activityForm.save()
             messages.success(request, 'Activity updated successfully!', 'alert-success')
-            return redirect('nurseries:detail_nursery', nursery_id=activity.nursery.id)
+            return redirect('nurseries:nursery_detail', nursery_id=activity.nursery_id)
         else:
             for field, errors in activityForm.errors.items():
                 for error in errors:
@@ -159,6 +159,7 @@ def add_staff(request: HttpRequest, nursery_id: int):
             staff.nursery = nursery
             staff.save()
             messages.success(request, 'Staff member added successfully!', 'alert-success')
+            return redirect('nurseries:nursery_detail', nursery_id=nursery_id)
         else:
             for field, errors in staffForm.errors.items():
                 for error in errors:
@@ -173,16 +174,17 @@ def delete_staff(request: HttpRequest, staff_id: int):
     nursery_id = staff.nursery.id  # Store the nursery id to redirect after deletion
     staff.delete()
     messages.success(request, 'Staff member deleted successfully!', 'alert-success')
-    return redirect('nurseries:detail_nursery', nursery_id=nursery_id)
+    return redirect('nurseries:nursery_detail', nursery_id=nursery_id)
 
 def update_staff(request: HttpRequest, staff_id: int):
+
     staff = Staff.objects.get(pk=staff_id)
     if request.method == 'POST':
         staffForm = StaffForm(request.POST, request.FILES, instance=staff)
         if staffForm.is_valid():
             staffForm.save()
             messages.success(request, 'Staff member updated successfully!', 'alert-success')
-            return redirect('nurseries:detail_nursery', nursery_id=staff.nursery.id)
+            return redirect('nurseries:nursery_detail', nursery_id=staff.nursery_id)
         else:
             for field, errors in staffForm.errors.items():
                 for error in errors:
@@ -190,9 +192,9 @@ def update_staff(request: HttpRequest, staff_id: int):
     else:
         staffForm = StaffForm(instance=staff)
 
-    return render(request, 'nurseries/update_staff.html', {'staffForm': staffForm, 'staff': staff})
+    return render(request, 'nurseries/nursery_detail.html', {'staffForm': staffForm, 'staff': staff})
 
-from django.shortcuts import redirect
+
 
 def add_gallery(request: HttpRequest, nursery_id: int):
     nursery = Nursery.objects.get(pk=nursery_id)
@@ -203,6 +205,9 @@ def add_gallery(request: HttpRequest, nursery_id: int):
             gallery.nursery = nursery  # Assuming the Gallery model has a ForeignKey to Nursery
             gallery.save()
             messages.success(request, 'Gallery image added successfully!', 'alert-success')
+            return redirect('nurseries:nursery_detail', nursery_id=nursery_id)
+
+
         else:
             for field, errors in galleryForm.errors.items():
                 for error in errors:
@@ -211,3 +216,42 @@ def add_gallery(request: HttpRequest, nursery_id: int):
         galleryForm = GalleryForm()
 
     return render(request, 'nurseries/nursery_detail.html', {'galleryForm': galleryForm, 'nursery': nursery})
+
+
+
+
+
+
+
+
+
+def nurseries_list(request):
+    
+    nurseries = Nursery.objects.all()
+    neighborhoods = Neighborhood.objects.all()
+
+    # Check if a search was made
+    searched = request.GET.get('searched', '')
+    if searched:
+        nurseries = nurseries.filter(name__icontains=searched)
+
+    # Pagination
+    page_number = request.GET.get("page", 1)
+    paginator = Paginator(nurseries, 6)
+    nurseries_page = paginator.get_page(page_number)
+
+    # Add average rating for each nursery
+    for nursery in nurseries_page:
+        avg_rating = nursery.review_set.aggregate(Avg('rating'))['rating__avg']
+        nursery.avg_rating = avg_rating if avg_rating is not None else 0
+
+    return render(request, "nurseries/nurseries_list.html", {
+        "nurseries": nurseries_page,
+        "search_term": searched,
+        "neighborhoods": neighborhoods
+    })
+
+
+
+
+
