@@ -20,7 +20,8 @@ class GalleryForm(forms.ModelForm):
         fields = "__all__"
         exclude = ['nursery'] 
 class NurseryForm(forms.ModelForm):
-
     class Meta:
         model = Nursery
         fields = "__all__"
+        exclude = ['owner'] 
+

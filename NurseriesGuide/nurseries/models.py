@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # City Model
 class City(models.Model):
@@ -26,6 +27,7 @@ class Nursery(models.Model):
     accepts_special_needs = models.BooleanField(default=False)
     verified = models.BooleanField(default=False)
     neighborhood = models.ForeignKey(Neighborhood, on_delete=models.CASCADE, related_name='nurseries')
+    owner = models.ForeignKey(User, on_delete=models.CASCADE,  limit_choices_to={'is_staff': True})
 
     def __str__(self):
         return self.name

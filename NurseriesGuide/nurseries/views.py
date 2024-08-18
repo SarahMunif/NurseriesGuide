@@ -13,7 +13,10 @@ from django.db.models import Avg,Sum,Max,Min
 # nursery model views 
 #
 def nurseries_view(request:HttpRequest):
-    nurseries = Nursery.objects.all() 
+    if not request.user.is_authenticated or not request.user.is_staff:
+        return redirect("main:home")  # Redirect non-staff users to home page
+
+    nurseries = Nursery.objects.filter(owner=request.user)
     neighborhoods = Neighborhood.objects.all()
 
     
@@ -32,14 +35,18 @@ def nurseries_view(request:HttpRequest):
       return render(request, "main/home.html", {"nurseries" : nurseries ,"search_term": searched })
 
 def add_nursery(request:HttpRequest):
+        if not request.user.is_authenticated or not request.user.is_staff:
+           return redirect("main:home")  # Redirect non-staff users to home page
         neighborhoods = Neighborhood.objects.all()
 
         if request.method=="POST":
          nurseryForm=NurseryForm(request.POST,request.FILES)
          if nurseryForm.is_valid():
-             nurseryForm.save()
-             messages.success(request, 'nursery added successfully!','alert-success')
-             return redirect("nurseries:nurseries_view")
+            nursery = nurseryForm.save(commit=False)
+            nursery.owner = request.user  # Set the owner to the current user  
+            nursery.save()           
+            messages.success(request, 'nursery added successfully!','alert-success')
+            return redirect("nurseries:nurseries_view")
          else:    
             for field, errors in nurseryForm.errors.items():
                  for error in errors:
