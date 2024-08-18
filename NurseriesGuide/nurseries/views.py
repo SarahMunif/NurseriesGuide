@@ -29,7 +29,7 @@ def nurseries_view(request:HttpRequest):
     if request.user.is_staff:
      return render(request, "nurseries/nurseries_view.html", {"nurseries" : nurseries,"search_term": searched,"neighborhoods":neighborhoods})
     if not request.user.is_staff:
-      return render(request, "nurseries/user_nurseries_view.html", {"nurseries" : nurseries ,"search_term": searched })
+      return render(request, "main/home.html", {"nurseries" : nurseries ,"search_term": searched })
 
 def add_nursery(request:HttpRequest):
         neighborhoods = Neighborhood.objects.all()

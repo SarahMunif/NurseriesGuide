@@ -26,7 +26,7 @@ class Nursery(models.Model):
     accepts_special_needs = models.BooleanField(default=False)
     verified = models.BooleanField(default=False)
     neighborhood = models.ForeignKey(Neighborhood, on_delete=models.CASCADE, related_name='nurseries')
-    
+
     def __str__(self):
         return self.name
 #Activity Model 
@@ -37,7 +37,7 @@ class Activity(models.Model):
     age_max = models.IntegerField(default=5)
     image = models.ImageField(upload_to='images/', default="images/default.jpg")  
     nursery = models.ForeignKey(Nursery, on_delete=models.CASCADE)
-
+    
     def __str__(self):
         return self.name
 
