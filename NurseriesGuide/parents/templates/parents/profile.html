@@ -2,9 +2,20 @@
 
 {% block title %} الملف الشخصي {% endblock %}
 
+{% load static %}
 
 {% block content %}
 
-انا {{request.user.first_name}}
+{% if request.user.is_authenticated and request.user.id == user.id %}
+
+
+
+{% else %}
+
+not parent
+
+{% endif %}
+
+
 
 {% endblock %}

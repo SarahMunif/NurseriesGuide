@@ -37,8 +37,11 @@
             </ul>
         </div>
                      {% if request.user.is_authenticated %}
-                    <div class="d-flex gap-1 align-items-center">
-                      <a  class="nav-link" href="{% url 'parents:log_out'%}?next={{request.path}}"> تسجيل خروج</a>
+                     <div class="d-flex gap-1 align-items-center">
+                        <a  class="nav-link" href="{% url 'parents:parent_profile' request.user.id %}"> حسابي</a>
+                      </div>
+                    <div class="d-flex gap-1 align-items-center ms-3">
+                      <a  class="nav-link" href="{% url 'parents:log_out' %}?next={{request.path}}"> تسجيل خروج</a>
                     </div>
                     {% else %}
         <div class="nav-item dropdown px-5">

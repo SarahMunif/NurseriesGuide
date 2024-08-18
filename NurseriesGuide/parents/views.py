@@ -99,20 +99,17 @@ def log_out(request: HttpRequest):
 
     return redirect(request.GET.get("next", "/"))
 
-# def parent_profile(request:HttpRequest, user_name):
+def parent_profile(request:HttpRequest, user_id):
+    try:
 
-#     try:
-#         user = User.objects.get(username=user_name)
-#         if not Parent.objects.filter(user=user).first():
-#             new_profile = Parent(user=user)
-#             new_profile.save()
+        user = User.objects.get(id=user_id)
 
-#     except Exception as e:
-#         print(e)
+    except Exception as e:
+        print("Error",e)
 
     
 
-#     return render(request, 'parents/profile.html')
+    return render(request, 'parents/profile.html', {"user":user })
 
 
 
