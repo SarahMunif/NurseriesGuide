@@ -194,7 +194,7 @@ def update_staff(request: HttpRequest, staff_id: int):
 
     return render(request, 'nurseries/nursery_detail.html', {'staffForm': staffForm, 'staff': staff})
 
-from django.shortcuts import redirect
+
 
 def add_gallery(request: HttpRequest, nursery_id: int):
     nursery = Nursery.objects.get(pk=nursery_id)
@@ -216,3 +216,42 @@ def add_gallery(request: HttpRequest, nursery_id: int):
         galleryForm = GalleryForm()
 
     return render(request, 'nurseries/nursery_detail.html', {'galleryForm': galleryForm, 'nursery': nursery})
+
+
+
+
+
+
+
+
+
+def nurseries_list(request):
+    
+    nurseries = Nursery.objects.all()
+    neighborhoods = Neighborhood.objects.all()
+
+    # Check if a search was made
+    searched = request.GET.get('searched', '')
+    if searched:
+        nurseries = nurseries.filter(name__icontains=searched)
+
+    # Pagination
+    page_number = request.GET.get("page", 1)
+    paginator = Paginator(nurseries, 6)
+    nurseries_page = paginator.get_page(page_number)
+
+    # Add average rating for each nursery
+    for nursery in nurseries_page:
+        avg_rating = nursery.review_set.aggregate(Avg('rating'))['rating__avg']
+        nursery.avg_rating = avg_rating if avg_rating is not None else 0
+
+    return render(request, "nurseries/nurseries_list.html", {
+        "nurseries": nurseries_page,
+        "search_term": searched,
+        "neighborhoods": neighborhoods
+    })
+
+
+
+
+

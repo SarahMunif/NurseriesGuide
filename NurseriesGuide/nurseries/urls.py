@@ -6,7 +6,8 @@ app_name = "nurseries"
 
 
 urlpatterns = [
-    path("",views.nurseries_view,name="nurseries_view"),
+    path("view",views.nurseries_view,name="nurseries_view"),
+    path("",views.nurseries_list,name="nurseries_list"),
     path("add/",views.add_nursery,name="add_nursery"),
     path("update/<int:nursery_id>/",views.update_nursery,name="update_nursery"),
     path("delete/<int:nursery_id>/",views.delete_nursery,name="delete_nursery"),

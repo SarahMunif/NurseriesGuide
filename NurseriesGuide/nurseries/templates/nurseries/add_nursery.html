@@ -1,7 +1,112 @@
-<!-- nurseries/add_nursery.html -->
-{% extends 'main/base.html' %}
-{% block title %}add nursery{% endblock %}
+{% extends "main/base.html" %}
+
+{% block title %}إضافة حضانة{% endblock %}
 
 {% block content %}
+<div class="container my-4">
+    <h2 class="text-center mb-4">إضافة حضانة جديدة</h2>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <!-- City Selection -->
+        <div class="mb-3">
+            <label for="city" class="form-label">المدينة</label>
+            <select id="city" name="city" class="form-select" required>
+                <option value="">اختر المدينة</option>
+                <!-- Options will be populated via JavaScript -->
+            </select>
+        </div>
+        
+        <!-- Neighborhood Selection -->
+        <div class="mb-3">
+            <label for="district" class="form-label">الحي</label>
+            <select id="district" name="district" class="form-select" required>
+                <option value="">اختر الحي</option>
+                <!-- Options will be populated via JavaScript -->
+            </select>
+        </div>
+
+        <!-- Other Form Fields -->
+        {{ nurseryForm.as_p }}
+
+        <button type="submit" class="btn btn-primary">إضافة</button>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const citySelect = document.getElementById('city');
+        const districtSelect = document.getElementById('district');
+
+        // Debugging output
+        const output = document.createElement('pre');
+        document.body.appendChild(output);
+
+        // Fetch cities on page load
+        fetch('https://api.address.gov.sa/GeoAddress/v1.0/cities')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Debug output
+                output.textContent = JSON.stringify(data, null, 2);
+
+                if (data.cities && data.cities.length > 0) {
+                    data.cities.forEach(city => {
+                        const option = document.createElement('option');
+                        option.value = city.code;
+                        option.textContent = city.name;
+                        citySelect.appendChild(option);
+                    });
+                } else {
+                    console.error('No cities data found');
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching cities:', error);
+                output.textContent = `Error fetching cities: ${error}`;
+            });
+
+        // Fetch districts based on selected city
+        citySelect.addEventListener('change', function() {
+            const cityCode = citySelect.value;
+            districtSelect.innerHTML = '<option value="">اختر الحي</option>'; // Reset districts
+
+            if (cityCode) {
+                fetch(`https://api.address.gov.sa/GeoAddress/v1.0/cities/${cityCode}/districts`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok ' + response.statusText);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        // Debug output
+                        output.textContent = JSON.stringify(data, null, 2);
+
+                        if (data.districts && data.districts.length > 0) {
+                            data.districts.forEach(district => {
+                                const option = document.createElement('option');
+                                option.value = district.code;
+                                option.textContent = district.name;
+                                districtSelect.appendChild(option);
+                            });
+                        } else {
+                            console.error('No districts data found for city', cityCode);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching districts:', error);
+                        output.textContent = `Error fetching districts: ${error}`;
+                    });
+            }
+        });
+    });
+</script>
+
 
 {% endblock %}
