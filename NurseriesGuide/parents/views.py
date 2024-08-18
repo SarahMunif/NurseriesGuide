@@ -34,14 +34,14 @@ def signup_manager(request:HttpRequest):
                 login(request, new_manager)
 
 
-            messages.success(request, "تم تسجيلك كمالك حضانة بنجاح ", "success")
+            messages.success(request, "تم تسجيلك كمالك حضانة بنجاح ", "alert-success")
             return redirect(request.GET.get("next", "/"))
 
         except IntegrityError as e:
-            messages.error(request, "تم ادخال معلومات خاطئة ، ادخل  معلومات صحيحة", "danger")
+            messages.error(request, "تم ادخال معلومات خاطئة ، ادخل  معلومات صحيحة", "alert-danger")
             print(e)
         except Exception as e:
-            messages.error(request, "حدث خطأ غير متوقع يرجى الحاولة مره اخرى", "danger")
+            messages.error(request, "حدث خطأ غير متوقع يرجى الحاولة مره اخرى", "alert-danger")
             print(e)
 
     return render(request,"parents/sign_up_manager.html")
