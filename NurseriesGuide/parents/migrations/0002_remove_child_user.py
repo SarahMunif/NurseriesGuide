@@ -8,12 +8,11 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('parents', '0001_initial'),
+    ]
 
     operations = [
         migrations.RemoveField(
             model_name='child',
             name='user',
-            model_name="child",
-            name="user",
         ),
     ]
