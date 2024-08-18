@@ -6,16 +6,112 @@
 
 {% block content %}
 
-{% if request.user.is_authenticated and request.user.id == user.id %}
+
+<style>
+    .rounded-card {
+        border-radius: 1.5rem; /* This will apply rounded corners to the entire card */
+        overflow: hidden; /* Ensures that the background and content inside respect the border-radius */
+    }
+    .card-body {
+        background-color: #FFF3F4; /* Background color applied directly to card-body */
+    }
+</style>
 
 
+<br>
+<h1>اطفالي</h1>
 
-{% else %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-end">
+                <a href="{% url 'parents:add_child' %}" class="btn btn-light btn-lg rounded-pill shadow-sm" style="font-weight: bold; background-color:#FFFFFF;" data-bs-toggle="modal" data-bs-target="#addNurseryModal"><h6>أضافة طفل</h6></a>
+            </div>
+        </div>
+    </div>
+</div>
 
-not parent
+<div class="container-fluid">
+    {% for child in children %}
+    <div class="row mt-4">
+        
+<!-- Modal for Deletion Confirmation -->
+<div class="modal fade" id="deleteModal-{{ child.id }}" tabindex="-1" aria-labelledby="deleteModalLabel-{{ child.id }}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel-{{ child.id }}">Confirm Deletion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete {{ child.first_name }}?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <a href="#" class="btn btn-danger">Delete</a>            </div>
+        </div>
+    </div>
+</div>
+<h1> {{ child.id }}</h1>
 
-{% endif %}
+{% endfor %}
 
 
+<!-- Modal for Adding child -->
+<div class="modal fade" id="addNurseryModal" tabindex="-1" aria-labelledby="addNurseryModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addNurseryModalLabel">أضف طفل</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="{% url 'parents:add_child' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-container">
+                        <div class="mb-3">
+                            <label for="nursery-special-needs" class="form-label"> صورة الطفل</label>
+                            <input type="file" class="form-check-input" id="nursery-special-needs" name="photo">
+                        </div>
+                        <div class="mb-3">
+                            <label for="nursery-name" class="form-label">الأسم الاول</label>
+                            <input type="text" class="form-control" id="nursery-name" name="first_name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nursery-name" class="form-label">الأسم الثاني</label>
+                            <input type="text" class="form-control" id="nursery-name" name="last_name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nursery-address" class="form-label">تاريخ الميلاد</label>
+                            <input type="date" class="form-control" id="nursery-address" name="birth_date" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="nursery-email" class="form-label">رقم الهوية</label>
+                            <input type="text" class="form-control" id="nursery-email" name="national_id" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nursery-description" class="form-label">نبذه عن الطفل</label>
+                            <textarea class="form-control" id="nursery-description" name="about" required></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="nursery-neighborhood" class="form-label">جنس الطفل</label>
+                            <select class="form-control" id="nursery-neighborhood" name="neighborhood" required>
+                                {% for value, label in gender  %}
+                                    <option value="{{ value }}">{{ label }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <button type="submit" class="btn btn-primary">أضف الطفل</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
 
 {% endblock %}

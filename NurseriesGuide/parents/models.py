@@ -24,6 +24,8 @@ class Child(models.Model):
         choices=GenderChoices.choices,
     )
 
+    first_name = models.CharField(max_length=124,default=None)
+    last_name = models.CharField(max_length=124,default=None)
     birth_date = models.DateField()
     national_id = models.CharField(max_length=10)
     about = models.TextField(default= None)
