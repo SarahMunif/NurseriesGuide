@@ -156,7 +156,6 @@ def add_activity(request:HttpRequest,nursery_id:int):
         if activityForm.is_valid():
             activity = activityForm.save(commit=False)  # Get the unsaved Activity instance
             activity.nursery=nursery  # Set the nursery for this activity            
-            print(nursery)
             activity.save()  # Now save the Activity instance into the database
             messages.success(request, 'Activity added successfully!', 'alert-success')
             return redirect('nurseries:nursery_detail', nursery_id=nursery_id)
@@ -300,3 +299,24 @@ def nurseries_list(request):
 
 
 
+def add_subscription(request, nursery_id):
+    nursery = Nursery.objects.get(pk=nursery_id)
+    
+    if request.user != nursery.owner:
+        return redirect("main:home")
+    if request.method == 'POST':
+        subscriptionForm = SubscriptionForm(request.POST)
+        if subscriptionForm.is_valid():
+            subscription = subscriptionForm.save(commit=False)  # Get the unsaved Activity instance
+            subscription.nursery=nursery  # Set the nursery for this activity            
+            subscription.save()  # Now save the Activity instance into the database
+            messages.success(request, 'Activity added successfully!', 'alert-success')
+            return redirect('nurseries:nursery_detail', nursery_id=nursery_id)
+        else:
+            for field, errors in subscriptionForm.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field}: {error}", 'alert-danger')
+    else:
+        subscriptionForm = subscriptionForm()
+
+    return render(request, 'nurseries/nursery_detail.html', {'subscriptionForm': subscriptionForm, 'nursery': nursery})

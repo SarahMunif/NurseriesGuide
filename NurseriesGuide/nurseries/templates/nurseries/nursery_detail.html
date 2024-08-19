@@ -393,8 +393,130 @@
         </div>
     </div>
 </div>         
-<h1 class="mt-4 mb-4">باقاتنا </h1>
+<!-- Subscription Section -->
+<h1 class="mt-3">باقاتنا</h1>
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-end">
+            <a href="{% url 'registrations:add_subscription' nursery.id %}" class="btn btn-light btn-lg rounded-pill shadow-sm" style="font-weight: bold; background-color:#FFFFFF;" data-bs-toggle="modal" data-bs-target="#addSubscriptionModal">
+                <h6>أضافة باقة</h6>
+            </a>
+        </div>
+    </div>
+</div>
 
+<div class="container-fluid px-lg-5">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-auto">
+            <a class="mb-3" href="#subscriptionCarousel" role="button" data-bs-slide="prev">
+                <!-- Left arrow icon here -->
+                <svg></svg>
+            </a>
+        </div>
+        <div class="col-lg-8">
+            <div id="subscriptionCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    {% for subscription in subscriptions %}
+                        {% if forloop.counter0|divisibleby:3 %}
+                            <div class="carousel-item {% if forloop.counter0 == 0 %}active{% endif %}">
+                                <div class="container">
+                                    <div class="row">
+                        {% endif %}
+                                        <div class="col-md-4 col-sm-6 mb-4">
+                                            <div class="card rounded-card">
+                                                <div class="card-body color-activty">
+                                                    <h5 class="card-title mb-1">
+                                                       {{ subscription.title }}
+                                                        <!-- update icon -->
+                                                        <a data-bs-toggle="modal" data-bs-target="#updateModal-{{ subscription.id }}" href="#">
+                                                            <svg></svg>
+                                                        </a>
+                                                        <!-- delete icon -->
+                                                        <a data-bs-toggle="modal" data-bs-target="#deleteModal-{{ subscription.id }}" href="#">
+                                                            <svg></svg>
+                                                        </a>                                                       
+                                                    </h5>
+                                                    <p class="mb-1">
+                                                        {{ subscription.duration }}
+                                                    </p>
+                                                    <p class="card-text">
+                                                       {{ subscription.description }}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                        {% if forloop.counter|divisibleby:3 or forloop.last %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="col-auto">
+            <a class="mb-3" href="#subscriptionCarousel" role="button" data-bs-slide="next">
+                <!-- Right arrow icon here -->
+                <svg></svg>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for Adding Subscription -->
+<div class="modal fade" id="addSubscriptionModal" tabindex="-1" aria-labelledby="addSubscriptionModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addSubscriptionModalLabel">أضف باقة</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="{% url 'registrations:add_subscription' nursery.id %}">
+                    {% csrf_token %}
+                    <div class="form-container">
+                        <div class="mb-3">
+                            <label for="subscription-title" class="form-label">اسم الباقة</label>
+                            <input type="text" class="form-control" id="subscription-title" name="title" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="subscription-duration-number" class="form-label">مدة الباقة (رقم)</label>
+                            <input type="number" class="form-control" id="subscription-duration-number" name="duration_number" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="subscription-duration-unit" class="form-label">وحدة الزمن</label>
+                            <select class="form-control" id="subscription-duration-unit" name="duration_unit" required>
+                                <option value="day">يومياً</option>
+                                <option value="week">أسبوعياً</option>
+                                <option value="month">شهرياً</option>
+                                <option value="year">سنوياً</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="subscription-price" class="form-label">السعر</label>
+                            <input type="text" class="form-control" id="subscription-price" name="price" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="subscription-age-min" class="form-label">العمر الأدنى</label>
+                            <input type="number" class="form-control" id="subscription-age-min" name="age_min" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="subscription-age-max" class="form-label">العمر الأقصى</label>
+                            <input type="number" class="form-control" id="subscription-age-max" name="age_max" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="subscription-description" class="form-label">وصف الباقة</label>
+                            <textarea class="form-control" id="subscription-description" name="description" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <button type="submit" class="btn btn-primary">أضف</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <h1 class="mt-4 mb-4">الموقع </h1>
 <!-- <iframe class="mt-4 mb-4" src="{{ nursery.address }}" width="1300" height="800" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe> -->
  

@@ -2,8 +2,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Registration
-from .forms import RegistrationForm, RegistrationStatusForm
+from .forms import RegistrationForm, RegistrationStatusForm,SubscriptionForm
 from parents.models import Child
+from .models import Nursery, Subscription
 
 
 
@@ -73,3 +74,25 @@ def registration_update_status(request, pk):
 
     return render(request, 'registrations/registration_status_form.html', {'form': form, 'registration': registration})
 
+
+def add_subscription(request, nursery_id):
+    nursery = get_object_or_404(Nursery, pk=nursery_id)
+    
+    if request.user != nursery.owner:
+        return redirect("main:home")
+    if request.method == 'POST':
+        subscriptionForm = SubscriptionForm(request.POST)
+        if subscriptionForm.is_valid():
+            subscription = subscriptionForm.save(commit=False)  # Get the unsaved Activity instance
+            subscription.nursery=nursery  # Set the nursery for this activity            
+            subscription.save()  # Now save the Activity instance into the database
+            messages.success(request, 'Activity added successfully!', 'alert-success')
+            return redirect('nurseries:nursery_detail', nursery_id=nursery_id)
+        else:
+            for field, errors in subscriptionForm.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field}: {error}", 'alert-danger')
+    else:
+        subscriptionForm = subscriptionForm()
+
+    return render(request, 'nurseries/nursery_detail.html', {'subscriptionForm': subscriptionForm, 'nursery': nursery})
