@@ -5,7 +5,7 @@ from django.contrib import messages
 from nurseries.models import Activity,City,Neighborhood,Nursery,Gallery,Staff
 from django.core.paginator import Paginator
 from django.contrib import messages 
-from django.db.models import Avg,Sum,Max,Min
+from django.db.models import Avg,Sum,Max,Min,Count
 from django.db.models import Q
 
 from registrations.models import Subscription
@@ -91,7 +91,7 @@ def add_nursery(request:HttpRequest):
             nursery = nurseryForm.save(commit=False)
             nursery.owner = request.user  # Set the owner to the current user  
             nursery.save()           
-            messages.success(request, 'nursery added successfully!','alert-success')
+            messages.success(request, f'تم أضافة الحضانة{nursery.name}  بنجاح  !','alert-success')
             return redirect("nurseries:nurseries_view")
          else:    
             for field, errors in nurseryForm.errors.items():
@@ -102,7 +102,7 @@ def add_nursery(request:HttpRequest):
 def delete_nursery(request:HttpRequest,nursery_id:int):
     nursery = Nursery.objects.get(pk=nursery_id)
     if nursery.delete():
-             messages.success(request, 'nursery deleted successfully!',"alert-success")
+             messages.success(request, f'تم حذف حضانة {nursery.name}  بنجاح !',"alert-success")
              return redirect('nurseries:nurseries_view')
     else:
          for field, errors in nursery.errors.items():
@@ -116,7 +116,7 @@ def update_nursery(request:HttpRequest,nursery_id:int):
          nurseryForm=NurseryOwnerForm(request.POST, request.FILES, instance=nursery)
          if nurseryForm.is_valid():
              nurseryForm.save()
-             messages.success(request, 'nursery updated successfully!',"alert-success")
+             messages.success(request, 'تم حفظ تعديلاتك بنجاح  !',"alert-success")
              return redirect("nurseries:nurseries_view")
          else:
              for field, errors in nurseryForm.errors.items():
@@ -160,7 +160,7 @@ def add_activity(request:HttpRequest,nursery_id:int):
             activity = activityForm.save(commit=False)  # Get the unsaved Activity instance
             activity.nursery=nursery  # Set the nursery for this activity            
             activity.save()  # Now save the Activity instance into the database
-            messages.success(request, 'Activity added successfully!', 'alert-success')
+            messages.success(request, f'تم أضافة النشاط{activity.name} بنجاج  !', 'alert-success')
             return redirect('nurseries:nursery_detail', nursery_id=nursery_id)
         else:
             for field, errors in activityForm.errors.items():
@@ -175,7 +175,7 @@ def delete_activity(request:HttpRequest, activity_id:int):
     activity = Activity.objects.get(pk=activity_id)
     nursery_id = activity.nursery.id  
     activity.delete()
-    messages.success(request, 'Activity deleted successfully!', 'alert-success')
+    messages.success(request, f'تم حذف النشاط {activity.name} بنجاج  !', 'alert-success')
     return redirect('nurseries:nursery_detail', nursery_id=nursery_id)
 
 
@@ -185,7 +185,7 @@ def update_activity(request:HttpRequest, activity_id:int):
         activityForm = ActivityForm(request.POST, request.FILES, instance=activity)
         if activityForm.is_valid():
             activityForm.save()
-            messages.success(request, 'Activity updated successfully!', 'alert-success')
+            messages.success(request, '  تم حفظ تعديلاتك بنجاح!', 'alert-success')
             return redirect('nurseries:nursery_detail', nursery_id=activity.nursery_id)
         else:
             for field, errors in activityForm.errors.items():
@@ -206,7 +206,7 @@ def add_staff(request: HttpRequest, nursery_id: int):
             staff = staffForm.save(commit=False)
             staff.nursery = nursery
             staff.save()
-            messages.success(request, 'Staff member added successfully!', 'alert-success')
+            messages.success(request, f' تم أضافة العضو {staff.first_name} بنجاح   !', 'alert-success')
             return redirect('nurseries:nursery_detail', nursery_id=nursery_id)
         else:
             for field, errors in staffForm.errors.items():
@@ -221,7 +221,7 @@ def delete_staff(request: HttpRequest, staff_id: int):
     staff = Staff.objects.get(pk=staff_id)
     nursery_id = staff.nursery.id  # Store the nursery id to redirect after deletion
     staff.delete()
-    messages.success(request, 'Staff member deleted successfully!', 'alert-success')
+    messages.success(request, f' تم حذف العضو {staff.first_name} بنجاح   !', 'alert-success')
     return redirect('nurseries:nursery_detail', nursery_id=nursery_id)
 
 def update_staff(request: HttpRequest, staff_id: int):
@@ -231,7 +231,7 @@ def update_staff(request: HttpRequest, staff_id: int):
         staffForm = StaffForm(request.POST, request.FILES, instance=staff)
         if staffForm.is_valid():
             staffForm.save()
-            messages.success(request, 'Staff member updated successfully!', 'alert-success')
+            messages.success(request, 'تم حفظ تعديلاتك بنجاح!', 'alert-success')
             return redirect('nurseries:nursery_detail', nursery_id=staff.nursery_id)
         else:
             for field, errors in staffForm.errors.items():
@@ -252,7 +252,7 @@ def add_gallery(request: HttpRequest, nursery_id: int):
             gallery = galleryForm.save(commit=False)
             gallery.nursery = nursery  # Assuming the Gallery model has a ForeignKey to Nursery
             gallery.save()
-            messages.success(request, 'Gallery image added successfully!', 'alert-success')
+            messages.success(request, 'تمت الاضافة بنجاح !', 'alert-success')
             return redirect('nurseries:nursery_detail', nursery_id=nursery_id)
 
 
