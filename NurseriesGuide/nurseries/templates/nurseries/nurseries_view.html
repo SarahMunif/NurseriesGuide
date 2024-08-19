@@ -30,7 +30,7 @@
 
 <div class="container-fluid">
     <div class="row mt-4">
-        {% for nursery in nurseries %}
+ {% for nursery in nurseries %}
         <div class="col-md-4 col-sm-6 mb-4">
             <div class="card shadow-lg rounded-card">
                 <div class="card-body">
@@ -70,8 +70,11 @@
                         <div class="col">
                             <h6 class="mb-0">{{ nursery.neighborhood }}</h6>
                         </div>
-                        <h6 class="mt-3">حاله الطلب :</h6>
-                    </div>
+                            <h6 class="mt-3">حالة الطلب: {{ nursery.status }}</h6>
+                            {% if nursery.status == 'rejected' %}
+                            <p>Reason for Rejection: {{ nursery.rejection_reason }}</p>
+                            {% endif %}          
+                        </div>
 
             </div>
         <!-- Modal for Update Form -->
@@ -147,8 +150,10 @@
             </div>
         </div>
         </div>    
-{% endfor %}
+
 </div>
+{% endfor %}
+
 </div>
 </div>
     <!-- Modal for Adding Nursery -->

@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.http import HttpRequest,HttpResponse
-from .forms import NurseryForm,ActivityForm,StaffForm,GalleryForm
+from .forms import NurseryForm,ActivityForm,StaffForm,GalleryForm,NurseryOwnerForm
 from django.contrib import messages 
 from nurseries.models import Activity,City,Neighborhood,Nursery,Gallery,Staff
 from django.core.paginator import Paginator
@@ -11,7 +11,7 @@ from django.db.models import Avg,Sum,Max,Min
 # Create your views here.
 
 # nursery model views 
-#
+
 def nurseries_view(request:HttpRequest):
     if not request.user.is_authenticated or not request.user.is_staff:
         return redirect("main:home")  # Redirect non-staff users to home page
@@ -34,13 +34,46 @@ def nurseries_view(request:HttpRequest):
     if not request.user.is_staff:
       return render(request, "main/home.html", {"nurseries" : nurseries ,"search_term": searched })
 
+def verify_nurseries(request):
+    if not request.user.is_superuser:
+        return redirect('main:home') 
+    else:
+        if request.method == 'POST':
+            nursery_id = request.POST.get('nursery_id')
+            action = request.POST.get('action', 'verify')
+            rejection_reason = request.POST.get('rejection_reason', '')
+
+            if nursery_id:
+                nursery = Nursery.objects.get(id=nursery_id)
+                if action == 'verify':
+                    nursery.verified = True
+                    nursery.status = 'verified'
+                elif action == 'reject':
+                    nursery.verified = False
+                    nursery.status = 'rejected'
+                    nursery.rejection_reason = rejection_reason
+
+                nursery.save()
+                return redirect('nurseries:verify_nurseries')
+            else:
+                messages.error(request, "No nursery selected.")
+
+        unverified_nurseries = Nursery.objects.filter(status='pending')
+        return render(request, "nurseries/superuser_nurseries.html", {
+            "unverified_nurseries": unverified_nurseries
+        })
+
+
+
+
+
 def add_nursery(request:HttpRequest):
         if not request.user.is_authenticated or not request.user.is_staff:
            return redirect("main:home")  # Redirect non-staff users to home page
         neighborhoods = Neighborhood.objects.all()
 
         if request.method=="POST":
-         nurseryForm=NurseryForm(request.POST,request.FILES)
+         nurseryForm=NurseryOwnerForm(request.POST,request.FILES)
          if nurseryForm.is_valid():
             nursery = nurseryForm.save(commit=False)
             nursery.owner = request.user  # Set the owner to the current user  
@@ -67,7 +100,7 @@ def delete_nursery(request:HttpRequest,nursery_id:int):
 def update_nursery(request:HttpRequest,nursery_id:int):
     nursery = Nursery.objects.get(pk=nursery_id)
     if request.method == "POST":
-         nurseryForm=NurseryForm(request.POST, request.FILES, instance=nursery)
+         nurseryForm=NurseryOwnerForm(request.POST, request.FILES, instance=nursery)
          if nurseryForm.is_valid():
              nurseryForm.save()
              messages.success(request, 'nursery updated successfully!',"alert-success")
@@ -216,7 +249,6 @@ def add_gallery(request: HttpRequest, nursery_id: int):
         galleryForm = GalleryForm()
 
     return render(request, 'nurseries/nursery_detail.html', {'galleryForm': galleryForm, 'nursery': nursery})
-
 
 
 

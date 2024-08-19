@@ -19,6 +19,11 @@ class GalleryForm(forms.ModelForm):
         model = Gallery
         fields = "__all__"
         exclude = ['nursery'] 
+class NurseryOwnerForm(forms.ModelForm):
+    class Meta:
+        model = Nursery
+        fields = "__all__"
+        exclude = ['owner', 'status']  # Exclude both owner and status fields
 
 class NurseryForm(forms.ModelForm):
     class Meta:
@@ -26,6 +31,6 @@ class NurseryForm(forms.ModelForm):
         fields = "__all__"
         exclude = ['owner'] 
         widgets = {
-            'neighborhood': forms.HiddenInput(),  # Hide the neighborhood input since it's set by the dropdowns
+            'neighborhood': forms.HiddenInput(),
         }
 

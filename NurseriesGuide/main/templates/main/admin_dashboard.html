@@ -1,0 +1,47 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<style>
+    .nav-underline {
+        display: flex;                
+        justify-content: center; 
+        padding: 10px 0;             
+    }
+
+    .nav-underline .nav-link {
+        color: #555;
+        border-bottom: 2px solid transparent; 
+        padding: 10px 15px;  
+    }
+
+    .nav-underline .nav-link:hover {
+        border-color: #F5888E;
+    }
+
+    .nav-underline .nav-link.active {
+        border-color: #F5888E;
+    }
+</style>
+
+<nav class="nav nav-underline">
+  <li class="nav-item">
+    <a class="nav-link" aria-current="page" href="">احصائيات الموقع</a>
+  </li>
+
+  <li class="nav-item">
+    <a class="nav-link {% if request.resolver_match.url_name == 'verify_nurseries' %}active{% endif %}" href="{% url 'nurseries:verify_nurseries' %}">طلبات تسجيل الحضانات  
+    </a>
+
+  </li>
+
+</nav>
+
+
+<div class="container">
+    {% block Dashboard-content %}
+    {% endblock %}
+</div>
+{% endblock %}

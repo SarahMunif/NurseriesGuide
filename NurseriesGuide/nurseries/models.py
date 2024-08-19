@@ -26,6 +26,12 @@ class Nursery(models.Model):
     description = models.TextField()
     accepts_special_needs = models.BooleanField(default=False)
     verified = models.BooleanField(default=False)
+    status = models.CharField(max_length=20, default='pending', choices=(
+        ('pending', 'Pending'),
+        ('verified', 'Verified'),
+        ('rejected', 'Rejected')
+    ))
+    rejection_reason = models.TextField(blank=True, null=True)
     neighborhood = models.ForeignKey(Neighborhood, on_delete=models.CASCADE, related_name='nurseries')
     owner = models.ForeignKey(User, on_delete=models.CASCADE,  limit_choices_to={'is_staff': True})
 
