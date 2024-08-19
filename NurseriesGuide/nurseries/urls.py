@@ -8,8 +8,9 @@ app_name = "nurseries"
 urlpatterns = [
     path("view",views.nurseries_view,name="nurseries_view"),
     path("",views.nurseries_list,name="nurseries_list"),
-    path("requests/",views.verify_nurseries,name="verify_nurseries"),
-     
+    path("requests-admin/",views.verify_nurseries,name="verify_nurseries"),
+    path("owner/requests/",views.owner_requests_view,name="owner_requests_view"),
+
 
     path("add/",views.add_nursery,name="add_nursery"),
     path("update/<int:nursery_id>/",views.update_nursery,name="update_nursery"),

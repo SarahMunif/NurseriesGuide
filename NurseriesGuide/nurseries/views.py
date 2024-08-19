@@ -6,6 +6,7 @@ from nurseries.models import Activity,City,Neighborhood,Nursery,Gallery,Staff
 from django.core.paginator import Paginator
 from django.contrib import messages 
 from django.db.models import Avg,Sum,Max,Min
+from django.db.models import Q
 
 
 # Create your views here.
@@ -17,6 +18,8 @@ def nurseries_view(request:HttpRequest):
         return redirect("main:home")  # Redirect non-staff users to home page
 
     nurseries = Nursery.objects.filter(owner=request.user)
+    nurseries = Nursery.objects.filter(status='verified')
+    
     neighborhoods = Neighborhood.objects.all()
 
     
@@ -63,7 +66,17 @@ def verify_nurseries(request):
             "unverified_nurseries": unverified_nurseries
         })
 
+def owner_requests_view(request):
+    if not request.user.is_authenticated or not request.user.is_staff:
+     return redirect("main:home")  # Redirect non-staff users to home page
 
+    nurseries = Nursery.objects.filter(owner=request.user)
+    neighborhoods = Neighborhood.objects.all()
+
+    unverified_nurseries = nurseries.filter(Q(status='pending') | Q(status='rejected'))    
+    return render(request, "nurseries/owner_requests.html", {
+            "unverified_nurseries": unverified_nurseries,"neighborhoods":neighborhoods
+        })
 
 
 
