@@ -1,4 +1,4 @@
-from django.shortcuts import render , redirect
+from django.shortcuts import render , redirect ,get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpRequest, HttpResponse, Http404
 from django.core.paginator import Paginator
@@ -13,29 +13,68 @@ from .forms import ChildForm
 
 def add_child(request:HttpRequest):
 
+    if not request.user.is_authenticated:
+        return redirect("main:home")  # Redirect non-authenticated users to home page
+
     parent = Parent.objects.get(user=request.user)
 
-    if request.method == 'POST':
-        print("im here in add child")
+    if request.method == "POST":
         form = ChildForm(request.POST, request.FILES)
         if form.is_valid():
             child = form.save(commit=False)
-            child.parent = parent
-            child.save()
-            messages.success(request, "تم إضافة الطفل بنجاح", "alert-success")
-            return redirect('parents:parent_profile', user_id=request.user.id)
-    else:
-        form = ChildForm()
+            child.parent = parent 
+            child.save()    
+            messages.success(request, "تم إضافة الطفل بنجاح", 'alert-success')
+        else:
+            print(form.errors)
+            messages.error(request,  "تم ادخال معلومات خاطئة ، ادخل  معلومات صحيحة", 'alert-danger')
 
-    return render(request, 'parents/profile.html')
+    return render(request, 'parents/profile.html', {"gender": Child.GenderChoices.choices})
 
 def update_parent(request:HttpRequest):
     pass
-def delete_child(request:HttpRequest):
+
+def child_detail(request:HttpRequest):
     pass
 
-def update_child(request:HttpRequest):
-    pass
+
+def delete_child(request:HttpRequest,child_id):
+
+    if not request.user.is_authenticated:
+        return redirect("main:home")  # Redirect non-authenticated users to home page
+
+    child = Child.objects.get(pk=child_id)
+
+    if child.delete():
+        messages.success(request, f'بنجاح{child.first_name}تم ازالة معلومات ',"alert-success")
+    
+    else:
+        messages.error(request, f"{child.first_name} لم نتمكن من ازالة معلومات","alert-danger")    
+
+    return redirect(request.GET.get("next", "/"))
+
+
+
+def update_child(request:HttpRequest,child_id):
+
+    if not request.user.is_authenticated:
+        return redirect("main:home")  # Redirect non-authenticated users to home page
+
+    # parent = Parent.objects.get(user=request.user)
+    child = Child.objects.get(pk=child_id)
+
+    if request.method == "POST":
+        form = ChildForm(request.POST, request.FILES, instance=child)
+        if form.is_valid():
+            form.save()       
+            messages.success(request, "تم إضافة الطفل بنجاح", 'alert-success')
+            return redirect(request.GET.get("next", "/"))
+        else:
+            print(form.errors)
+            messages.error(request,  "تم ادخال معلومات خاطئة ، ادخل  معلومات صحيحة", 'alert-danger')
+
+    return render(request, 'parents/profile.html', {"gender": Child.GenderChoices.choices})
+
 
 
 def signup_manager(request:HttpRequest):
@@ -117,12 +156,12 @@ def log_out(request: HttpRequest):
 
 def parent_profile(request:HttpRequest, user_id):
 
-    # user = User.objects.get(id=user_id)
     
-    children = Child.objects.filter(parent=user_id)
+    parent = get_object_or_404(Parent, user=request.user)
+    children = Child.objects.filter(parent=parent)
 
 
-    return render(request, 'parents/profile.html', {"children":children , "gender":Child.GenderChoices.choices})
+    return render(request, 'parents/profile.html', {"parent":parent ,"children":children,"gender": Child.GenderChoices.choices})
 
 
 

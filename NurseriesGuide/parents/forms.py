@@ -11,4 +11,4 @@ class ParentForm(forms.ModelForm):
 class ChildForm(forms.ModelForm):
     class Meta:
         model = Child
-        fields = "__all__"
+        exclude = ['parent']

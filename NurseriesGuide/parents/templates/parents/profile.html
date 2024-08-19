@@ -6,112 +6,257 @@
 
 {% block content %}
 
-
 <style>
-    .rounded-card {
-        border-radius: 1.5rem; /* This will apply rounded corners to the entire card */
-        overflow: hidden; /* Ensures that the background and content inside respect the border-radius */
+    h1,
+    h5,
+    a {
+        color: #12275A
     }
+
+    a {
+        text-decoration: none;
+    }
+
+    .rounded-card {
+        border-radius: 1.5rem;
+        overflow: hidden;
+    }
+
     .card-body {
-        background-color: #FFF3F4; /* Background color applied directly to card-body */
+        background-color: #FFF3F4;
     }
 </style>
 
+<div class="row">
 
-<br>
-<h1>اطفالي</h1>
+    <div class="col-4" style="background-color: bisque; height: max-content;">
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <div class="d-flex justify-content-end">
-                <a href="{% url 'parents:add_child' %}" class="btn btn-light btn-lg rounded-pill shadow-sm" style="font-weight: bold; background-color:#FFFFFF;" data-bs-toggle="modal" data-bs-target="#addNurseryModal"><h6>أضافة طفل</h6></a>
-            </div>
+        <div class="d-flex flex-column gap-3">
+
+            <h1>{{parent.phone_number}}</h1>
+
         </div>
     </div>
-</div>
 
-<div class="container-fluid">
-    {% for child in children %}
-    <div class="row mt-4">
+
+    <div class="col">
+
+        <div class="d-flex justify-content-between">
+            <h1>اطفالي</h1>
+
+            <a href="{% url 'parents:add_child' %}" class="btn btn-light btn-lg rounded-pill shadow-sm"
+                style="font-weight: bold; background-color:#FFFFFF;" data-bs-toggle="modal"
+                data-bs-target="#addNurseryModal">
+                <h6>أضافة طفل</h6>
+            </a>
+        </div>
+
+
+        <div class="container-fluid">
+            <div class="row mt-4">
+                {% for child in children %}
+                <div class="col-md-4 col-sm-6 mb-4">
+                    <div class="card shadow-lg rounded-card">
+                        <div class="card-body">
+                            <h5 class="card-title mb-3">
+                                <a data-bs-toggle="modal" data-bs-target="#ViewChildyModal-{{ child.id }}" href="#">{{ child.first_name }}</a>
         
-<!-- Modal for Deletion Confirmation -->
-<div class="modal fade" id="deleteModal-{{ child.id }}" tabindex="-1" aria-labelledby="deleteModalLabel-{{ child.id }}" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel-{{ child.id }}">Confirm Deletion</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                Are you sure you want to delete {{ child.first_name }}?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <a href="#" class="btn btn-danger">Delete</a>            </div>
-        </div>
-    </div>
-</div>
-<h1> {{ child.id }}</h1>
+                                <!-- update icon -->
+                                <a data-bs-toggle="modal" data-bs-target="#updateModal-{{ child.id }}" href="#">
+        
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil me-3" viewBox="0 0 16 16">
+                                        <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                                    </svg>
+                                </a>
+                                <!-- delete icon -->
+        
+                                <a data-bs-toggle="modal" data-bs-target="#deleteModal-{{ child.id }}" href="#">
+        
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3 me-3" viewBox="0 0 16 16">
+                                        <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
+                                    </svg>
+                                </a>
+        
+                            </h5>
+        
+                    </div>
+                    <!-- #ViewChildyModal -->
+                    <div class="modal fade" id="ViewChildyModal-{{ child.id }}" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="updateModalLabel-{{ child.first_name }}">عرض بيانات  </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
 
-{% endfor %}
+                                    <h3>{{child.national_id}}</h3>
 
+                                </div>
+                            </div>
+                        </div>
+                    </div>    
+                <!-- Modal for Update Form -->
 
-<!-- Modal for Adding child -->
-<div class="modal fade" id="addNurseryModal" tabindex="-1" aria-labelledby="addNurseryModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addNurseryModalLabel">أضف طفل</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form method="post" action="{% url 'parents:add_child' %}" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <div class="form-container">
-                        <div class="mb-3">
-                            <label for="nursery-special-needs" class="form-label"> صورة الطفل</label>
-                            <input type="file" class="form-check-input" id="nursery-special-needs" name="photo">
-                        </div>
-                        <div class="mb-3">
-                            <label for="nursery-name" class="form-label">الأسم الاول</label>
-                            <input type="text" class="form-control" id="nursery-name" name="first_name" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="nursery-name" class="form-label">الأسم الثاني</label>
-                            <input type="text" class="form-control" id="nursery-name" name="last_name" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="nursery-address" class="form-label">تاريخ الميلاد</label>
-                            <input type="date" class="form-control" id="nursery-address" name="birth_date" required>
-                        </div>
+                <div class="modal fade" id="updateModal-{{ child.id }}" tabindex="-1" aria-labelledby="updateModalLabel-{{ child.id }}" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="updateModalLabel-{{ child.first_name }}">تعديل بيانات  </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form method="post" action="{% url 'parents:update_child' child.id %}?next={{ request.path }}">
+                                    {% csrf_token %}
+                                    <div class="form-container">
+                                        <div class="mb-3">
+                                            <img src="{{ child.photo.url }}" alt="{{ child.first_name }}" class="img-thumbnail mt-2 mb-2" style="max-height: 130px;">
+                                            <label for="child-photo" class="form-label">صورة الطفل</label>
+                                            <input type="file" name="photo" class="form-control"  accept="image/*"/>
 
-                        <div class="mb-3">
-                            <label for="nursery-email" class="form-label">رقم الهوية</label>
-                            <input type="text" class="form-control" id="nursery-email" name="national_id" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="nursery-description" class="form-label">نبذه عن الطفل</label>
-                            <textarea class="form-control" id="nursery-description" name="about" required></textarea>
-                        </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="child-first-name" class="form-label">الأسم الاول</label>
+                                            <input type="text" class="form-control" id="child-first-name" name="first_name" value="{{ child.first_name }}"
+                                                required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="child-last-name" class="form-label">الأسم الثاني</label>
+                                            <input type="text" class="form-control" id="child-last-name" name="last_name" value="{{ child.last_name }}"
+                                                required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="child-birth-date" class="form-label">تاريخ الميلاد</label>
+                                            <input type="date" class="form-control" id="child-birth-date" name="birth_date" value="{{ child.birth_date|date:'Y-m-d' }}"
+                                                required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="child-national-id" class="form-label">رقم الهوية</label>
+                                            <input type="text" class="form-control" id="child-national-id" name="national_id" value="{{child.national_id}}"
+                                                required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="child-about" class="form-label">نبذه عن الطفل</label>
+                                            <textarea class="form-control" id="child-about" name="about" required>{{child.about}}</textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="child-gender" class="form-label">جنس الطفل</label>
+                                            <select class="form-control" id="child-gender"  name="gender" required>
+                                                <option value="{{child.gender}}" selected>{{child.get_gender_display}}</option>
 
-                        <div class="mb-3">
-                            <label for="nursery-neighborhood" class="form-label">جنس الطفل</label>
-                            <select class="form-control" id="nursery-neighborhood" name="neighborhood" required>
-                                {% for value, label in gender  %}
-                                    <option value="{{ value }}">{{ label }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <button type="submit" class="btn btn-primary">أضف الطفل</button>
+                                                {% for value, label in gender %}
+                                                <option value="{{ value }}">{{ label }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    <button type="submit" class="btn btn-primary">أحفظ التعديلات</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
-                </form>
+                </div>    
+            </div>    
+        
+        
+                <!-- Modal for Deletion Confirmation -->
+        
+                <div class="modal fade" id="deleteModal-{{ child.id }}" tabindex="-1" aria-labelledby="deleteModalLabel-{{ child.id }}"
+                    aria-hidden="true">
+
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="deleteModalLabel-{{ child.id }}">تأكيد الحذف </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                هل انت متاكد من حذف
+                                "{{ child.first_name }}"
+                                ؟
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <a href="{% url 'parents:delete_child' child.id %}?next={{ request.path }}"
+                                    class="btn btn-danger">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>    
+        
+        </div>
+        {% endfor %}
+        
+        </div>
+        </div>
+
+
+        <!-- Modal for Adding child -->
+        <div class="modal fade" id="addNurseryModal" tabindex="-1" aria-labelledby="addNurseryModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addNurseryModalLabel">أضف طفل</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" action="{% url 'parents:add_child' %}?next={{ request.path }}" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-container">
+                                <div class="mb-3">
+                                    <label for="child-photo" class="form-label">صورة الطفل</label>
+                                    <input type="file" class="form-check-input" id="child-photo" name="photo">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="child-first-name" class="form-label">الأسم الاول</label>
+                                    <input type="text" class="form-control" id="child-first-name" name="first_name"
+                                        required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="child-last-name" class="form-label">الأسم الثاني</label>
+                                    <input type="text" class="form-control" id="child-last-name" name="last_name"
+                                        required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="child-birth-date" class="form-label">تاريخ الميلاد</label>
+                                    <input type="date" class="form-control" id="child-birth-date" name="birth_date"
+                                        required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="child-national-id" class="form-label">رقم الهوية</label>
+                                    <input type="text" class="form-control" id="child-national-id" name="national_id"
+                                        required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="child-about" class="form-label">نبذه عن الطفل</label>
+                                    <textarea class="form-control" id="child-about" name="about" required></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="child-gender" class="form-label">جنس الطفل</label>
+                                    <select class="form-control" id="child-gender" name="gender" required>
+                                        {% for value, label in gender %}
+                                        <option value="{{ value }}">{{ label }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <button type="submit" class="btn btn-primary">أضف الطفل</button>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+
+
 </div>
-</div>
+
+
+
+
 
 {% endblock %}
