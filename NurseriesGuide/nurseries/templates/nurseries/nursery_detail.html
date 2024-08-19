@@ -198,6 +198,8 @@
                 </div>
             </div>
         </div>
+            <!-- right icon  Carousel -->
+
         <div class="col-auto">
             <a class=" mb-3" href="#activityCarousel" role="button" data-bs-slide="next">
                 <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
@@ -406,13 +408,9 @@
 </div>
 
 <div class="container-fluid px-lg-5">
+
     <div class="row justify-content-center align-items-center">
-        <div class="col-auto">
-            <a class="mb-3" href="#subscriptionCarousel" role="button" data-bs-slide="prev">
-                <!-- Left arrow icon here -->
-                <svg></svg>
-            </a>
-        </div>
+
         <div class="col-lg-8">
             <div id="subscriptionCarousel" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
@@ -426,21 +424,12 @@
                                             <div class="card rounded-card">
                                                 <div class="card-body color-activty">
                                                     <h5 class="card-title mb-1">
-                                                       {{ subscription.title }}
-                                                        <!-- update icon -->
-                                                        <a data-bs-toggle="modal" data-bs-target="#updateModal-{{ subscription.id }}" href="#">
-                                                            <svg></svg>
-                                                        </a>
-                                                        <!-- delete icon -->
-                                                        <a data-bs-toggle="modal" data-bs-target="#deleteModal-{{ subscription.id }}" href="#">
-                                                            <svg></svg>
-                                                        </a>                                                       
+                                                        {{ subscription.name }}
+                                                        <span class="text-muted"> - ${{ subscription.price }}</span>
                                                     </h5>
-                                                    <p class="mb-1">
-                                                        {{ subscription.duration }}
-                                                    </p>
+                                                    <p class="mb-1">Duration: {{ subscription.duration }} months</p>
                                                     <p class="card-text">
-                                                       {{ subscription.description }}
+                                                        {{ subscription.description }}
                                                     </p>
                                                 </div>
                                             </div>
@@ -453,12 +442,7 @@
                     {% endfor %}
                 </div>
             </div>
-        </div>
-        <div class="col-auto">
-            <a class="mb-3" href="#subscriptionCarousel" role="button" data-bs-slide="next">
-                <!-- Right arrow icon here -->
-                <svg></svg>
-            </a>
+
         </div>
     </div>
 </div>

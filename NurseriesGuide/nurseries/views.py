@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.db.models import Avg,Sum,Max,Min
 from django.db.models import Q
 
-
+from registrations.models import Subscription
 # Create your views here.
 
 # nursery model views 
@@ -129,6 +129,8 @@ def detail_nursery(request:HttpRequest,nursery_id:int):
     nursery = Nursery.objects.get(pk=nursery_id)
     staffs=nursery.staff_set.all() 
     gallery_items=nursery.gallery_set.all() 
+    subscriptions = nursery.subscriptions.all()
+
     # this calculate the min and max age the nursery takes based on the activities it offers
     activities = nursery.activity_set.all() 
     min = activities.aggregate(Min('age_min'))  # This will return a dictionary
@@ -144,7 +146,8 @@ def detail_nursery(request:HttpRequest,nursery_id:int):
         "max": max,
         "activities":activities,
         "staffs":staffs,
-        "gallery_items":gallery_items
+        "gallery_items":gallery_items,
+        "subscriptions":subscriptions
     })
 # activity model views 
 
@@ -299,24 +302,3 @@ def nurseries_list(request):
 
 
 
-def add_subscription(request, nursery_id):
-    nursery = Nursery.objects.get(pk=nursery_id)
-    
-    if request.user != nursery.owner:
-        return redirect("main:home")
-    if request.method == 'POST':
-        subscriptionForm = SubscriptionForm(request.POST)
-        if subscriptionForm.is_valid():
-            subscription = subscriptionForm.save(commit=False)  # Get the unsaved Activity instance
-            subscription.nursery=nursery  # Set the nursery for this activity            
-            subscription.save()  # Now save the Activity instance into the database
-            messages.success(request, 'Activity added successfully!', 'alert-success')
-            return redirect('nurseries:nursery_detail', nursery_id=nursery_id)
-        else:
-            for field, errors in subscriptionForm.errors.items():
-                for error in errors:
-                    messages.error(request, f"{field}: {error}", 'alert-danger')
-    else:
-        subscriptionForm = subscriptionForm()
-
-    return render(request, 'nurseries/nursery_detail.html', {'subscriptionForm': subscriptionForm, 'nursery': nursery})

@@ -33,6 +33,8 @@ class Nursery(models.Model):
     ))
     rejection_reason = models.TextField(blank=True, null=True)
     neighborhood = models.ForeignKey(Neighborhood, on_delete=models.CASCADE, related_name='nurseries')
+    age_min = models.IntegerField(default=0)
+    age_max = models.IntegerField(default=5)
     owner = models.ForeignKey(User, on_delete=models.CASCADE,  limit_choices_to={'is_staff': True})
 
     def __str__(self):
