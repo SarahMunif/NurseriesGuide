@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.db.models import Avg,Sum,Max,Min,Count
 from django.db.models import Q
 
-from registrations.models import Subscription
+from registrations.models import Subscription,Registration
 # Create your views here.
 
 # nursery model views 
@@ -267,13 +267,24 @@ def add_gallery(request: HttpRequest, nursery_id: int):
 
 
 
-def chlidren_requests(request):
-    if not request.user.is_authenticated or not request.user.is_staff:
-     return redirect("main:home")
-    return render(request, "nurseries/chlidren_requests.html")
 
+def children_requests(request):
+    if not request.user.is_staff:
+        return redirect("main:home")
+    
+    # Fetch all nurseries owned by the logged-in user
+    user_nurseries = Nursery.objects.filter(owner=request.user)
+    if not user_nurseries.exists():
+        # Handle the case where the user does not own any nursery
+        return render(request, "nurseries/no_nursery.html")
 
-
+    # Fetch registrations linked to any of the nurseries owned by the user
+    registrations = Registration.objects.filter(subscription__nursery__in=user_nurseries).order_by('-created_at')
+    
+    context = {
+        'registrations': registrations
+    }
+    return render(request, "nurseries/children_requests.html", context)
 
 def nurseries_list(request):
     

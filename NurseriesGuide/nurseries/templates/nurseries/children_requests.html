@@ -1,0 +1,45 @@
+{% extends 'main/staff_dashboard.html' %}
+{% load static %}
+
+{% block title %}طلبات تسجيل الاطفال{% endblock %}
+
+{% block Dashboard-content %}
+<div class="shadow-sm p-3 mt-5 mb-5  rounded" style="background-color: #fff;">
+    {% if registrations %}
+        <table class="table table-striped mt-3" >
+            <thead>
+                <tr>
+                    <th style="background-color: #fff; color: #34366D;">تعديل الحاله</th>
+                    <th style="background-color: #fff; color: #34366D;">حذف الطلب</th>
+                    <th style="background-color: #fff; color: #34366D;">اسم الطفل</th>
+                    <th style="background-color: #fff; color: #34366D;">الخطه</th>
+                    <th style="background-color: #fff; color: #34366D;">حاله الطلب</th>
+                    <th style="background-color: #fff; color: #34366D;">تاريخ الطلب</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for registration in registrations %}
+                <tr>
+                    <td>
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#editModal-{{ registration.id }}">
+                            <span class="material-symbols-outlined">edit</span>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#deleteModal-{{ registration.id }}">
+                            <span class="material-symbols-outlined">delete</span>
+                        </a>
+                    </td>
+                    <td >{{ registration.child.first_name }} {{ registration.child.last_name }}</td>
+                    <td>{{ registration.subscription.duration_number }}  {{ registration.subscription.duration_unit }}</td>
+                    <td>{{ registration.get_status_display }}</td>
+                    <td>{{ registration.created_at|date:"Y-m-d" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>لا تتواجد طلبات تسجيل.</p>
+    {% endif %}
+</div>
+{% endblock %}

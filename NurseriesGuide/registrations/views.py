@@ -73,7 +73,7 @@ def registration_update_status(request, pk):
     registration = get_object_or_404(Registration, pk=pk)
     
     # Ensure the user is a manager of the nursery related to the registration
-    if request.user != registration.subscription.nursery.manager:
+    if request.user != registration.subscription.nursery.owner:
         messages.error(request, 'لا تملك الصلاحية', 'alert-warning')
         return redirect('registration_detail', pk=registration.pk)
 
@@ -88,7 +88,7 @@ def registration_update_status(request, pk):
     else:
         form = RegistrationStatusForm(instance=registration)
 
-    return render(request, 'registrations/registration_status_form.html', {'form': form, 'registration': registration})
+    return render(request, 'registrations/nursery_detail.html', {'form': form, 'registration': registration})
 
 
 def add_subscription(request, nursery_id):

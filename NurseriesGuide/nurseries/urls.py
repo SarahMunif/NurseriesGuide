@@ -11,7 +11,7 @@ urlpatterns = [
     path("requests-admin/",views.verify_nurseries,name="verify_nurseries"),
     path("owner/requests/",views.owner_requests_view,name="owner_requests_view"),
 
-    path("chlidren/requests/", views.chlidren_requests, name="chlidren_requests"),
+    path("chlidren/requests/", views.children_requests, name="children_requests"),
     
     path("add/",views.add_nursery,name="add_nursery"),
     path("update/<int:nursery_id>/",views.update_nursery,name="update_nursery"),
