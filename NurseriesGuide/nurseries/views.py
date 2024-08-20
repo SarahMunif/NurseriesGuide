@@ -4,9 +4,7 @@ from .forms import NurseryForm,ActivityForm,StaffForm,GalleryForm,NurseryOwnerFo
 from django.contrib import messages 
 from nurseries.models import Activity,City,Neighborhood,Nursery,Gallery,Staff
 from django.core.paginator import Paginator
-from django.contrib import messages 
-from django.db.models import Avg,Sum,Max,Min,Count
-from django.db.models import Q
+from django.db.models import Avg,Sum,Max,Min,Count, Q
 
 from registrations.models import Subscription
 # Create your views here.
@@ -275,31 +273,162 @@ def chlidren_requests(request):
 
 
 
+
+
+
+
+
+
+
+from django.views.generic import ListView
+from .models import Nursery
+from registrations.models import Review
+
+
+
+# def nurseries_list(request):
+#     nurseries = Nursery.objects.all()
+
+#     # Check if there are any nurseries in the database
+#     has_nurseries = nurseries.exists()
+
+#     # Fetch distinct filter values from the database
+#     ages = Nursery.objects.values_list('age_group', flat=True).distinct()
+#     cities = Nursery.objects.values_list('city', flat=True).distinct()
+#     neighborhoods = Nursery.objects.values_list('neighborhood', flat=True).distinct()
+
+#     # Handle filtering
+#     age = request.GET.get('age', '')
+#     city = request.GET.get('city', '')
+#     neighborhood = request.GET.get('neighborhood', '')
+#     special_needs = request.GET.get('special_needs', '')
+
+#     if age:
+#         nurseries = nurseries.filter(age_group=age)
+#     if city:
+#         nurseries = nurseries.filter(city=city)
+#     if neighborhood:
+#         nurseries = nurseries.filter(neighborhood=neighborhood)
+#     if special_needs:
+#         nurseries = nurseries.filter(special_needs=True)
+
+#     # Handle search
+#     search_term = request.GET.get('searched', '')
+#     if search_term:
+#         nurseries = nurseries.filter(Q(name__icontains=search_term) | Q(description__icontains=search_term))
+
+#     # Handle pagination
+#     paginator = Paginator(nurseries, 6)  # 6 nurseries per page
+#     page_number = request.GET.get('page')
+#     paginated_nurseries = paginator.get_page(page_number)
+
+#     # Calculate average rating for each nursery
+#     for nursery in paginated_nurseries:
+#         avg_rating = nursery.reviews.aggregate(Avg('rating'))['rating__avg']
+#         nursery.avg_rating = avg_rating if avg_rating else 0
+
+#     context = {
+#         'nurseries': paginated_nurseries,
+#         'search_term': search_term,
+#         'age': age,
+#         'city': city,
+#         'neighborhood': neighborhood,
+#         'special_needs': special_needs,
+#         'ages': ages,
+#         'cities': cities,
+#         'neighborhoods': neighborhoods,
+#         'has_nurseries': has_nurseries,
+#     }
+
+#     return render(request, 'nurseries/nurseries_list.html', context)
+
+
+
 def nurseries_list(request):
-    
     nurseries = Nursery.objects.all()
-    neighborhoods = Neighborhood.objects.all()
 
-    # Check if a search was made
-    searched = request.GET.get('searched', '')
-    if searched:
-        nurseries = nurseries.filter(name__icontains=searched)
+    # Check if there are any nurseries in the database
+    has_nurseries = nurseries.exists()
 
-    # Pagination
-    page_number = request.GET.get("page", 1)
-    paginator = Paginator(nurseries, 6)
-    nurseries_page = paginator.get_page(page_number)
+    # Fetch distinct filter values from the related models
+    # Assuming you want to filter by city and neighborhood from related Neighborhood model
+    cities = Neighborhood.objects.values_list('city__name', flat=True).distinct()
+    neighborhoods = Neighborhood.objects.values_list('name', flat=True).distinct()
 
-    # Add average rating for each nursery
-    for nursery in nurseries_page:
-        avg_rating = nursery.review_set.aggregate(Avg('rating'))['rating__avg']
-        nursery.avg_rating = avg_rating if avg_rating is not None else 0
+    # Handle filtering
+    city = request.GET.get('city', '')
+    neighborhood = request.GET.get('neighborhood', '')
+    special_needs = request.GET.get('special_needs', '')
 
-    return render(request, "nurseries/nurseries_list.html", {
-        "nurseries": nurseries_page,
-        "search_term": searched,
-        "neighborhoods": neighborhoods
-    })
+    if city:
+        nurseries = nurseries.filter(neighborhood__city__name=city)
+    if neighborhood:
+        nurseries = nurseries.filter(neighborhood__name=neighborhood)
+    if special_needs:
+        nurseries = nurseries.filter(accepts_special_needs=True)
+
+    # Handle search
+    search_term = request.GET.get('searched', '')
+    if search_term:
+        nurseries = nurseries.filter(Q(name__icontains=search_term) | Q(description__icontains=search_term))
+
+    # Handle pagination
+    paginator = Paginator(nurseries, 3) 
+    page_number = request.GET.get('page')
+    paginated_nurseries = paginator.get_page(page_number)
+
+    # Calculate average rating for each nursery
+    for nursery in paginated_nurseries:
+        avg_rating = nursery.reviews.aggregate(Avg('rating'))['rating__avg']
+        nursery.avg_rating = avg_rating if avg_rating else 0
+
+    context = {
+        'nurseries': paginated_nurseries,
+        'search_term': search_term,
+        'city': city,
+        'neighborhood': neighborhood,
+        'special_needs': special_needs,
+        'cities': cities,
+        'neighborhoods': neighborhoods,
+        'has_nurseries': has_nurseries,
+    }
+
+    return render(request, 'nurseries/nurseries_list.html', context)
+    
+
+
+
+    
+class NurseriesListView(ListView):
+    model = Nursery
+    template_name = 'nurseries/nurseries_list.html'
+    context_object_name = 'nurseries'
+    paginate_by = 6  # Number of nurseries per page
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        search_term = self.request.GET.get('searched', '')
+        if search_term:
+            queryset = queryset.filter(name__icontains=search_term)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        nurseries = context['nurseries']
+        
+        # Calculate average rating for each nursery
+        for nursery in nurseries:
+            avg_rating = nursery.reviews.aggregate(Avg('rating'))['rating__avg']
+            nursery.avg_rating = avg_rating if avg_rating else 0
+        
+        context['search_term'] = self.request.GET.get('searched', '')
+        return context
+
+
+
+
+
+
 
 
 
