@@ -34,7 +34,10 @@
     <a class="nav-link {% if request.resolver_match.url_name == 'owner_requests_view' %}active{% endif %}" href="{% url 'nurseries:owner_requests_view' %}">طلباتي</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link " href="">طلبات تسجيل الاطفال  </a>
+    
+    <a class="nav-link {% if request.resolver_match.url_name == 'chlidren_requests' %}active{% endif %}" href="{% url 'nurseries:chlidren_requests' %}">طلبات تسجيل الاطفال  
+    </a>
+
   </li>
   <li class="nav-item">
     <a class="nav-link {% if request.resolver_match.url_name == 'nurseries_view' %}active{% endif %}" href="{% url 'nurseries:nurseries_view' %}">الحضانات</a>

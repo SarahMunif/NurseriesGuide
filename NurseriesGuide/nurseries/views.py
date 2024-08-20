@@ -267,7 +267,10 @@ def add_gallery(request: HttpRequest, nursery_id: int):
 
 
 
-
+def chlidren_requests(request):
+    if not request.user.is_authenticated or not request.user.is_staff:
+     return redirect("main:home")
+    return render(request, "nurseries/chlidren_requests.html")
 
 
 
