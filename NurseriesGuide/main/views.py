@@ -36,13 +36,13 @@ def contact_us(request):
 def staff_dashboard(request):
     if not request.user.is_staff:
         messages.success(request, "only staff can view this page", "alert-warning")
-        return redirect("main:home_view")
+        return redirect("main:home")
     
     return render(request, 'main/staff_dashboard.html')
 
 def admin_dashboard(request):
     if not request.user.is_superuser:
         messages.success(request, "only admin can view this page", "alert-warning")
-        return redirect("main:home_view")
+        return redirect("main:home")
     
     return render(request, 'main/admin_dashboard.html')

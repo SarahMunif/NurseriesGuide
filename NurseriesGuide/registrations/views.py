@@ -9,29 +9,45 @@ from .models import Nursery, Subscription
 
 
 
+# @login_required
+# def registration_create(request):
+#     # Ensure the parent has at least one child before allowing registration
+#     if not Child.objects.filter(parent__user=request.user).exists():
+#         messages.warning(request, 'You must add at least one child before making a registration.', 'alert-warning')
+#         return redirect('add_child')  # Assuming you have a view named 'add_child' for adding children
+
+#     if request.method == 'POST':
+#         form = RegistrationForm(request.POST)
+#         if form.is_valid():
+#             registration = form.save(commit=False)
+#             registration.save()
+#             messages.success(request, 'تم التسجيل بنجاح', 'alert-success')
+#             return redirect('registration_detail', pk=registration.pk)
+#         else:
+#             messages.error(request, 'حدث خطأ ما', 'alert-danger')
+#     else:
+#         form = RegistrationForm()
+
+#     return render(request, 'registrations/registration_form.html', {'form': form})
+
+
+
 @login_required
 def registration_create(request):
-    # Ensure the parent has at least one child before allowing registration
-    if not Child.objects.filter(parent__user=request.user).exists():
-        messages.warning(request, 'You must add at least one child before making a registration.', 'alert-warning')
-        return redirect('add_child')  # Assuming you have a view named 'add_child' for adding children
-
     if request.method == 'POST':
-        form = RegistrationForm(request.POST)
-        if form.is_valid():
-            registration = form.save(commit=False)
-            registration.save()
-            messages.success(request, 'تم التسجيل بنجاح', 'alert-success')
-            return redirect('registration_detail', pk=registration.pk)
-        else:
-            messages.error(request, 'حدث خطأ ما', 'alert-danger')
-    else:
-        form = RegistrationForm()
+        child_id = request.POST.get('child')
+        subscription_id = request.POST.get('subscription_id')  # Make sure this is passed from the form
 
-    return render(request, 'registrations/registration_form.html', {'form': form})
+        child = Child.objects.get(id=child_id)
+        subscription = Subscription.objects.get(id=subscription_id)
 
-
-
+        Registration.objects.create(
+            child=child,
+            subscription=subscription,
+            status='reviewing'
+        )
+        return redirect('main:home') 
+    return render(request, 'nurseries/nursery_detail.html') 
 
 
 @login_required
