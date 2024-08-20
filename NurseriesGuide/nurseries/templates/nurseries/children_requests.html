@@ -4,6 +4,11 @@
 {% block title %}طلبات تسجيل الاطفال{% endblock %}
 
 {% block Dashboard-content %}
+<link href="{% static 'css/main.css' %}?v=1.1" rel="stylesheet" />
+
+<br>
+<h1>طلبات تسجيل</h1>
+
 <div class="shadow-sm p-3 mt-5 mb-5  rounded" style="background-color: #fff;">
     {% if registrations %}
         <table class="table table-striped mt-3" >
@@ -22,19 +27,80 @@
                 <tr>
                     <td>
                         <a href="#" data-bs-toggle="modal" data-bs-target="#editModal-{{ registration.id }}">
-                            <span class="material-symbols-outlined">edit</span>
+                            <span class="material-symbols-outlined">تعديل</span>
                         </a>
                     </td>
                     <td>
                         <a href="#" data-bs-toggle="modal" data-bs-target="#deleteModal-{{ registration.id }}">
-                            <span class="material-symbols-outlined">delete</span>
+                            <span class="material-symbols-outlined">حذف</span>
                         </a>
                     </td>
                     <td >{{ registration.child.first_name }} {{ registration.child.last_name }}</td>
-                    <td>{{ registration.subscription.duration_number }}  {{ registration.subscription.duration_unit }}</td>
-                    <td>{{ registration.get_status_display }}</td>
-                    <td>{{ registration.created_at|date:"Y-m-d" }}</td>
+                    <td>
+                                                {% if registration.subscription.duration_unit == 'day' %}
+                                                {{ registration.subscription.duration_number }} يوم 
+                                                {% elif registration.subscription.duration_unit == 'week' %}
+                                                {{ registration.subscription.duration_number }} أسبوع
+                                                {% elif registration.subscription.duration_unit == 'month' %}
+                                                {{ registration.subscription.duration_number }} شهر
+                                                {% elif registration.subscription.duration_unit == 'year' %}
+                                                {{ registration.subscription.duration_number }} شهر
+                                                {% else %}
+                                                  {{ registration.subscription.duration_unit }}
+                                                {% endif %}
+
+
+                    </td>
+                    <td>
+                        {% if registration.status == 'reviewing' %}
+                            جاري المراجعة
+                        {% elif registration.status == 'accepted' %}
+                            مقبول
+                        {% elif registration.status == 'rejected' %}
+                            مرفوض
+                        {% else %}
+                            {{ registration.get_status_display }}  <!-- Default display if no match -->
+                        {% endif %}
+                    </td>                 
+                   <td>{{ registration.created_at|date:"Y-m-d" }}</td>
                 </tr>
+                <!-- Modal for Registration Status Update -->
+                <div class="modal fade" id="editModal-{{ registration.id }}" tabindex="-1" aria-labelledby="editModalLabel-{{ registration.id }}" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editModalLabel-{{ registration.id }}">تحديث حالة التسجيل</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form method="post" action="{% url 'registrations:registration_update_status' registration.id %}">
+                                    {% csrf_token %}
+                                    <label for="status-{{ registration.id }}" class="form-label">حالة التسجيل</label>
+                                    <select class="form-control mb-3" id="status-{{ registration.id }}" name="status" required>
+                                        {% for status, status_display in registration.STATUS_CHOICES %}
+                                            <option value="{{ status }}" {% if registration.status == status %}selected{% endif %}>
+                                                {% if status == 'reviewing' %}
+                                                    جاري المراجعة
+                                                {% elif status == 'accepted' %}
+                                                    مقبول
+                                                {% elif status == 'rejected' %}
+                                                    مرفوض
+                                                {% else %}
+                                                    {{ status_display }}
+                                                {% endif %}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+
+                                    <label for="rejection-reason-{{ registration.id }}" class="form-label">سبب الرفض (اختياري)</label>
+                                    <textarea class="form-control mb-3" id="rejection-reason-{{ registration.id }}" name="rejection_reason">{{ registration.rejection_reason }}</textarea>
+
+                                    <button type="submit" class="btn btn-primary">أحفظ التعديلات</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 {% endfor %}
             </tbody>
         </table>

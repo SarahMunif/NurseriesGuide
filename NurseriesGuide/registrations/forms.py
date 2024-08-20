@@ -12,6 +12,8 @@ class RegistrationStatusForm(forms.ModelForm):
     class Meta:
         model = Registration
         fields = "__all__" 
+        exclude = ['child',"subscription"] 
+
 class SubscriptionForm(forms.ModelForm):
 
     class Meta:

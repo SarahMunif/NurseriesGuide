@@ -68,27 +68,24 @@ def registration_detail(request, pk):
 
 
 
-@login_required
 def registration_update_status(request, pk):
     registration = get_object_or_404(Registration, pk=pk)
-    
-    # Ensure the user is a manager of the nursery related to the registration
-    if request.user != registration.subscription.nursery.owner:
-        messages.error(request, 'لا تملك الصلاحية', 'alert-warning')
-        return redirect('registration_detail', pk=registration.pk)
-
     if request.method == 'POST':
         form = RegistrationStatusForm(request.POST, instance=registration)
         if form.is_valid():
-            form.save()
-            messages.success(request, 'تم تحديث الحالة بنجاح', 'alert-success')
-            return redirect('registration_detail', pk=registration.pk)
+            updated_registration = form.save(commit=False)
+            updated_registration.save()
+            messages.success(request, 'تم تعديل الحالة بنجاح.','alert-success')
+            return redirect('nurseries:children_requests')
         else:
-            messages.error(request, 'حدث خطأ ما', 'alert-danger')
-    else:
-        form = RegistrationStatusForm(instance=registration)
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"Error in {field}: {error}",'alert-danger')
+            else:
+                form = RegistrationStatusForm(instance=registration)
 
-    return render(request, 'registrations/nursery_detail.html', {'form': form, 'registration': registration})
+  
+    return render(request, 'nurseries/children_requests.html', {'form': form, 'registration': registration})
 
 
 def add_subscription(request, nursery_id):

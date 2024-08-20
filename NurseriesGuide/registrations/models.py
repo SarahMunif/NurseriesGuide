@@ -32,7 +32,6 @@ class Registration(models.Model):
         ('accepted', 'Accepted'),
         ('rejected', 'Rejected'),
     ]
-
     child = models.ForeignKey(Child, on_delete=models.CASCADE, related_name='registrations')
     subscription = models.ForeignKey(Subscription, on_delete=models.CASCADE, related_name='registrations')
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='reviewing')

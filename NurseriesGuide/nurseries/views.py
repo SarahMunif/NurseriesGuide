@@ -15,8 +15,8 @@ def nurseries_view(request:HttpRequest):
     if not request.user.is_authenticated or not request.user.is_staff:
         return redirect("main:home")  # Redirect non-staff users to home page
 
-    nurseries = Nursery.objects.filter(owner=request.user)
-    nurseries = Nursery.objects.filter(status='verified')
+    user_nurseries = Nursery.objects.filter(owner=request.user)
+    nurseries = user_nurseries.filter(status='verified')
     
     neighborhoods = Neighborhood.objects.all()
 
@@ -89,7 +89,7 @@ def add_nursery(request:HttpRequest):
             nursery = nurseryForm.save(commit=False)
             nursery.owner = request.user  # Set the owner to the current user  
             nursery.save()           
-            messages.success(request, f'تم أضافة الحضانة{nursery.name}  بنجاح  !','alert-success')
+            messages.success(request, f'تم أضافة الحضانة{nursery.name}  بنجاح  ! يمكنك تتبع حاله الطلب في "طلباتي"','alert-success')
             return redirect("nurseries:nurseries_view")
          else:    
             for field, errors in nurseryForm.errors.items():
@@ -272,17 +272,12 @@ def children_requests(request):
     
     # Fetch all nurseries owned by the logged-in user
     user_nurseries = Nursery.objects.filter(owner=request.user)
-    if not user_nurseries.exists():
-        # Handle the case where the user does not own any nursery
-        return render(request, "nurseries/no_nursery.html")
-
     # Fetch registrations linked to any of the nurseries owned by the user
     registrations = Registration.objects.filter(subscription__nursery__in=user_nurseries).order_by('-created_at')
     
-    context = {
-        'registrations': registrations
-    }
-    return render(request, "nurseries/children_requests.html", context)
+    
+    return render(request, "nurseries/children_requests.html", {        'registrations': registrations,
+        'status_choices': Registration.STATUS_CHOICES })
 
 
 
