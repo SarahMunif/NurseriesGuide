@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 from nurseries.models import Nursery
 from .models import Parent
 from .models import Child
-from .forms import ChildForm
+from .forms import ChildForm ,ParentForm
 
 
 def add_child(request:HttpRequest):
@@ -25,14 +25,45 @@ def add_child(request:HttpRequest):
             child.parent = parent 
             child.save()    
             messages.success(request, "تم إضافة الطفل بنجاح", 'alert-success')
+
         else:
             print(form.errors)
             messages.error(request,  "تم ادخال معلومات خاطئة ، ادخل  معلومات صحيحة", 'alert-danger')
+        return redirect(request.GET.get("next", "/"))
 
     return render(request, 'parents/profile.html', {"gender": Child.GenderChoices.choices})
 
-def update_parent(request:HttpRequest):
-    pass
+def update_parent(request: HttpRequest):
+    # print(parent_id)
+    if not request.user.is_authenticated:
+        return redirect("main:home")  # Redirect non-authenticated users to home page
+
+    # parent = get_object_or_404(Parent, pk=parent_id)
+
+    if request.method == "POST":
+        print("im here")
+        try:
+            with transaction.atomic():
+                user:User = request.user
+
+                user.first_name = request.POST["first_name"]
+                user.last_name = request.POST["last_name"]
+                user.email = request.POST["email"]
+                user.username = request.POST["username"]
+                user.save()
+
+                parent:Parent = user.parent
+                parent.phone_number = request.POST["phone_number"]
+                parent.Work_number = request.POST["Work_number"]
+
+                parent.save()
+
+            messages.success(request, "تم تحديث البيانات بنجاح", 'alert-success')
+        except Exception as e:
+            messages.error(request, "تم إدخال معلومات خاطئة، أدخل معلومات صحيحة", 'alert-danger')
+            print(e)
+    
+    return render(request, 'parents/profile.html', {'parent': parent})
 
 def child_detail(request:HttpRequest):
     pass
@@ -68,10 +99,10 @@ def update_child(request:HttpRequest,child_id):
         if form.is_valid():
             form.save()       
             messages.success(request, "تم إضافة الطفل بنجاح", 'alert-success')
-            return redirect(request.GET.get("next", "/"))
         else:
             print(form.errors)
             messages.error(request,  "تم ادخال معلومات خاطئة ، ادخل  معلومات صحيحة", 'alert-danger')
+        return redirect(request.GET.get("next", "/"))
 
     return render(request, 'parents/profile.html', {"gender": Child.GenderChoices.choices})
 
