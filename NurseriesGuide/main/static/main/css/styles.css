@@ -2,7 +2,7 @@ body {
     font-family: 'Cairo', sans-serif;
 }
 
-main{
+main {
     min-height: calc(100vh - 395px);
 }
 
@@ -21,17 +21,14 @@ main{
     justify-content: center; 
     padding: 10px 0;             
 }
-    
+
 .nav-underline .nav-link {
     color: #555;
     border-bottom: 2px solid transparent; 
     padding: 10px 15px;  
 }
 
-.nav-underline .nav-link:hover {
-    border-color: #F5888E;
-}
-
+.nav-underline .nav-link:hover,
 .nav-underline .nav-link.active {
     border-color: #F5888E;
 }
@@ -81,27 +78,17 @@ main{
     padding: 10px 20px;
 }
 
-
-.stats-section {
+.stats-section,
+.nursery-section,
+.reviews-section {
     text-align: center;
     padding: 50px 0;
 }
 
-.stats-section h5 {
+.stats-section h5,
+.nursery-section h2,
+.reviews-section h2 {
     margin-bottom: 20px;
-}
-
-.stats-section .col-md-4 {
-    margin-bottom: 30px;
-}
-
-.nursery-section {
-    padding: 50px 0;
-    text-align: center;
-}
-
-.nursery-section h2 {
-    margin-bottom: 40px;
 }
 
 .nursery-cards img {
@@ -111,33 +98,22 @@ main{
 
 .reviews-section {
     background-color: #F28B82;
-    text-align: center;
     position: relative;
-    padding: 100px 0;
-    overflow: hidden;
+    padding-top: 150px;
+    padding-bottom: 200px;
+    max-width: 100vw;
 }
 
-.reviews-section h2 {
-    margin-top: 3rem;
-}
-
-.img-shapper {
-    padding: 0 0;
-    margin-top: 0px;
-    width: 1000px;
-    object-fit:cover;
-    
-}
 
 .wave-top {
     position: absolute;
-    top: 0;
+    top: -10px; /* Adjust this value to control the overlap */
     left: 0;
-    margin-bottom: 250px;
     width: 100%;
-    height: 150px;
-    background: url('/static/main/images/shaper.png') no-repeat;
+    height: 160px;
+    background: url('/static/main/images/wave-w-b.svg') no-repeat;
     background-size: cover;
+    z-index: 1;
 }
 
 .wave-bottom-p {
@@ -154,10 +130,13 @@ main{
 .footer {
     background-color: #343779;
     color: white;
-    padding: 40px 0;
+    padding: 50px 0;
+    position: relative; /* Ensures that the wave-top stays within the footer area */
+    z-index: 2;
 }
 
-.footer h1 h2 h3 h4 h5 h6 {
+.footer h1, .footer h2, .footer h3, 
+.footer h4, .footer h5, .footer h6 {
     color: whitesmoke;
 }
 
@@ -168,40 +147,176 @@ main{
     margin-bottom: 10px;
 }
 
-.stats-section {
-    text-align: center;
-    padding: 50px 0;
+.footer .container {
+    position: relative;
+    z-index: 3; 
 }
 
-.stats-section h5 {
-    margin-bottom: 20px;
+.ylo-section-wrapper {
+    position: relative;
+    background-color: #FDFAF0;
+    min-height: 300px;
+    overflow: hidden;
 }
 
-.stats-section .col-md-4 {
-    margin-bottom: 30px;
-}
-
-.nursery-section {
-    padding: 50px 0;
-    text-align: center;
-}
-
-.nursery-section h2 {
-    margin-bottom: 40px;
-}
-
-.nursery-cards img {
+.ylo-section-wrapper::before,
+.ylo-section-wrapper::after {
+    content: '';
+    position: absolute;
     width: 100%;
-    border-radius: 10px;
+    height: 80px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    z-index: 1;
 }
 
-.reviews-section {
-    background-color: #F28B82;
-    padding-top: 150px;
-    padding-bottom: 200px;
-    text-align: center;
-    max-width: 100vw;
+.ylo-section-wrapper::before {
+    top: 0;
+    left: 0;
+    background-image: url('/static/main/images/w-t.png');
+}
+
+.ylo-section-wrapper::after {
+    bottom: 0;
+    left: 0;
+    background-image: url('/static/main/images/w-b.png');
+}
+
+.ylo-section {
+    position: relative;
+    z-index: 2;
+    background-color: transparent;
+}
+
+.custom-filter-btn, 
+.btn-dark.rounded-pill, 
+.btn-outline-secondary.rounded-pill {
+    height: 40px;
+    padding: 0.5rem 2rem;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.btn-dark.custom-filter-btn, 
+.btn-dark.rounded-pill {
+    background-color: #343779;
+    border-color: #343779;
+    color: white;
+}
+
+.btn-dark.custom-filter-btn:hover, 
+.btn-dark.rounded-pill:hover {
+    background-color: #2b2d68;
+    border-color: #2b2d68;
+    color: white;
+}
+
+.btn-outline-pink {
+    background-color: transparent !important;
+    border-color: #F5888E !important;
+    color: #F5888E !important;
+}
+
+.btn-outline-pink:hover {
+    background-color: #F5888E !important;
+    border-color: #F5888E !important;
+    color: white !important;
 }
 
 
+.form-check {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    height: 40px;
+}
 
+.form-check-input {
+    margin-left: 0;
+    order: 2; 
+    accent-color: #F28B82; 
+}
+
+.form-check-label {
+    margin-bottom: 0;
+    font-size: 1rem;
+    order: 1; 
+    margin-left: 0
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .filter-buttons .dropdown, 
+    .filter-buttons .form-check,
+    .filter-buttons .btn {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .filter-buttons {
+        justify-content: center;
+    }
+}
+
+
+.pagination {
+    gap: 10px; 
+}
+
+.pagination .page-link {
+    min-width: 40px; 
+    height: 40px; 
+    padding: 0 10px; 
+    border-radius: 50%; 
+    text-align: center; 
+    background-color: transparent;
+    border-color: #F5888E;
+    color: #F5888E;
+    transition: background-color 0.3s, color 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pagination .page-link:hover {
+    background-color: #F5888E;
+    color: white;
+    border-color: #F5888E;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #F5888E;
+    border-color: #F5888E;
+    color: white;
+}
+
+.pagination .page-item.disabled .page-link {
+    color: #ddd;
+    background-color: transparent;
+    border-color: #ddd;
+}
+
+
+/* Increase gap between cards */
+.row.gy-4 {
+    row-gap: 5rem; /* or any value that suits your design */
+}
+
+/* Dotted border styling */
+.nursery-card {
+    border: 3px dotted;
+}
+
+/* Adjust button size to be consistent */
+.btn-size {
+    width: 100px; /* Adjust width as needed */
+    height: 40px; /* Adjust height as needed */
+    font-size: 1rem; /* Adjust font size as needed */
+}
+
+/* Adjusting Verified Icon size and color */
+.bi-patch-check {
+    width: 24px; /* Increase width */
+    height: 24px; /* Increase height */
+    fill: #F5888E; /* Set color to pink */
+}

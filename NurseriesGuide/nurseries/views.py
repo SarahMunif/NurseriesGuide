@@ -294,6 +294,10 @@ from registrations.models import Review
 
 
 
+from django.core.paginator import Paginator
+from django.shortcuts import render
+from django.db.models import Avg, Q
+
 def nurseries_list(request):
     nurseries = Nursery.objects.all()
 
@@ -301,7 +305,6 @@ def nurseries_list(request):
     has_nurseries = nurseries.exists()
 
     # Fetch distinct filter values from the related models
-    # Assuming you want to filter by city and neighborhood from related Neighborhood model
     cities = Neighborhood.objects.values_list('city__name', flat=True).distinct()
     neighborhoods = Neighborhood.objects.values_list('name', flat=True).distinct()
 
@@ -323,7 +326,7 @@ def nurseries_list(request):
         nurseries = nurseries.filter(Q(name__icontains=search_term) | Q(description__icontains=search_term))
 
     # Handle pagination
-    paginator = Paginator(nurseries, 3) 
+    paginator = Paginator(nurseries, 3)  
     page_number = request.GET.get('page')
     paginated_nurseries = paginator.get_page(page_number)
 
@@ -344,5 +347,6 @@ def nurseries_list(request):
     }
 
     return render(request, 'nurseries/nurseries_list.html', context)
+
     
 
