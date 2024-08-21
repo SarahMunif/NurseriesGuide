@@ -2,9 +2,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Registration
-from .forms import RegistrationForm, RegistrationStatusForm,SubscriptionForm
+from .forms import RegistrationForm, RegistrationStatusForm,SubscriptionForm,ReviewForm
 from parents.models import Child
-from .models import Nursery, Subscription
+from .models import Nursery, Subscription,Review
 
 
 
@@ -48,21 +48,6 @@ def registration_create(request):
         )
         return redirect('main:home') 
     return render(request, 'nurseries/nursery_detail.html') 
-
-
-@login_required
-def registration_list(request):
-    registrations = Registration.objects.filter(child__parent__user=request.user)
-    return render(request, 'registrations/registration_list.html', {'registrations': registrations})
-
-
-
-
-
-@login_required
-def registration_detail(request, pk):
-    registration = get_object_or_404(Registration, pk=pk)
-    return render(request, 'registrations/registration_detail.html', {'registration': registration})
 
 
 
@@ -119,3 +104,38 @@ def add_subscription(request, nursery_id):
         subscriptionForm = subscriptionForm()
 
     return render(request, 'nurseries/nursery_detail.html', {'subscriptionForm': subscriptionForm, 'nursery': nursery})
+
+
+# class Review(models.Model):
+#     nursery = models.ForeignKey(Nursery, on_delete=models.CASCADE, related_name='reviews')
+#     parent = models.ForeignKey(Parent, on_delete=models.CASCADE, related_name='reviews')
+#     rating = models.IntegerField(choices=[(1, '1'), (2, '2'), (3, '3'), (4, '4'), (5, '5')])
+#     comment = models.TextField(blank=True)
+
+def add_review(request, nursery_id):
+    nursery = Nursery.objects.get(pk=nursery_id)
+    if request.method == 'POST':
+        has_accepted_registration = Registration.objects.filter(
+        subscription__nursery=nursery,
+        child__parent=request.user.parent,
+        status='accepted'
+        ).exists()
+        if has_accepted_registration:
+            review_form = ReviewForm(request.POST)
+            if review_form.is_valid():
+                review = review_form.save(commit=False)
+                review.nursery = nursery
+                review.parent = request.user.parent  
+                review.save()
+                return redirect('nurseries:nursery_detail', nursery_id=nursery.id)
+            else:
+              for field, errors in review_form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field}: {error}", 'alert-danger')
+        else:
+          messages.error(request, '  !', 'alert-danger')
+          return redirect('nurseries:nursery_detail', nursery_id=nursery.id)
+
+
+
+    return render(request, 'nurseries/nursery_detail.html')

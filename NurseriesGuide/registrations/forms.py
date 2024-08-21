@@ -1,7 +1,7 @@
 # registrations/forms.py
 
 from django import forms
-from .models import Registration ,Subscription
+from .models import Registration ,Subscription,Review
 
 class RegistrationForm(forms.ModelForm):
     class Meta:
@@ -20,3 +20,8 @@ class SubscriptionForm(forms.ModelForm):
         model = Subscription
         fields = "__all__"
         exclude = ['nursery'] 
+
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        exclude = ['parent','nursery']
