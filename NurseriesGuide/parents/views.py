@@ -9,7 +9,31 @@ from nurseries.models import Nursery
 from .models import Parent
 from .models import Child
 from .forms import ChildForm ,ParentForm
+from registrations.models import Registration
 
+def requests_status(request):
+    if not request.user.is_authenticated or request.user.is_superuser or request.user.is_staff:
+        return redirect("main:home")
+
+    try:
+        parent_obj = Parent.objects.get(user=request.user)
+    except Parent.DoesNotExist:
+        # Handle the case where the parent object does not exist
+        return redirect("main:home")
+
+    # Get all children related to the parent
+    children = Child.objects.filter(parent=parent_obj)
+
+    # Get all registration requests for the children
+    registration_requests = Registration.objects.filter(child__in=children)
+
+    context = {
+        'status_choices': Registration.STATUS_CHOICES,
+        'children': children,
+        'registration_requests': registration_requests,
+    }
+
+    return render(request, 'parents/request_status.html', context)
 
 def add_child(request:HttpRequest):
 
@@ -193,6 +217,7 @@ def parent_profile(request:HttpRequest, user_id):
 
 
     return render(request, 'parents/profile.html', {"parent":parent ,"children":children,"gender": Child.GenderChoices.choices})
+
 
 
 

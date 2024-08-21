@@ -1,0 +1,125 @@
+{% extends 'main/base.html'%}
+
+
+{% block title %} طلباتي{% endblock %}
+
+{% block content %}
+
+
+<style>
+    h1,
+    h5,
+    a {
+        color: #12275A
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .rounded-card {
+        border-radius: 1.5rem;
+        overflow: hidden;
+    }
+
+    .card-body {
+        background-color: #FFF3F4;
+    }
+
+    .child-info {
+
+        padding: 1rem;
+    }
+
+    .child-info h4 {
+
+        margin-top: 1rem;
+    }
+
+    .no-data-message{
+        margin: 2rem;
+    }
+</style>
+
+<h1> طلباتي </h1>
+
+
+<div class="container-fluid">
+    {%if registration_requests%}
+    <div class="row mt-4">
+        {% for child in children %}
+        <div class="col-md-4 col-sm-6 mb-4">
+            <div class="card shadow-lg rounded-card">
+                <div class="card-body">
+                    {% for request in registration_requests %}
+                    {% if request.child == child %}
+                    <h5 class="card-title mb-3 d-flex justify-content-between">
+                        <a href="#">{{ request.subscription.nursery }}</a>
+                    </h5>
+                    
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <img src="{{child.photo.url}}" class="img-thumbnail mt-2 mb-2 rounded-card" style="max-height: 70px;" alt="">
+                        </div>
+                        <div class="col">
+                            <h6 class="mb-0">{{ child.first_name }} {{ child.last_name }}</h6>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <h6><strong>حالة الطلب :</strong> {{ request.get_status_display }}</h6>
+                            {% if request.status == 'rejected' %}
+                            <h6><strong>سبب الرفض:</strong> {{ request.rejection_reason }}</h6>
+                            {% endif %}
+                            <h6 class="card-title mb-3 ">
+                                {% if request.status == 'reviewing' %}
+                                <a data-bs-toggle="modal" data-bs-target="#deleteModal-{{ child.id }}" href="#">
+                                    الغاء الطلب 
+                                </a>
+                                {% endif %}
+                            </h6>
+                        </div>
+
+                    </div>
+                    {% endif %}
+
+                                                <!-- Modal for Deletion Confirmation -->
+        
+                                                <div class="modal fade" id="deleteModal-{{ child.id }}" tabindex="-1" aria-labelledby="deleteModalLabel-{{ child.id }}"
+                                                aria-hidden="true">
+                            
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="deleteModalLabel-{{ child.id }}">تأكيد الالغاء </h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            هل انت متاكد الغاء طلب تسجيل 
+                                                            "{{ child.first_name }}"                                    ؟
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                            <a href="{% url 'registrations:delete_registration' request.id %}?next={{ request.path }}"
+                                                                class="btn btn-danger">الغاء الطلب</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {%else%}
+    <h4 class="no-data-message">
+        لا يوجد طلبات تسجيل لأطفالك
+    </h4>
+    {%endif%}
+</div>
+
+
+
+{% endblock %}

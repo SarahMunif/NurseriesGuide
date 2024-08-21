@@ -36,18 +36,30 @@ from .models import Nursery, Subscription,Review
 def registration_create(request):
     if request.method == 'POST':
         child_id = request.POST.get('child')
-        subscription_id = request.POST.get('subscription_id')  # Make sure this is passed from the form
+        subscription_id = request.POST.get('subscription_id')  # Ensure this is passed from the form
 
+        # Retrieve the child and subscription objects
         child = Child.objects.get(id=child_id)
         subscription = Subscription.objects.get(id=subscription_id)
+        nurseryid = subscription.nursery.pk
+        # Check if a registration already exists for this child
+        existing_registration = Registration.objects.filter(child=child).exists()
 
-        Registration.objects.create(
-            child=child,
-            subscription=subscription,
-            status='reviewing'
-        )
-        return redirect('main:home') 
-    return render(request, 'nurseries/nursery_detail.html') 
+        if existing_registration:
+            # If a registration already exists, do not create a new one
+            messages.error(request, 'لا يمكنك إنشاء طلب جديد لأن هذا الطفل لديه بالفعل طلب تحت المراجعة.',"alert-warning")
+            return redirect('nurseries:nursery_detail',nursery_id=nurseryid)   # Redirect to the appropriate page with an error message
+        else:
+            # Create a new registration if none exists
+            Registration.objects.create(
+                child=child,
+                subscription=subscription,
+                status='reviewing'
+            )
+            messages.success(request, 'تم إنشاء طلب التسجيل بنجاح.',"alert-success")
+            return redirect('parents:requests_status')  # Redirect to the home page or the appropriate page
+
+    return render(request, 'nurseries/nursery_detail.html')
 
 
 
