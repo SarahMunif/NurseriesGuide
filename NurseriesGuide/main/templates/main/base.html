@@ -48,9 +48,9 @@
                 <li class="nav-item">
                     <a class="nav-link {% if request.resolver_match.url_name == 'nurseries_list' %}active{% endif %}" href="{% url 'nurseries:nurseries_list' %}">حضاناتنا</a></li>
                 
-                {% if request.user.is_authenticated %}
-                <li class="nav-item"><a class="nav-link" href="#">طلباتي</a></li>
-                {% endif %}
+                    {% if request.user.is_authenticated and not request.user.is_superuser and not request.user.is_staff %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'parents:requests_status' %}">طلباتي</a></li>
+                    {% endif %}
 
                 <li class="nav-item">
                     <a class="nav-link {% if request.resolver_match.url_name == 'about_us' %}active{% endif %}" href="{% url 'main:about_us' %}">من نحن</a></li>

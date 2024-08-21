@@ -28,9 +28,9 @@ class Subscription(models.Model):
 
 class Registration(models.Model):
     STATUS_CHOICES = [
-        ('reviewing', 'Reviewing'),
-        ('accepted', 'Accepted'),
-        ('rejected', 'Rejected'),
+        ('reviewing', ' تحت المراجعة'),
+        ('accepted', 'مقبول'),
+        ('rejected', 'مرفوض'),
     ]
     child = models.ForeignKey(Child, on_delete=models.CASCADE, related_name='registrations')
     subscription = models.ForeignKey(Subscription, on_delete=models.CASCADE, related_name='registrations')
