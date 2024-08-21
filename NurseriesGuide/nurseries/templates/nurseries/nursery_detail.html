@@ -543,6 +543,8 @@
             </div>
 
         </div>
+
+
         <div class="col-auto">
             <a class="mb-3" href="#subscriptionCarousel" role="button" data-bs-slide="next">
                 <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
@@ -604,9 +606,7 @@
         </div>
     </div>
 </div>
-<h1 class="mt-4 mb-4">الموقع </h1>
-<!-- <iframe class="mt-4 mb-4" src="{{ nursery.address }}" width="1300" height="800" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe> -->
- 
+
 <!-- Modal for Adding Staff -->
 <div class="modal fade" id="addStaffModal" tabindex="-1" aria-labelledby="addStaffModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -679,4 +679,90 @@
         </div>
     </div>
 </div>
+
+<section class="rounded mt-5" style="background-color: #F5888E; min-height: 40vh; box-sizing: border-box; padding: 20px;">
+        {% if reviews %}
+            <h1 class="mb-5 mt-5" style="text-align: center;">اراء اولياء الامور</h1>
+    
+            <div class="row justify-content-center align-items-center">
+                <div class="col-auto">
+                    <a class="mb-3" href="#reviewCarousel" role="button" data-bs-slide="prev">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>
+                        </svg>
+                    </a>
+                </div>
+                <div class="col-lg-8">
+                    <div id="reviewCarousel" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            {% for review in reviews %}
+                                {% if forloop.counter0|divisibleby:3 %}
+                                    <div class="carousel-item {% if forloop.counter0 == 0 %}active{% endif %}">
+                                        <div class="container">
+                                            <div class="row">
+                                {% endif %}
+                                                <div class="col-md-4 col-sm-6 mb-4">
+                                                    <div class="card rounded-card">
+                                                        <div class="card-body">
+                                                            <h3 class="mb-1">
+                                                            {{ review.parent.user.first_name }} {{ review.parent.user.last_name }}
+                                                            </h3>
+                                                            <br>
+                                                            <div class="d-flex align-items-center">
+                                                                <span class="material-symbols-outlined">star</span>
+                                                                <h5 class="m-0 p-0">{{review.rating}}</h5>
+                                                            </div>
+                                                            <h5 class="card-title mb-1">
+                                                                <br>
+                                                                <span class="text-muted"> {{ review.comment }} </span>
+                                                            </h5>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                {% if forloop.counter|divisibleby:3 or forloop.last %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <a class="mb-3" href="#reviewCarousel" role="button" data-bs-slide="next">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        {% else %}
+            <h1 style="text-align: center;">كن أول من يعبر عن رأيه!</h1>
+        {% endif %}
+    
+        {% if request.user.is_authenticated %}
+            <h1 class="mt-5 mb-5"  style="text-align: center;">عبر عن رأيك</h1>
+            <form method="post" action="{% url 'registrations:add_review' nursery.id %}" style="display: flex; flex-direction: column; align-items: center; max-width: 500px; margin: auto;">  
+                {% csrf_token %}
+                <textarea class="form-control" name="comment" required minlength="3" placeholder="..." style="margin-bottom: 10px;"></textarea>
+                <select class="form-select" name="rating" required>
+                    <option value="">تقييمك</option>
+                    <option value="1">١</option>
+                    <option value="2">٢</option>
+                    <option value="3">٣</option>
+                    <option value="4">٤</option>
+                    <option value="5">٥</option>
+                </select>
+                <input type="submit" class="btn " value="أضف تعليقك" style="margin-top: 10px;background-color: #FFFFFF; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);"/>
+            </form>
+        {% else %}
+            <div class="p-3  mt-4 d-flex flex-column gap-2" style="text-align: center;">
+                <h5 style="color: #FFFFFF;">فقط المسجلون في هذه الحضانه يملكون صلاحية التعليق </h5>
+            </div>
+        {% endif %}
+        <br><br>
+    </section>
+
 {% endblock %}
+

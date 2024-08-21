@@ -2,11 +2,11 @@ from django.shortcuts import render,redirect
 from django.http import HttpRequest,HttpResponse
 from .forms import NurseryForm,ActivityForm,StaffForm,GalleryForm,NurseryOwnerForm
 from django.contrib import messages 
-from nurseries.models import Activity,City,Neighborhood,Nursery,Gallery,Staff
+from nurseries.models import Activity,Neighborhood,Nursery,Staff
 from django.core.paginator import Paginator
-from django.db.models import Avg,Sum,Max,Min,Count, Q
+from django.db.models import Avg,Max,Min, Q
 
-from registrations.models import Subscription,Registration
+from registrations.models import Review,Registration
 # Create your views here.
 
 # nursery model views 
@@ -128,7 +128,7 @@ def detail_nursery(request:HttpRequest,nursery_id:int):
     staffs=nursery.staff_set.all() 
     gallery_items=nursery.gallery_set.all() 
     subscriptions = nursery.subscriptions.all()
-
+    reviews= nursery.reviews.all()
     # this calculate the min and max age the nursery takes based on the activities it offers
     activities = nursery.activity_set.all() 
     min = activities.aggregate(Min('age_min'))  # This will return a dictionary
@@ -145,7 +145,8 @@ def detail_nursery(request:HttpRequest,nursery_id:int):
         "activities":activities,
         "staffs":staffs,
         "gallery_items":gallery_items,
-        "subscriptions":subscriptions
+        "subscriptions":subscriptions,
+        "reviews":reviews
     })
 # activity model views 
 

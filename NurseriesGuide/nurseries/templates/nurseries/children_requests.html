@@ -22,6 +22,7 @@
                     <th style="background-color: #fff; color: #34366D;">تعديل الحاله</th>
                     <th style="background-color: #fff; color: #34366D;">حذف من السجل</th>
                     <th style="background-color: #fff; color: #34366D;">اسم الطفل</th>
+                    <th style="background-color: #fff; color: #34366D;">الحضانه </th>
                     <th style="background-color: #fff; color: #34366D;">الخطه</th>
                     <th style="background-color: #fff; color: #34366D;">حاله الطلب</th>
                     <th style="background-color: #fff; color: #34366D;">تاريخ الطلب</th>
@@ -41,6 +42,7 @@
                         </a>
                     </td>
                     <td >{{ registration.child.first_name }} {{ registration.child.last_name }}</td>
+                    <td >{{ registration.subscription.nursery.name }} </td>
                     <td>
                                                 {% if registration.subscription.duration_unit == 'day' %}
                                                 {{ registration.subscription.duration_number }} يوم 
