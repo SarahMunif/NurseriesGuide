@@ -134,6 +134,7 @@ def add_review(request, nursery_id):
                     messages.error(request, f"{field}: {error}", 'alert-danger')
         else:
           messages.error(request, '  !', 'alert-danger')
+          print(messages.error)
           return redirect('nurseries:nursery_detail', nursery_id=nursery.id)
 
 
