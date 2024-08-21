@@ -25,26 +25,96 @@
     .card-body {
         background-color: #FFF3F4;
     }
-</style>
 
+    .child-info{
+
+        padding: 1rem;
+    }
+
+    .child-info h4{
+      
+        margin-top: 1rem;
+    }
+
+    .profile{
+        background-color:#FFF3F4 ;
+        min-height: 70vh; /* يعين الحد الأدنى للطول ليكون 100% من ارتفاع العرض */
+        box-sizing: border-box;
+        margin-bottom: 1rem;
+    }
+
+
+</style>
 <div class="row">
 
-    <div class="col-4" style="background-color: bisque; height: max-content;">
+    <div class="col-6 col-sm-6 col-md-4 col-lg-4 profile shadow">
 
-        <div class="d-flex flex-column gap-3">
+        <div class="d-flex flex-column justify-content-center align-items-center mt-2 gap-3">
 
-            <h1>{{parent.phone_number}}</h1>
+
+            <div class="d-flex justify-content-between  w-50">
+
+                <a class="" data-bs-toggle="modal" data-bs-target="#updateModal-{{ request.user.id }}" href="#">
+        
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil me-3" viewBox="0 0 16 16">
+                        <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                    </svg>
+                </a> 
+
+                <img src="{% static 'images/profile_default.jpg' %}" class="w-75 rounded-circle"/>
+
+            </div>
+            {% if request.user.is_superuser or request.user.is_staff %}
+
+            <h2>{{user.first_name}} {{user.last_name}}</h2>
+            <div class="d-flex justify-content-center w-75">
+                <h5>{{user.email}}</h5> 
+                <span class="material-symbols-outlined">
+                    alternate_email
+                </span>
+
+            </div>
+            {%elif request.user.is_authenticated  %}
+            <h2>{{user.first_name}} {{user.last_name}}</h2>
+            <div class="d-flex justify-content-center w-75">
+                <h5>{{user.email}}</h5> 
+                <span class="material-symbols-outlined">
+                    alternate_email
+                </span>
+
+            </div>
+            <div class="d-flex justify-content-center w-75">
+                <h5>{{user.parent.phone_number}}</h5>
+                <span class="material-symbols-outlined">
+                    smartphone
+                    </span>
+
+            </div>
+            <div class="d-flex justify-content-center w-75">
+                <h5>{{user.parent.Work_number}}</h5>
+                <span class="material-symbols-outlined">
+                    call
+                </span>
+
+            </div>
+
+            {%endif%}
+
+
+
 
         </div>
     </div>
 
+
+    {% if request.user.is_authenticated and not request.user.is_superuser and not request.user.is_staff %}
 
     <div class="col">
 
         <div class="d-flex justify-content-between">
             <h1>اطفالي</h1>
 
-            <a href="{% url 'parents:add_child' %}" class="btn btn-light btn-lg rounded-pill shadow-sm"
+            <a href="{% url 'parents:add_child' %}next={{ request.path }}" class="btn btn-light btn-lg rounded-pill shadow-sm"
                 style="font-weight: bold; background-color:#FFFFFF;" data-bs-toggle="modal"
                 data-bs-target="#addNurseryModal">
                 <h6>أضافة طفل</h6>
@@ -58,39 +128,70 @@
                 <div class="col-md-4 col-sm-6 mb-4">
                     <div class="card shadow-lg rounded-card">
                         <div class="card-body">
-                            <h5 class="card-title mb-3">
-                                <a data-bs-toggle="modal" data-bs-target="#ViewChildyModal-{{ child.id }}" href="#">{{ child.first_name }}</a>
+                            <h5 class="card-title mb-3 p-2">
+                                <div class="d-flex flex-column justify-content-center align-items-center">
+
+                                    <img src="{{child.photo.url}}" class="w-75 rounded-circle"/>
+
+                                    <a data-bs-toggle="modal" data-bs-target="#ViewChildyModal-{{ child.id }}" href="#">{{ child.first_name }} {{child.last_name}}</a>
+                                
+                                </div>
         
-                                <!-- update icon -->
-                                <a data-bs-toggle="modal" data-bs-target="#updateModal-{{ child.id }}" href="#">
-        
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil me-3" viewBox="0 0 16 16">
-                                        <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
-                                    </svg>
-                                </a>
-                                <!-- delete icon -->
-        
-                                <a data-bs-toggle="modal" data-bs-target="#deleteModal-{{ child.id }}" href="#">
-        
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3 me-3" viewBox="0 0 16 16">
-                                        <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
-                                    </svg>
-                                </a>
+                                <div class="d-flex justify-content-around mt-2">
+
+                                    <!-- update icon -->
+                                    <a data-bs-toggle="modal" data-bs-target="#updateModal-{{ child.id }}" href="#">
+            
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil me-3" viewBox="0 0 16 16">
+                                            <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                                        </svg>
+                                    </a>
+                                    <!-- delete icon -->
+            
+                                    <a data-bs-toggle="modal" data-bs-target="#deleteModal-{{ child.id }}" href="#">
+            
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3 me-3" viewBox="0 0 16 16">
+                                            <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
+                                        </svg>
+                                    </a>
+
+                                </div>
         
                             </h5>
         
                     </div>
                     <!-- #ViewChildyModal -->
-                    <div class="modal fade" id="ViewChildyModal-{{ child.id }}" tabindex="-1" aria-hidden="true">
+                    <div  class="modal fade" id="ViewChildyModal-{{ child.id }}" tabindex="-1" aria-labelledby="ViewChildyModal-{{ child.id }}" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
+                            <div class="modal-content" style="background-color:  #FFF3F4;">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="updateModalLabel-{{ child.first_name }}">عرض بيانات  </h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
 
-                                    <h3>{{child.national_id}}</h3>
+                                    <div class="child-info">
+
+                                        <div class="d-flex flex-column justify-content-center align-items-center">
+
+                                            <img src="{{child.photo.url}}" class="w-25 rounded-circle"/>
+
+                                            <h2>{{ child.first_name }} {{child.last_name}}</h2>
+                                        
+
+                                        </div>
+
+                                        <h4>الهوية : {{child.national_id}}</h4>
+                                        <h4>نبذة عن الطفل : {{child.about}}</h4>
+                                        <h4>العمر : {{child.age}} </h4>
+                                        <h4>الجنس : {{child.get_gender_display}}</h4>
+                                        <h4>الامراض : {{child.Disease}}</h4>
+                                        <h4>الحساسية : {{child.Allergy}}</h4>
+
+
+                                        
+                                    </div>
+
 
                                 </div>
                             </div>
@@ -127,25 +228,32 @@
                                         </div>
                                         <div class="mb-3">
                                             <label for="child-birth-date" class="form-label">تاريخ الميلاد</label>
-                                            <input type="date" class="form-control" id="child-birth-date" name="birth_date" value="{{ child.birth_date|date:'Y-m-d' }}"
+                                            <input type="date" class="form-control" id="birth-date"  min="2000-01-01" max="2024-08-29" name="birth_date" value="{{ child.birth_date|date:'Y-m-d' }}"
                                                 required>
                                         </div>
                                         <div class="mb-3">
                                             <label for="child-national-id" class="form-label">رقم الهوية</label>
                                             <input type="text" class="form-control" id="child-national-id" name="national_id" value="{{child.national_id}}"
-                                                required>
+                                            minlength="10" maxlength="10" required>
                                         </div>
                                         <div class="mb-3">
                                             <label for="child-about" class="form-label">نبذه عن الطفل</label>
                                             <textarea class="form-control" id="child-about" name="about" required>{{child.about}}</textarea>
                                         </div>
                                         <div class="mb-3">
+                                            <label for="child-about" class="form-label"> الامراض </label>
+                                            <textarea class="form-control" id="child-about" name="Disease" required>{{child.Disease}}</textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="child-about" class="form-label"> الحساسية </label>
+                                            <textarea class="form-control" id="child-about" name="Allergy" required>{{child.Allergy}}</textarea>
+                                        </div>
+                                        <div class="mb-3">
                                             <label for="child-gender" class="form-label">جنس الطفل</label>
                                             <select class="form-control" id="child-gender"  name="gender" required>
-                                                <option value="{{child.gender}}" selected>{{child.get_gender_display}}</option>
 
                                                 {% for value, label in gender %}
-                                                <option value="{{ value }}">{{ label }}</option>
+                                                <option value="{{ value }}" {% if child.gender == value %}selected{% endif %}>{{ label }}</option>
                                                 {% endfor %}
                                             </select>
                                         </div>
@@ -155,9 +263,7 @@
                         </div>
                     </div>
                 </div>    
-            </div>    
-        
-        
+            </div>  
                 <!-- Modal for Deletion Confirmation -->
         
                 <div class="modal fade" id="deleteModal-{{ child.id }}" tabindex="-1" aria-labelledby="deleteModalLabel-{{ child.id }}"
@@ -220,17 +326,25 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="child-birth-date" class="form-label">تاريخ الميلاد</label>
-                                    <input type="date" class="form-control" id="child-birth-date" name="birth_date"
+                                    <input type="date"  min="2000-01-01" max="2024-08-29" class="form-control" id="child-birth-date" name="birth_date"
                                         required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="child-national-id" class="form-label">رقم الهوية</label>
                                     <input type="text" class="form-control" id="child-national-id" name="national_id"
-                                        required>
+                                       minlength="10" maxlength="10" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="child-about" class="form-label">نبذه عن الطفل</label>
                                     <textarea class="form-control" id="child-about" name="about" required></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="child-about" class="form-label"> الامراض التي يعاني منها الطفل </label>
+                                    <textarea class="form-control" id="child-about" name="Disease" placeholder="الربو،السكري" required></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="child-about" class="form-label"> الحساسية</label>
+                                    <textarea class="form-control" id="child-about" name="Allergy" required placeholder="المكسرات،البيض"></textarea>
                                 </div>
                                 <div class="mb-3">
                                     <label for="child-gender" class="form-label">جنس الطفل</label>
@@ -255,7 +369,55 @@
 
 </div>
 
+<div class="modal fade" id="updateModal-{{ request.user.id }}" tabindex="-1" aria-labelledby="updateModalLabel-{{ child.id }}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateModalLabel-{{ request.user.first_name }}">تعديل بيانات  </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="{%url 'parents:update_parent' %}">
+                    {% csrf_token %}
+                    <div class="form-container">
 
+                        <div class="mb-3">
+                            <label for="child-first-name" class="form-label">الأسم الاول</label>
+                            <input type="text" class="form-control" id="child-first-name" name="first_name" value="{{ request.user.first_name }}"
+                                >
+                        </div>
+                        <div class="mb-3">
+                            <label for="child-last-name" class="form-label">الأسم الثاني</label>
+                            <input type="text" class="form-control" id="child-last-name" name="last_name" value="{{ request.user.last_name }}"
+                                >
+                        </div>
+                        <div class="mb-3">
+                            <label for="floatingInput">اسم المستخدم</label>
+                            <input type="text" class="form-control" id="floatingInput" placeholder="username" name="username" value="{{request.user.username}}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="floatingInput">البريد الالكتروني</label>
+                            <input type="email" class="form-control" id="floatingInput" placeholder="" name="email" value="{{request.user.email}}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="floatingInput">رقم الهاتف</label>
+                            <input type="text" value="{{request.user.parent.phone_number}}" class="form-control" id="floatingInput" placeholder="9665555555555" name="phone_number" maxlength="10" minlength="10" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="floatingInput">رقم هاتف العمل</label>
+                            <input type="text" value="{{request.user.parent.Work_number}}" class="form-control" id="floatingInput" placeholder="9665555555555" name="Work_number" maxlength="10" minlength="10" required>
+                        </div>
+
+
+                    <button type="submit" class="btn btn-primary">أحفظ التعديلات</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>   
+
+
+{%endif%}
 
 
 

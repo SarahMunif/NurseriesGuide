@@ -5,6 +5,11 @@
 
 {% block Dashboard-content %}
 <link href="{% static 'css/main.css' %}?v=1.1" rel="stylesheet" />
+<style>
+    .modal-content {
+        background-color: #FFF3F4; 
+    }
+</style>
 
 <br>
 <h1>طلبات تسجيل</h1>
@@ -15,7 +20,7 @@
             <thead>
                 <tr>
                     <th style="background-color: #fff; color: #34366D;">تعديل الحاله</th>
-                    <th style="background-color: #fff; color: #34366D;">حذف الطلب</th>
+                    <th style="background-color: #fff; color: #34366D;">حذف من السجل</th>
                     <th style="background-color: #fff; color: #34366D;">اسم الطفل</th>
                     <th style="background-color: #fff; color: #34366D;">الخطه</th>
                     <th style="background-color: #fff; color: #34366D;">حاله الطلب</th>
@@ -94,13 +99,37 @@
 
                                     <label for="rejection-reason-{{ registration.id }}" class="form-label">سبب الرفض (اختياري)</label>
                                     <textarea class="form-control mb-3" id="rejection-reason-{{ registration.id }}" name="rejection_reason">{{ registration.rejection_reason }}</textarea>
-
-                                    <button type="submit" class="btn btn-primary">أحفظ التعديلات</button>
+                                    <div class="d-flex justify-content-center mt-4">
+                                        <button type="submit" class="btn" style="background-color: #FFFFFF; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1)">أحفظ التعديلات</button>
+                                    </div>
                                 </form>
                             </div>
                         </div>
                     </div>
                 </div>
+                <!-- Modal for Registration Deletion Confirmation -->
+                <div class="modal fade" id="deleteModal-{{ registration.id }}" tabindex="-1" aria-labelledby="deleteModalLabel-{{ registration.id }}" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="deleteModalLabel-{{ registration.id }}">تأكيد الحذف </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                هل انت متاكد من حذف طلب
+                                {{ registration.child.first_name }} {{ registration.child.last_name }}؟
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">تراجع</button>
+                                <a href="{% url 'registrations:delete_registration' registration.id %}" class="btn btn-danger">حذف</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
                 {% endfor %}
             </tbody>
         </table>
