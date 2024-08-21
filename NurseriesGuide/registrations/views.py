@@ -66,6 +66,16 @@ def registration_detail(request, pk):
 
 
 
+def delete_registration(request,registration_id:int):
+    registration = Registration.objects.get(pk=registration_id)
+    if registration.delete():
+             messages.success(request, f'تم حذف الطلب  بنجاح !',"alert-success")
+             return redirect('nurseries:children_requests')
+    else:
+         for field, errors in registration.errors.items():
+             for error in errors:
+                 messages.error(request, f"{field}: {error}","alert-danger")    
+    return redirect('nurseries:children_requests')
 
 
 def registration_update_status(request, pk):

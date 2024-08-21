@@ -12,4 +12,7 @@ urlpatterns = [
     path('<int:pk>/', views.registration_detail, name='registration_detail'),
     path('<int:pk>/update-status/', views.registration_update_status, name='registration_update_status'),
     path('registration/add/subscription/<int:nursery_id>/', views.add_subscription, name='add_subscription'),
+    
+    path('delete/registration/<int:registration_id>/', views.delete_registration, name='delete_registration'),
+
     ]

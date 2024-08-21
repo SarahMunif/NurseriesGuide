@@ -9,9 +9,10 @@
         border-radius: 1.5rem; /* This will apply rounded corners to the entire card */
         overflow: hidden; /* Ensures that the background and content inside respect the border-radius */
     }
-    .color-activty {
+    .color-activty ,.modal-content  {
         background-color: #FFF3F4; /* Background color applied directly to card-body */
     }
+    
 </style>
 <br>
 <div id="galleryCarousel" class="carousel slide" data-bs-ride="carousel">
@@ -52,7 +53,7 @@
     <div class="col-auto">
         <!-- icon -->
     </div>
-    <div class="d-flex align-items-center mb-3">
+    <div class="d-flex align-items-center mb-3" >
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt" viewBox="0 0 16 16">
             <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A32 32 0 0 1 8 14.58a32 32 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10"/>
             <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4m0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
@@ -70,6 +71,24 @@
             <path d="M12 3a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3m-.663 2.146a1.5 1.5 0 0 0-.47-2.115l-2.5-1.508a1.5 1.5 0 0 0-1.676.086l-2.329 1.75a.866.866 0 0 0 1.051 1.375L7.361 3.37l.922.71-2.038 2.445A4.73 4.73 0 0 0 2.628 7.67l1.064 1.065a3.25 3.25 0 0 1 4.574 4.574l1.064 1.063a4.73 4.73 0 0 0 1.09-3.998l1.043-.292-.187 2.991a.872.872 0 1 0 1.741.098l.206-4.121A1 1 0 0 0 12.224 8h-2.79zM3.023 9.48a3.25 3.25 0 0 0 4.496 4.496l1.077 1.077a4.75 4.75 0 0 1-6.65-6.65z"/>
           </svg>
           {% endif %}
+
+          <div style="width: 100px;"></div> <!-- Custom spacer -->
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telephone" viewBox="0 0 16 16">
+            <path d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.6 17.6 0 0 0 4.168 6.608 17.6 17.6 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.68.68 0 0 0-.58-.122l-2.19.547a1.75 1.75 0 0 1-1.657-.459L5.482 8.062a1.75 1.75 0 0 1-.46-1.657l.548-2.19a.68.68 0 0 0-.122-.58zM1.884.511a1.745 1.745 0 0 1 2.612.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877z"/>
+          </svg>
+          <div style="width: 10px;"></div> <!-- Custom spacer -->
+          <span>{{nursery.contact_number}}</span>
+
+          <div style="width: 100px;"></div> <!-- Custom spacer -->
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope-at" viewBox="0 0 16 16">
+            <path d="M2 2a2 2 0 0 0-2 2v8.01A2 2 0 0 0 2 14h5.5a.5.5 0 0 0 0-1H2a1 1 0 0 1-.966-.741l5.64-3.471L8 9.583l7-4.2V8.5a.5.5 0 0 0 1 0V4a2 2 0 0 0-2-2zm3.708 6.208L1 11.105V5.383zM1 4.217V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v.217l-7 4.2z"/>
+            <path d="M14.247 14.269c1.01 0 1.587-.857 1.587-2.025v-.21C15.834 10.43 14.64 9 12.52 9h-.035C10.42 9 9 10.36 9 12.432v.214C9 14.82 10.438 16 12.358 16h.044c.594 0 1.018-.074 1.237-.175v-.73c-.245.11-.673.18-1.18.18h-.044c-1.334 0-2.571-.788-2.571-2.655v-.157c0-1.657 1.058-2.724 2.64-2.724h.04c1.535 0 2.484 1.05 2.484 2.326v.118c0 .975-.324 1.39-.639 1.39-.232 0-.41-.148-.41-.42v-2.19h-.906v.569h-.03c-.084-.298-.368-.63-.954-.63-.778 0-1.259.555-1.259 1.4v.528c0 .892.49 1.434 1.26 1.434.471 0 .896-.227 1.014-.643h.043c.118.42.617.648 1.12.648m-2.453-1.588v-.227c0-.546.227-.791.573-.791.297 0 .572.192.572.708v.367c0 .573-.253.744-.564.744-.354 0-.581-.215-.581-.8Z"/>
+          </svg>
+          <div style="width: 10px;"></div> <!-- Custom spacer -->
+          <span>{{nursery.email}}</span>
+
+
+
     </div>
 
 
@@ -386,8 +405,8 @@
                             <label for="activity-image" class="form-label">صورة النشاط</label>
                             <input type="file" class="form-control" id="activity-image" name="image">
                         </div>
-                        <div class="mb-3">
-                            <button type="submit" class="btn btn-primary">أضف 
+                        <div class="d-flex justify-content-center mt-4">
+                            <button type="submit" class="btn" style="background-color: #FFFFFF; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);width: 150px;">أضف</button>
                         </div>
                     </div>
                 </form>
@@ -492,17 +511,17 @@
                                             </h1>
                                             <h5 class="card-title mb-1">
                                                 <br>
-                                                <span class="text-muted"> {{ subscription.price }}ريال سعودي</span>
+                                                <span class="text-muted mt-4 "> {{ subscription.price }}ريال سعودي</span>
                                             </h5>
-                                            <p class="mb-1">
+                                            <p class="mb-1 mt-4">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-arms-up mx-2" viewBox="0 0 16 16">
                                                     <path d="M8 3a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"/>
                                                     <path d="m5.93 6.704-.846 8.451a.768.768 0 0 0 1.523.203l.81-4.865a.59.59 0 0 1 1.165 0l.810 4.865a.768.768 0 0 0 1.523-.203l-.845-8.451A1.5 1.5 0 0 1 10.5 5.5L13 2.284a.796.796 0 0 0-1.239-.998L9.634 3.84a.7.7 0 0 1-.33.235c-.23.074-.665.176-1.304.176-.64 0-1.074-.102-1.305-.176a.7.7 0 0 1-.329-.235L4.239 1.286a.796.796 0 0 0-1.24.998l2.5 3.216c.317.316.475.758.43 1.204Z"/>
                                                 </svg>
                                                 <span>{{ subscription.age_min }} - {{ subscription.age_max }}</span>
                                             </p> 
-                                            <label for="child-selection-{{ subscription.id }}" class="form-label">Select Child:</label>
-                                            <select class="form-select" id="child-selection-{{ subscription.id }}" name="child">
+                                            <label class="mt-4" for="child-selection-{{ subscription.id }}" class="form-label"> الطفل:</label>
+                                            <select class="form-select mt-4" id="child-selection-{{ subscription.id }}" name="child">
                                                 {% for child in request.user.parent.child_set.all %}
                                                     <option value="{{ child.id }}">{{ child.first_name }} {{ child.last_name }}</option>
                                                 {% endfor %}
@@ -510,7 +529,7 @@
                                             <br>
                                             <br>
                                             <div class="mb-3 text-center"> 
-                                                <button type="submit" class="btn  w-75" style="background-color: #FFFFFF;"><h5>أحجز</h5></button> 
+                                                <button type="submit" class="btn  w-75"  style="background-color: #FFFFFF; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);"><h5>أحجز</h5></button> 
                                               </div>
                                         </div>
 
@@ -576,8 +595,8 @@
                             <label for="subscription-description" class="form-label">وصف الباقة</label>
                             <textarea class="form-control" id="subscription-description" name="description" required></textarea>
                         </div>
-                        <div class="mb-3">
-                            <button type="submit" class="btn btn-primary">أضف</button>
+                        <div class="d-flex justify-content-center mt-4">
+                            <button type="submit" class="btn" style="background-color: #FFFFFF; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);width: 150px;">أضف</button>
                         </div>
                     </div>
                 </form>
@@ -620,8 +639,8 @@
                             <label for="staff-experience" class="form-label">الخبرة</label>
                             <textarea class="form-control" id="staff-experience" name="experience" required></textarea>
                         </div>
-                        <div class="mb-3">
-                            <button type="submit" class="btn btn-primary">أضف عضو هيئة التدريس</button>
+                        <div class="d-flex justify-content-center mt-4">
+                            <button type="submit" class="btn" style="background-color: #FFFFFF; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);width: 150px;">أضف</button>
                         </div>
                     </div>
                 </form>
