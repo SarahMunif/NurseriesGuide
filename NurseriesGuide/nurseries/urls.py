@@ -27,6 +27,6 @@ urlpatterns = [
     path("delete/<int:staff_id>/staff/",views.delete_staff,name="delete_staff"),
 
     path("add/<int:nursery_id>/gallery/", views.add_gallery, name="add_gallery"),
-
     
+    path("check_out/<int:child_id>/",views.check_out, name="check_out"),
 ]

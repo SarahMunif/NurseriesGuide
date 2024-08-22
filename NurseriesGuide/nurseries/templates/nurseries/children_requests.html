@@ -21,7 +21,7 @@
                 <tr>
                     <th style="background-color: #fff; color: #34366D;">تعديل الحاله</th>
                     <th style="background-color: #fff; color: #34366D;">حذف من السجل</th>
-                    <th style="background-color: #fff; color: #34366D;">اسم الطفل</th>
+                    <th style="background-color: #fff; color: #34366D;">ملف الطفل</th>
                     <th style="background-color: #fff; color: #34366D;">الحضانه </th>
                     <th style="background-color: #fff; color: #34366D;">الخطه</th>
                     <th style="background-color: #fff; color: #34366D;">حاله الطلب</th>
@@ -41,34 +41,17 @@
                             <span class="material-symbols-outlined">حذف</span>
                         </a>
                     </td>
-                    <td >{{ registration.child.first_name }} {{ registration.child.last_name }}</td>
+                    <td>
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#ViewChildyModal-{{ registration.child.id }}" style="text-decoration: none; color: inherit;">
+                            {{ registration.child.first_name }} {{ registration.child.last_name }}
+                        </a>
+                    </td>
                     <td >{{ registration.subscription.nursery.name }} </td>
                     <td>
-                                                {% if registration.subscription.duration_unit == 'day' %}
-                                                {{ registration.subscription.duration_number }} يوم 
-                                                {% elif registration.subscription.duration_unit == 'week' %}
-                                                {{ registration.subscription.duration_number }} أسبوع
-                                                {% elif registration.subscription.duration_unit == 'month' %}
-                                                {{ registration.subscription.duration_number }} شهر
-                                                {% elif registration.subscription.duration_unit == 'year' %}
-                                                {{ registration.subscription.duration_number }} شهر
-                                                {% else %}
-                                                  {{ registration.subscription.duration_unit }}
-                                                {% endif %}
-
+                        {{ registration.subscription.duration_number }} {{ registration.subscription.get_duration_unit_display }}
 
                     </td>
-                    <td>
-                        {% if registration.status == 'reviewing' %}
-                            جاري المراجعة
-                        {% elif registration.status == 'accepted' %}
-                            مقبول
-                        {% elif registration.status == 'rejected' %}
-                            مرفوض
-                        {% else %}
-                            {{ registration.get_status_display }}  <!-- Default display if no match -->
-                        {% endif %}
-                    </td>                 
+                    <td>{{registration.get_status_display}} </td>                 
                    <td>{{ registration.created_at|date:"Y-m-d" }}</td>
                 </tr>
                 <!-- Modal for Registration Status Update -->
@@ -86,15 +69,8 @@
                                     <select class="form-control mb-3" id="status-{{ registration.id }}" name="status" required>
                                         {% for status, status_display in registration.STATUS_CHOICES %}
                                             <option value="{{ status }}" {% if registration.status == status %}selected{% endif %}>
-                                                {% if status == 'reviewing' %}
-                                                    جاري المراجعة
-                                                {% elif status == 'accepted' %}
-                                                    مقبول
-                                                {% elif status == 'rejected' %}
-                                                    مرفوض
-                                                {% else %}
+
                                                     {{ status_display }}
-                                                {% endif %}
                                             </option>
                                         {% endfor %}
                                     </select>
@@ -128,7 +104,42 @@
                         </div>
                     </div>
                 </div>
+                    <!-- #ViewChildyModal -->
+                    <div class="modal fade" id="ViewChildyModal-{{ registration.child.id }}" tabindex="-1" aria-labelledby="ViewChildyModal-{{ registration.child.id }}" aria-hidden="true">                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content" style="background-color:  #FFF3F4;">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="updateModalLabel-{{ registration.child.first_name }}">عرض بيانات  </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
 
+                                    <div class="child-info">
+
+                                        <div class="d-flex flex-column justify-content-center align-items-center">
+
+                                            <img src="{{registration.child.photo.url}}" class="w-25 rounded-circle"/>
+
+                                            <h2>{{ registration.child.first_name }} {{registration.child.last_name}}</h2>
+                                        
+
+                                        </div>
+
+                                        <h4>الهوية : {{registration.child.national_id}}</h4>
+                                        <h4>نبذة عن الطفل : {{registration.child.about}}</h4>
+                                        <h4>العمر : {{registration.child.age}} </h4>
+                                        <h4>الجنس : {{registration.child.get_gender_display}}</h4>
+                                        <h4>الامراض : {{registration.child.Disease}}</h4>
+                                        <h4>الحساسية : {{registration.child.Allergy}}</h4>
+
+
+                                        
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>    
 
 
 

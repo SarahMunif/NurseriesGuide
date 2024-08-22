@@ -74,6 +74,12 @@
                                 <a data-bs-toggle="modal" data-bs-target="#deleteModal-{{ child.id }}" href="#">
                                     الغاء الطلب 
                                 </a>
+                                {% elif request.status == 'waiting_payment' %}
+                                <a href="{% url 'nurseries:check_out' child.id %}">
+                                     ادفع الان 
+                                     <!-- {{request.subscription.price}}  -->
+                                </a>
+
                                 {% endif %}
                             </h6>
                         </div>

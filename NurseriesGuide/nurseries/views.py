@@ -6,7 +6,9 @@ from nurseries.models import Activity,Neighborhood,Nursery,Staff
 from django.core.paginator import Paginator
 from django.db.models import Avg,Max,Min, Q
 
-from registrations.models import Review,Registration
+from registrations.models import Registration,Subscription
+from parents.models import Child
+import stripe
 # Create your views here.
 
 # nursery model views 
@@ -129,11 +131,17 @@ def detail_nursery(request:HttpRequest,nursery_id:int):
     gallery_items=nursery.gallery_set.all() 
     subscriptions = nursery.subscriptions.all()
     reviews= nursery.reviews.all()
+    
+    is_owner = request.user == nursery.owner # to restrict the update icons in the frontend for the owner only
+
     # this calculate the min and max age the nursery takes based on the activities it offers
     activities = nursery.activity_set.all() 
     min = activities.aggregate(Min('age_min'))  # This will return a dictionary
     max = activities.aggregate(Max('age_max'))  
     
+
+    average_rating = nursery.reviews.aggregate(Avg('rating'))
+    average_rating = average_rating['rating__avg']  
     min = min['age_min__min']  # Extract the  age from the dictonary for a better disply in the web bage
     max = max['age_max__max']  
     
@@ -146,7 +154,9 @@ def detail_nursery(request:HttpRequest,nursery_id:int):
         "staffs":staffs,
         "gallery_items":gallery_items,
         "subscriptions":subscriptions,
-        "reviews":reviews
+        "reviews":reviews,
+        "is_owner":is_owner,
+        "average_rating": average_rating if average_rating is not None else "  لا توجد تقييمات "
     })
 # activity model views 
 
@@ -350,4 +360,60 @@ def nurseries_list(request):
     return render(request, 'nurseries/nurseries_list.html', context)
 
     
+from django.conf import settings
+stripe.api_key = ''
 
+
+
+def check_out(request, child_id):
+        # Fetch the child and their subscription
+        child = Child.objects.get(id=child_id)
+        registration = Registration.objects.filter(child=child).first()
+        if not registration:
+            # Redirect or handle the error as needed
+            return redirect('main:home')
+
+        subscription = registration.subscription
+
+        # Create the stripe checkout session using price details from the database
+        checkout_session = stripe.checkout.Session.create(
+            payment_method_types=['card'],
+            line_items=[{
+                'price_data': {
+                    'currency': 'sar',
+                    'product_data': {
+                        'name': ' {}'.format(child.first_name),
+                    },
+                    'unit_amount': int(subscription.price * 100),  # Stripe requires the amount in cents
+                },
+                'quantity': 1,
+            }],
+            mode='payment',
+            success_url='http://127.0.0.1:8000/parents/requests-status/', 
+            cancel_url='http://127.0.0.1:8000/parents/requests-status/',
+        )
+
+        # Redirect to the Stripe checkout
+        return redirect(checkout_session.url)
+
+
+
+# def check_out(request,child_id):
+#     child=Child.objects.get(child_id)
+#     subscription=Subscription.
+#     checkout_session=stripe.checkout.Session.create(
+#         payment_method_types=[
+#         'card',
+#         ],
+#         line_items=[
+#             {
+#             #TODO: replace this w the price of the product you want 
+#             'price':'{{PRICE_ID}}',
+#             "quantity":1,
+#             },
+#         ],
+#         model='payment',
+#         success_url="main:home" ,
+#         cancel_url= "main:home"  ,
+        
+#     )
