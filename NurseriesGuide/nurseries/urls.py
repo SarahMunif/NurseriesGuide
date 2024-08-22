@@ -28,5 +28,7 @@ urlpatterns = [
 
     path("add/<int:nursery_id>/gallery/", views.add_gallery, name="add_gallery"),
     
-    path("check_out/<int:child_id>/",views.check_out, name="check_out"),
+    path("check-out/<int:child_id>/",views.check_out, name="check_out"),
+    path('payment-success/<int:child_id>/', views.payment_success, name='payment_success'),
+    path('payment-cancel/<int:child_id>/', views.payment_cancel, name='payment_cancel'), 
 ]

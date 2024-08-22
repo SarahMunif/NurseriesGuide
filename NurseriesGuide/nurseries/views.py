@@ -5,7 +5,7 @@ from django.contrib import messages
 from nurseries.models import Activity,Neighborhood,Nursery,Staff
 from django.core.paginator import Paginator
 from django.db.models import Avg,Max,Min, Q
-
+from django.urls import reverse
 from registrations.models import Registration,Subscription
 from parents.models import Child
 import stripe
@@ -375,7 +375,6 @@ def check_out(request, child_id):
 
         subscription = registration.subscription
 
-        # Create the stripe checkout session using price details from the database
         checkout_session = stripe.checkout.Session.create(
             payment_method_types=['card'],
             line_items=[{
@@ -389,14 +388,24 @@ def check_out(request, child_id):
                 'quantity': 1,
             }],
             mode='payment',
-            success_url='http://127.0.0.1:8000/parents/requests-status/', 
-            cancel_url='http://127.0.0.1:8000/parents/requests-status/',
-        )
+        success_url=request.build_absolute_uri(reverse('nurseries:payment_success', args=[child_id])),
+        cancel_url=request.build_absolute_uri(reverse('nurseries:payment_cancel', args=[child_id])),
+    )
+
 
         # Redirect to the Stripe checkout
         return redirect(checkout_session.url)
 
 
+def payment_success(request, child_id):
+    child = Child.objects.get(id=child_id)
+    registration = Registration.objects.filter(child=child).first()
+    registration.status="accepted"
+    registration.save() 
+    return redirect("parents:requests_status")
+
+def payment_cancel(request, child_id):
+        return redirect("parents:requests_status")
 
 # def check_out(request,child_id):
 #     child=Child.objects.get(child_id)
