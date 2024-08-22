@@ -5,6 +5,12 @@ from .models import Registration
 from .forms import RegistrationForm, RegistrationStatusForm,SubscriptionForm,ReviewForm
 from parents.models import Child
 from .models import Nursery, Subscription,Review
+from django.core.mail import EmailMessage
+from django.conf import settings
+from django.template.loader import render_to_string
+
+
+
 
 
 
@@ -56,8 +62,14 @@ def registration_create(request):
                 subscription=subscription,
                 status='reviewing'
             )
+            send_to = subscription.nursery.owner.email
+            print(send_to)
+            content_html = render_to_string("main/mail/send_request_to_owner.html")
+            email_message = EmailMessage("",content_html, settings.EMAIL_HOST_USER, [send_to])
+            email_message.content_subtype = "html"
+            email_message.send()
             messages.success(request, 'تم إنشاء طلب التسجيل بنجاح.',"alert-success")
-            return redirect('parents:requests_status')  # Redirect to the home page or the appropriate page
+            return redirect('parents:requests_status') 
 
     return render(request, 'nurseries/nursery_detail.html')
 
@@ -83,6 +95,14 @@ def registration_update_status(request, pk):
             updated_registration = form.save(commit=False)
             updated_registration.save()
             messages.success(request, 'تم تعديل الحالة بنجاح.','alert-success')
+            send_to = registration.child.parent.user.email
+            print(send_to)
+            print(send_to)
+            content_html = render_to_string("main/mail/receive_request_from_owner.html")
+            email_message = EmailMessage("",content_html, settings.EMAIL_HOST_USER, [send_to])
+            email_message.content_subtype = "html"
+            email_message.send()
+            messages.success(request, 'تم إنشاء طلب التسجيل بنجاح.',"alert-success")
             return redirect('nurseries:children_requests')
         else:
             for field, errors in form.errors.items():
