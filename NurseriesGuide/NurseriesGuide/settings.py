@@ -135,3 +135,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+
+
+NATIONAL_ADDRESS_API_KEY = 'd47f6a9c7d374ffe99badebb162ba0ea'

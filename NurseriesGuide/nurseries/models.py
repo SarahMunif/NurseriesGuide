@@ -33,11 +33,14 @@ class Nursery(models.Model):
     ))
     rejection_reason = models.TextField(blank=True, null=True)
     neighborhood = models.ForeignKey(Neighborhood, on_delete=models.CASCADE, related_name='nurseries')
-
+    
     owner = models.ForeignKey(User, on_delete=models.CASCADE,  limit_choices_to={'is_staff': True})
 
     def __str__(self):
         return self.name
+    
+
+
 #Activity Model 
 class Activity(models.Model):
     name = models.CharField(max_length=100)  
@@ -50,10 +53,8 @@ class Activity(models.Model):
     def __str__(self):
         return self.name
 
-#Gallery Model 
 
-from django.db import models
-
+#Gallery Model
 class Gallery(models.Model):
     image = models.ImageField(upload_to='images/', default="images/default.jpg")
     video = models.FileField(upload_to='videos/', blank=True, null=True)

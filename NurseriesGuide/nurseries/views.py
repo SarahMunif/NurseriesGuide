@@ -7,6 +7,8 @@ from django.core.paginator import Paginator
 from django.db.models import Avg,Max,Min, Q
 
 from registrations.models import Review,Registration
+
+
 # Create your views here.
 
 # nursery model views 
@@ -287,17 +289,12 @@ def children_requests(request):
 
 
 
-from django.views.generic import ListView
+
 from .models import Nursery
-from registrations.models import Review
 
 
 
 
-
-from django.core.paginator import Paginator
-from django.shortcuts import render
-from django.db.models import Avg, Q
 
 def nurseries_list(request):
     nurseries = Nursery.objects.all()
