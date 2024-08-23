@@ -360,7 +360,6 @@ def nurseries_list(request):
     return render(request, 'nurseries/nurseries_list.html', context)
 
     
-from django.conf import settings
 stripe.api_key = ''
 
 
@@ -407,22 +406,3 @@ def payment_success(request, child_id):
 def payment_cancel(request, child_id):
         return redirect("parents:requests_status")
 
-# def check_out(request,child_id):
-#     child=Child.objects.get(child_id)
-#     subscription=Subscription.
-#     checkout_session=stripe.checkout.Session.create(
-#         payment_method_types=[
-#         'card',
-#         ],
-#         line_items=[
-#             {
-#             #TODO: replace this w the price of the product you want 
-#             'price':'{{PRICE_ID}}',
-#             "quantity":1,
-#             },
-#         ],
-#         model='payment',
-#         success_url="main:home" ,
-#         cancel_url= "main:home"  ,
-        
-#     )

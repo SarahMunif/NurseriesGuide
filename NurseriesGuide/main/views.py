@@ -5,8 +5,11 @@ from django.db.models import Count,Min,Max
 from nurseries.models import Nursery,City,Activity,Gallery
 from parents.models import Parent
 
-
-
+from .models import Contact
+from django.core.mail import EmailMessage
+from django.conf import settings
+from django.template.loader import render_to_string
+from django.contrib import messages
 
 def home(request):
      
@@ -46,3 +49,23 @@ def admin_dashboard(request):
         return redirect("main:home")
     
     return render(request, 'main/admin_dashboard.html')
+
+
+def contact_view(request):
+    
+    if request.method == "POST":
+        print(f'this')
+
+        contact = Contact(first_name=request.POST["first_name"],last_name=request.POST["last_name"], email=request.POST["email"], message=request.POST["message"])
+        contact.save()
+
+        #send confirmation email
+        send_to = settings.EMAIL_HOST_USER
+        print(f'this{send_to}')
+        content_html = render_to_string("main/mail/send_request_to_owner.html")
+        email_message = EmailMessage("",content_html, settings.EMAIL_HOST_USER, [send_to])
+        email_message.content_subtype = "html"
+        email_message.send()
+        messages.success(request, 'تم إنشاء طلب التسجيل بنجاح.',"alert-success")
+        return redirect('main:contact_view') 
+    return render(request, 'main/contact_us.html' )
