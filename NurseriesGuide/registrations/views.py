@@ -135,7 +135,7 @@ def add_subscription(request, nursery_id):
             subscription = subscriptionForm.save(commit=False)  # Get the unsaved Activity instance
             subscription.nursery=nursery  # Set the nursery for this activity            
             subscription.save()  # Now save the Activity instance into the database
-            messages.success(request, 'Activity added successfully!', 'alert-success')
+            messages.success(request, 'تم اضافه الباقه بنجاح!', 'alert-success')
             return redirect('nurseries:nursery_detail', nursery_id=nursery_id)
         else:
             for field, errors in subscriptionForm.errors.items():

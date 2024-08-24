@@ -23,7 +23,7 @@ class Nursery(models.Model):
     address = models.URLField(max_length=3000)  # Changed from CharField to URLField
     contact_number = models.CharField(max_length=15)
     email = models.EmailField()
-    description = models.TextField()
+    description = models.TextField(blank=True, null=True)
     accepts_special_needs = models.BooleanField(default=False)
     verified = models.BooleanField(default=False)
     status = models.CharField(max_length=20, default='pending', choices=(

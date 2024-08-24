@@ -21,7 +21,7 @@
     <div class="carousel-inner">
         {% for item in gallery_items %}
         <div class="carousel-item {% if forloop.first %}active{% endif %}">
-            {% if item.type == 'video' %}
+            {% if item.video %}
             <video class="d-block w-100" controls>
                 <source src="{{ item.video.url }}" type="video/mp4">
             </video>
@@ -415,7 +415,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="activity-description" class="form-label">وصف النشاط</label>
-                            <textarea class="form-control" id="activity-description" name="description" required></textarea>
+                            <textarea class="form-control" id="activity-description" name="description" ></textarea>
                         </div>
                         <div class="mb-3">
                             <label for="activity-age-min" class="form-label">العمر الأدنى</label>
@@ -623,7 +623,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="subscription-description" class="form-label">وصف الباقة</label>
-                            <textarea class="form-control" id="subscription-description" name="description" required></textarea>
+                            <textarea class="form-control" id="subscription-description" name="description" ></textarea>
                         </div>
                         <div class="d-flex justify-content-center mt-4">
                             <button type="submit" class="btn" style="background-color: #FFFFFF; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);width: 150px;">أضف</button>

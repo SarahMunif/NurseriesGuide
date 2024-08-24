@@ -175,6 +175,7 @@ def add_activity(request:HttpRequest,nursery_id:int):
             for field, errors in activityForm.errors.items():
                 for error in errors:
                     messages.error(request, f"{field}: {error}", 'alert-danger')
+            return redirect('nurseries:nursery_detail', nursery_id=nursery_id)
     else:
         activityForm = ActivityForm()
 
