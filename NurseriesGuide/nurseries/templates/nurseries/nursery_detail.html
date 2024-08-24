@@ -707,7 +707,7 @@
         </div>
     </div>
 </div>
-
+<!-- reviews -->
 <section class="rounded mt-5" style="background-color: #F5888E; min-height: 40vh; box-sizing: border-box; padding: 20px;">
         {% if reviews %}
             <h1 class="mb-5 mt-5" style="text-align: center;">اراء اولياء الامور</h1>
@@ -770,7 +770,9 @@
         {% endif %}
     
         {% if request.user.is_authenticated %}
-            <h1 class="mt-5 mb-5"  style="text-align: center;">عبر عن رأيك</h1>
+        {% if not request.user.is_superuser and not request.user.is_staff %}
+            <!-- Display the form for regular authenticated users who are neither superusers nor staff -->
+            <h1 class="mt-5 mb-5" style="text-align: center;">عبر عن رأيك</h1>
             <form method="post" action="{% url 'registrations:add_review' nursery.id %}" style="display: flex; flex-direction: column; align-items: center; max-width: 500px; margin: auto;">  
                 {% csrf_token %}
                 <textarea class="form-control" name="comment" required minlength="3" placeholder="..." style="margin-bottom: 10px;"></textarea>
@@ -782,13 +784,20 @@
                     <option value="4">٤</option>
                     <option value="5">٥</option>
                 </select>
-                <input type="submit" class="btn " value="أضف تعليقك" style="margin-top: 10px;background-color: #FFFFFF; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);"/>
+                <input type="submit" class="btn" value="أضف تعليقك" style="margin-top: 10px;background-color: #FFFFFF; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);"/>
             </form>
         {% else %}
-            <div class="p-3  mt-4 d-flex flex-column gap-2" style="text-align: center;">
-                <h5 style="color: #FFFFFF;">فقط المسجلون في هذه الحضانه يملكون صلاحية التعليق </h5>
+            <!-- Specific message for superusers or staff -->
+            <div class="p-3 mt-4 d-flex flex-column gap-2" style="text-align: center;">
+                <h5 style="color: #FFFFFF;">فقط اولياء الامور يملكون صلاحية التعليق</h5>
             </div>
         {% endif %}
+    {% else %}
+        <!-- Message for non-authenticated users -->
+        <div class="p-3 mt-4 d-flex flex-column gap-2" style="text-align: center;">
+            <h5 style="color: #FFFFFF;">فقط المسجلون في هذه الحضانه يملكون صلاحية التعليق</h5>
+        </div>
+    {% endif %}
         <br><br>
     </section>
 

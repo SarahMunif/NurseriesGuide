@@ -1,4 +1,5 @@
 from django.db import models
+from parents.models import Parent
 
 # Create your models here.
 class Contact(models.Model):
@@ -13,3 +14,7 @@ class Contact(models.Model):
 
     def __str__(self) -> str:
         return self.name
+    
+class Web_Review(models.Model):
+    parent = models.ForeignKey(Parent, on_delete=models.CASCADE)
+    comment = models.TextField(blank=True)

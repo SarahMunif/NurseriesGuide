@@ -147,6 +147,11 @@ def add_subscription(request, nursery_id):
 def add_review(request, nursery_id):
     nursery = Nursery.objects.get(pk=nursery_id)
     if request.method == 'POST':
+        # Check if the parent already has a review for this nursery
+        existing_review = Review.objects.filter(nursery=nursery, parent=request.user.parent).exists()
+        if existing_review:
+           messages.error(request, 'لديك بالفعل تعليق لا يمكنك اضافه تعليق اخر ', 'alert-danger')
+           return redirect('nurseries:nursery_detail', nursery_id=nursery_id)
         has_accepted_registration = Registration.objects.filter(
         subscription__nursery=nursery,
         child__parent=request.user.parent,
@@ -165,7 +170,7 @@ def add_review(request, nursery_id):
                 for error in errors:
                     messages.error(request, f"{field}: {error}", 'alert-danger')
         else:
-          messages.error(request, '  !', 'alert-danger')
+          messages.error(request, '  ليس لديك اطفال فيه هذه الحضانه ', 'alert-danger')
           print(messages.error)
           return redirect('nurseries:nursery_detail', nursery_id=nursery.id)
 
