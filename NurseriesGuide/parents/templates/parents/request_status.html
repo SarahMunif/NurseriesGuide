@@ -16,13 +16,18 @@
     }
 
     .rounded-card {
-        border-radius: 1.5rem;
+        border-radius: .5rem;
+        border: none;
         overflow: hidden;
         height: 100%;
     }
 
     .card-body {
-        background-color: #FFF3F4;
+        /* background: rgb(255,255,255);
+        background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,243,244,1) 0%, rgba(244,243,255,1) 100%); */
+        /* background: rgb(255,255,255);
+        background: linear-gradient(202deg, rgba(255,255,255,1) 0%, rgba(255,243,244,1) 0%, rgba(244,243,255,1) 100%); */
+        background-color:#FFF3F4 ;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -46,74 +51,64 @@
 <div class="container-fluid">
     {% if registration_requests %}
     <div class="row mt-4">
-        {% for child in children %}
+        {% for request in registration_requests %}
         <div class="col-lg-4 col-md-6 mb-4 d-flex">
-            <div class="card shadow-lg rounded-card w-100">
+            <div class="card shadow rounded-card w-100">
                 <div class="card-body">
-                    {% for request in registration_requests %}
-                    {% if request.child == child %}
-
+                    
                     <h5 class="card-title mb-3 d-flex justify-content-between">
                         <a href="#">{{ request.subscription.nursery }}</a>
                     </h5>
 
                     <div class="row align-items-center">
                         <div class="col-auto">
-                            <img src="{{child.photo.url}}" class="img-thumbnail mt-2 mb-2 rounded-card" style="max-height: 70px;" alt="">
+                            <img src="{{ request.child.photo.url }}" class=" mt-2 mb-2 rounded" style="max-height: 70px;" alt="">
                         </div>
                         <div class="col">
-                            <h6 class="mb-0">{{ child.first_name }} {{ child.last_name }}</h6>
+                            <h6 class="mb-0">{{ request.child.first_name }} {{ request.child.last_name }}</h6>
                         </div>
                     </div>
+
                     <div class="d-flex justify-content-between">
                         <h6><strong>حالة الطلب :</strong> {{ request.get_status_display }}</h6>
                         {% if request.status == 'rejected' %}
                         <h6><strong>سبب الرفض:</strong> {{ request.rejection_reason }}</h6>
                         {% endif %}
-                        <h6 class="card-title mb-3 ">
+                        <h6 class="card-title mb-3">
                             {% if request.status == 'reviewing' %}
-                            <a data-bs-toggle="modal" data-bs-target="#deleteModal-{{ child.id }}" href="#">
+                            <a data-bs-toggle="modal" data-bs-target="#deleteModal-{{ request.id }}" href="#">
                                 الغاء الطلب 
                             </a>
-                            {% elif request.status == 'rejected'%}
-                            <a data-bs-toggle="modal" data-bs-target="#deleteModal-{{ child.id }}" href="#">
-                                <span class="material-symbols-outlined">
-                                    delete
-                                    </span>                                
+                            {% elif request.status == 'rejected' %}
+                            <a data-bs-toggle="modal" data-bs-target="#deleteModal-{{ request.id }}" href="#">
+                                <span class="material-symbols-outlined">delete</span>                                
                             </a>
                             {% elif request.status == 'waiting_payment' %}
-                            <a href="{% url 'nurseries:check_out' child.id %}">
-                                 ادفع الان 
-                                 <!-- {{request.subscription.price}}  -->
+                            <a href="{% url 'nurseries:check_out' request.child.id %}">
+                                ادفع الان
                             </a>
                             {% endif %}
                         </h6>
                     </div>
 
-                    {% endif %}
-
                     <!-- Modal for Deletion Confirmation -->
-                    <div class="modal fade" id="deleteModal-{{ child.id }}" tabindex="-1" aria-labelledby="deleteModalLabel-{{ child.id }}"
-                    aria-hidden="true">
+                    <div class="modal fade" id="deleteModal-{{ request.id }}" tabindex="-1" aria-labelledby="deleteModalLabel-{{ request.id }}" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="deleteModalLabel-{{ child.id }}">تأكيد الالغاء </h5>
+                                    <h5 class="modal-title" id="deleteModalLabel-{{ request.id }}">تأكيد الالغاء </h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    هل انت متاكد الغاء طلب تسجيل 
-                                    "{{ child.first_name }}"                                    ؟
+                                    هل انت متاكد من الغاء طلب تسجيل "{{ request.child.first_name }}"؟
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <a href="{% url 'registrations:delete_registration' request.id %}?next={{ request.path }}"
-                                        class="btn btn-danger">الغاء الطلب</a>
+                                    <a href="{% url 'registrations:delete_registration' request.id %}?next={{ request.path }}" class="btn btn-danger">الغاء الطلب</a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    {% endfor %}
                 </div>
             </div>
         </div>
