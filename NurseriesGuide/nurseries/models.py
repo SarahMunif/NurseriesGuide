@@ -35,7 +35,9 @@ class Nursery(models.Model):
     neighborhood = models.ForeignKey(Neighborhood, on_delete=models.CASCADE, related_name='nurseries')
 
     owner = models.ForeignKey(User, on_delete=models.CASCADE,  limit_choices_to={'is_staff': True})
-
+    
+    commercial_registry_file = models.FileField(upload_to='commercial_registry/', null=True, blank=True)
+    license_file = models.FileField(upload_to='nursery_licenses/', null=True, blank=True)
     def __str__(self):
         return self.name
 #Activity Model 

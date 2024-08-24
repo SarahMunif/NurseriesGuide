@@ -297,20 +297,13 @@ def children_requests(request):
 
 
 
-from django.views.generic import ListView
-from .models import Nursery
-from registrations.models import Review
-
-
-
-
 
 from django.core.paginator import Paginator
 from django.shortcuts import render
 from django.db.models import Avg, Q
 
 def nurseries_list(request):
-    nurseries = Nursery.objects.all()
+    nurseries = Nursery.objects.filter(status='verified')
 
     # Check if there are any nurseries in the database
     has_nurseries = nurseries.exists()

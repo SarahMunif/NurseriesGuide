@@ -18,33 +18,37 @@
         margin-top: 20px;
     }
     .action-link {
-        margin-right: 10px;
-        color: #007BFF; /* Bootstrap primary blue */
+        color: #343779; 
         text-decoration: none;
     }
     .action-link:hover {
-        text-decoration: underline;
-    }
+        color:blue;
+     }
+ 
 </style>
 
 <h1 class="mt-4">حضانات تحتاج الى توثيق</h1>
 
-<div class="container-fluid">
+<div class="container-fluid mt-5">
     <div class="row mt-4">
         {% for nursery in unverified_nurseries %}
         <div class="col-md-4 col-sm-6 mb-4">
             <div class="card shadow-lg rounded-card">
                 <div class="card-body">
                     <h5 class="card-title mb-3">
-                        <a href="{% url 'nurseries:nursery_detail' nursery.id %}">{{ nursery.name }}</a>
+                        <a href="{% url 'nurseries:nursery_detail' nursery.id %}">تفاصيل {{ nursery.name }}</a>
                     </h5>
                     <h6>{{ nursery.neighborhood }}</h6>
+                    <div class="mb-3 mt-4">
+                        <a class="action-link " href="{{ nursery.commercial_registry_file.url }}" target="_blank">سجل تجاري</a>
+                        <a class="action-link me-3" href="{{ nursery.license_file.url }}"   target="_blank">رخصة</a>
+                    </div>
                     <div class="form-section">
                         <form method="post" action="{% url 'nurseries:verify_nurseries' %}">
                             {% csrf_token %}
                             <input type="hidden" name="nursery_id" value="{{ nursery.id }}">
                             <a href="javascript:;" onclick="parentNode.submit();" class="action-link" name="action" value="verify">قبول</a>
-                            <a href="#" class="action-link" data-toggle="modal" data-target="#rejectionModal-{{ nursery.id }}">رفض</a>
+                            <a href="#" class="action-link me-3" data-toggle="modal" data-target="#rejectionModal-{{ nursery.id }}">رفض</a>
                         </form>
                     </div>
                 </div>
