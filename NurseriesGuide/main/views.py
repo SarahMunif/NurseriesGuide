@@ -64,11 +64,11 @@ def contact_view(request):
         #send confirmation email
         send_to = settings.EMAIL_HOST_USER
         print(f'this{send_to}')
-        content_html = render_to_string("main/mail/send_request_to_owner.html")
-        email_message = EmailMessage("",content_html, settings.EMAIL_HOST_USER, [send_to])
+        content_html = render_to_string("main/mail/confirmation.html",{"contact":contact})
+        email_message = EmailMessage("لديك رسالة جديدة",content_html, settings.EMAIL_HOST_USER, [send_to])
         email_message.content_subtype = "html"
         email_message.send()
-        messages.success(request, 'تم إنشاء طلب التسجيل بنجاح.',"alert-success")
+        messages.success(request, 'تم استلام رسالتك شكرا لتواصلك معنا',"alert-success")
         return redirect('main:contact_view') 
     return render(request, 'main/contact_us.html' )
 
