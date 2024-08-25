@@ -58,6 +58,30 @@
     <path d="m10.273 2.513-.921-.944.715-.698.622.637.89-.011a2.89 2.89 0 0 1 2.924 2.924l-.01.89.636.622a2.89 2.89 0 0 1 0 4.134l-.637.622.011.89a2.89 2.89 0 0 1-2.924 2.924l-.89-.01-.622.636a2.89 2.89 0 0 1-4.134 0l-.622-.637-.89.011a2.89 2.89 0 0 1-2.924-2.924l.01-.89-.636-.622a2.89 2.89 0 0 1 0-4.134l.637-.622-.011-.89a2.89 2.89 0 0 1 2.924-2.924l.89.01.622-.636a2.89 2.89 0 0 1 4.134 0l-.715.698a1.89 1.89 0 0 0-2.704 0l-.92.944-1.32-.016a1.89 1.89 0 0 0-1.911 1.912l.016 1.318-.944.921a1.89 1.89 0 0 0 0 2.704l.944.92-.016 1.32a1.89 1.89 0 0 0 1.912 1.911l1.318-.016.921.944a1.89 1.89 0 0 0 2.704 0l.92-.944 1.32.016a1.89 1.89 0 0 0 1.911-1.912l-.016-1.318.944-.921a1.89 1.89 0 0 0 0-2.704l-.944-.92.016-1.32a1.89 1.89 0 0 0-1.912-1.911z"/>
     </svg>   
 </div>
+<div class="d-flex align-items-center">
+    {% if average_rating == 1 %}
+    <span class="material-symbols-outlined">star</span>
+    {% elif average_rating == 2 %}
+    <span class="material-symbols-outlined">star</span>
+    <span class="material-symbols-outlined">star</span>
+    {% elif average_rating == 3 %}
+    <span class="material-symbols-outlined">star</span>
+    <span class="material-symbols-outlined">star</span>
+    <span class="material-symbols-outlined">star</span>
+    {% elif average_rating == 4 %}
+    <span class="material-symbols-outlined">star</span>
+    <span class="material-symbols-outlined">star</span>
+    <span class="material-symbols-outlined">star</span>
+    <span class="material-symbols-outlined">star</span>
+    {% elif average_rating == 5 %}
+    <span class="material-symbols-outlined">star</span>
+    <span class="material-symbols-outlined">star</span>
+    <span class="material-symbols-outlined">star</span>
+    <span class="material-symbols-outlined">star</span>
+    <span class="material-symbols-outlined">star</span>
+    {% endif %}
+</div>
+
 
 <br>
 <div class="row align-items-center">
@@ -478,17 +502,7 @@
                                                 <div class="card-body color-activty">
                                                     <h1 class="mb-1">
                                                         
-                                                        {% if subscription.duration_unit == 'day' %}
-                                                        {{ subscription.duration_number }} يوم 
-                                                        {% elif subscription.duration_unit == 'week' %}
-                                                        {{ subscription.duration_number }} أسبوع
-                                                        {% elif subscription.duration_unit == 'month' %}
-                                                        {{ subscription.duration_number }} شهر
-                                                        {% elif subscription.duration_unit == 'year' %}
-                                                        {{ subscription.duration_number }} شهر
-                                                        {% else %}
-                                                          {{ subscription.duration_unit }}
-                                                        {% endif %}
+                                                        {{ subscription.duration_number }} {{subscription.get_duration_unit_display }}
                                                       </h1>
                                                     <h5 class="card-title mb-1">
                                                         <br>
@@ -525,17 +539,7 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         <div class="modal-body">
                                             <h1 class="modal-title" id="subscriptionModalLabel-{{ subscription.id }}">باقه
-                                                {% if subscription.duration_unit == 'day' %}
-                                                {{ subscription.duration_number }} يوم 
-                                                {% elif subscription.duration_unit == 'week' %}
-                                                {{ subscription.duration_number }} أسبوع
-                                                {% elif subscription.duration_unit == 'month' %}
-                                                {{ subscription.duration_number }} شهر
-                                                {% elif subscription.duration_unit == 'year' %}
-                                                {{ subscription.duration_number }} شهر
-                                                {% else %}
-                                                  {{ subscription.duration_unit }}
-                                                {% endif %}
+                                                {{ subscription.duration_number }} {{subscription.get_duration_unit_display }}
                                             </h1>
                                             <h5 class="card-title mb-1">
                                                 <br>
@@ -737,8 +741,27 @@
                                                             </h3>
                                                             <br>
                                                             <div class="d-flex align-items-center">
+                                                                {% if review.rating == 1 %}
                                                                 <span class="material-symbols-outlined">star</span>
-                                                                <h5 class="m-0 p-0">{{review.rating}}</h5>
+                                                                {% elif review.rating == 2 %}
+                                                                <span class="material-symbols-outlined">star</span>
+                                                                <span class="material-symbols-outlined">star</span>
+                                                                {% elif review.rating == 3 %}
+                                                                <span class="material-symbols-outlined">star</span>
+                                                                <span class="material-symbols-outlined">star</span>
+                                                                <span class="material-symbols-outlined">star</span>
+                                                                {% elif review.rating == 4 %}
+                                                                <span class="material-symbols-outlined">star</span>
+                                                                <span class="material-symbols-outlined">star</span>
+                                                                <span class="material-symbols-outlined">star</span>
+                                                                <span class="material-symbols-outlined">star</span>
+                                                                {% elif review.rating == 5 %}
+                                                                <span class="material-symbols-outlined">star</span>
+                                                                <span class="material-symbols-outlined">star</span>
+                                                                <span class="material-symbols-outlined">star</span>
+                                                                <span class="material-symbols-outlined">star</span>
+                                                                <span class="material-symbols-outlined">star</span>
+                                                                {% endif %}
                                                             </div>
                                                             <h5 class="card-title mb-1">
                                                                 <br>

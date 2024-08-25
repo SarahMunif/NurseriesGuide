@@ -147,6 +147,8 @@ def detail_nursery(request:HttpRequest,nursery_id:int):
 
     average_rating = nursery.reviews.aggregate(Avg('rating'))
     average_rating = average_rating['rating__avg']  
+    average_rating= round(average_rating) 
+
     min = min['age_min__min']  # Extract the  age from the dictonary for a better disply in the web bage
     max = max['age_max__max']  
     
@@ -305,24 +307,16 @@ def children_requests(request):
 
 
 
-from django.core.paginator import Paginator
-from django.shortcuts import render
-from django.db.models import Avg, Q
+
 
 def nurseries_list(request):
     nurseries = Nursery.objects.filter(status='verified')
 
-    # Check if there are any nurseries in the database
-    has_nurseries = nurseries.exists()
-
-    # Fetch distinct filter values from the related models
-    cities = Neighborhood.objects.values_list('city__name', flat=True).distinct()
-    neighborhoods = Neighborhood.objects.values_list('name', flat=True).distinct()
-
-    # Handle filtering
+    # Handle filtering by city, neighborhood, and special needs
     city = request.GET.get('city', '')
     neighborhood = request.GET.get('neighborhood', '')
     special_needs = request.GET.get('special_needs', '')
+    min_rating = request.GET.get('min_rating', None)  # Retrieve the minimum rating from the request
 
     if city:
         nurseries = nurseries.filter(neighborhood__city__name=city)
@@ -336,15 +330,22 @@ def nurseries_list(request):
     if search_term:
         nurseries = nurseries.filter(Q(name__icontains=search_term) | Q(description__icontains=search_term))
 
+    # Filter by minimum rating if specified
+    if min_rating:
+        nurseries = nurseries.annotate(avg_rating=Avg('reviews__rating')).filter(avg_rating__gte=min_rating)
+
+    # Check if there are any nurseries after filtering
+    has_nurseries = nurseries.exists()
+
+    # Fetch distinct cities and neighborhoods for filtering options
+    cities = Neighborhood.objects.values_list('city__name', flat=True).distinct()
+    neighborhoods = Neighborhood.objects.values_list('name', flat=True).distinct()
+
     # Handle pagination
-    paginator = Paginator(nurseries, 3)  
+    paginator = Paginator(nurseries, 3)
     page_number = request.GET.get('page')
     paginated_nurseries = paginator.get_page(page_number)
 
-    # Calculate average rating for each nursery
-    for nursery in paginated_nurseries:
-        avg_rating = nursery.reviews.aggregate(Avg('rating'))['rating__avg']
-        nursery.avg_rating = avg_rating if avg_rating else 0
 
     context = {
         'nurseries': paginated_nurseries,
