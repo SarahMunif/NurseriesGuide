@@ -12,6 +12,8 @@ import stripe
 
 from django.contrib.auth.models import User
 from django.db.models.functions import TruncMonth
+from decimal import Decimal
+
 # Create your views here.
 
 # nursery model views 
@@ -456,43 +458,25 @@ def owner_nursery_statistics(request):
     })
 
 
-from decimal import Decimal
-
-
-
-
-
-
 
 
 def admin_nursery_statistics(request):
-    parent_count = User.objects.count()
-    owners_count = User.objects.filter(is_staff=True).count()
+    parent_count = User.objects.count() # all users count
+    
+    # Query verified nurseries
+    # verify_nurseries = Nursery.objects.filter(status='verified') 
+    # nurseries_count = verify_nurseries.count() 
 
-
-    verify_nurseries = Nursery.objects.filter(status='verified') 
-    nurseries_count=verify_nurseries.count() 
-    verify_nurseries = Nursery.objects.filter(status='verified') 
-    nurseries_count=verify_nurseries.count() 
-
-    registration = Registration.objects.all()
-    registration=registration.filter(status="accepted") # filtering by accepted to count the amount of payed have been (لحسبه الارباح )
-    total_price = registration.aggregate(total_price=Sum('subscription__price'))['total_price'] # total price to get the profit from  
-    if total_price is None:
-        total_price = Decimal('0.00')
-    else:
-        total_profit=total_price*Decimal('0.1') # decimal bc of the field decimal in the model , otherwise it will rais an error
-
-
+    # Calculate total profits
+    registration = Registration.objects.filter(status="accepted")
+    total_price = registration.aggregate(total_price=Sum('subscription__price'))['total_price']
+    total_profit = Decimal('0.00') if total_price is None else total_price * Decimal('0.1')
 
     # Query accepted registrations and aggregate monthly revenue
     registrations = Registration.objects.filter(status="accepted")
     monthly_revenue = registrations.annotate(
         month=TruncMonth('created_at')
-    ).values(
-        'month'
-    ).annotate(
-        # Multiply total price by 0.1 directly in the query
+    ).values('month').annotate(
         total_price=ExpressionWrapper(
             Sum('subscription__price') * Decimal('0.1'),
             output_field=DecimalField()
@@ -503,11 +487,39 @@ def admin_nursery_statistics(request):
     months = [revenue['month'].strftime("%Y-%m") for revenue in monthly_revenue]
     prices = [float(revenue['total_price']) for revenue in monthly_revenue]
 
+    # Calculate the difference in profits between the last two months
+
+    if len(prices) >= 2:
+        profit_difference = prices[-1] - prices[-2]
+    else:
+        profit_difference = 0  # Default to 0 if not enough data
+
+
+
+    # Calculate the number of new users per month using 'date_joined'
+    user_stats = User.objects.annotate(
+        month=TruncMonth('date_joined')
+    ).values('month').annotate(
+        user_count=Count('id')
+    ).order_by('month')
+
+    user_months = [user['month'].strftime("%Y-%m") for user in user_stats]
+    user_counts = [user['user_count'] for user in user_stats]
+    # Calculate the difference in user registrations between the last two months
+    if len(user_counts) >= 2:
+        user_count_difference = user_counts[-1] - user_counts[-2]
+    else:
+        user_count_difference = 0  # Default to 0 if not enough data
+
     return render(request, 'nurseries/admin_statistics.html', {
         "months": months,
         "prices": prices,
-        "nurseries_count":nurseries_count,
-        "total_profit":total_profit,
-        "parent_count":parent_count,
-        "owners_count":owners_count
+        "profit_difference": profit_difference,
+        # "nurseries_count": nurseries_count,
+        "total_profit": total_profit,
+        "parent_count": parent_count,
+        "user_months": user_months,
+        "user_counts": user_counts,
+        "user_count_difference": user_count_difference,
+
     })
