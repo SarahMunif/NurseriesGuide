@@ -4,11 +4,14 @@ from .forms import NurseryForm,ActivityForm,StaffForm,GalleryForm,NurseryOwnerFo
 from django.contrib import messages 
 from nurseries.models import Activity,Neighborhood,Nursery,Staff
 from django.core.paginator import Paginator
-from django.db.models import Avg,Max,Min, Q,Count
+from django.db.models import Avg,Max,Min, Q,Count,Sum,ExpressionWrapper, DecimalField
 from django.urls import reverse
 from registrations.models import Registration
 from parents.models import Child
 import stripe
+
+from django.contrib.auth.models import User
+from django.db.models.functions import TruncMonth
 # Create your views here.
 
 # nursery model views 
@@ -406,9 +409,9 @@ def payment_cancel(request, child_id):
 
 
 
-def nursery_statistics(request):
-    if not request.user.is_authenticated:
-        return redirect('login')
+def owner_nursery_statistics(request):
+    if not request.user.is_staff:
+        return redirect('main:home')
     
     verify_nurseries = Nursery.objects.filter(status='verified')
     nurseries = verify_nurseries.filter(owner=request.user).annotate(
@@ -450,4 +453,61 @@ def nursery_statistics(request):
         'chart_data': chart_data,
         'pie_chart_data': pie_chart_data,
         'registrations_pie_chart_data': registrations_pie_chart_data
+    })
+
+
+from decimal import Decimal
+
+
+
+
+
+
+
+
+def admin_nursery_statistics(request):
+    parent_count = User.objects.count()
+    owners_count = User.objects.filter(is_staff=True).count()
+
+
+    verify_nurseries = Nursery.objects.filter(status='verified') 
+    nurseries_count=verify_nurseries.count() 
+    verify_nurseries = Nursery.objects.filter(status='verified') 
+    nurseries_count=verify_nurseries.count() 
+
+    registration = Registration.objects.all()
+    registration=registration.filter(status="accepted") # filtering by accepted to count the amount of payed have been (لحسبه الارباح )
+    total_price = registration.aggregate(total_price=Sum('subscription__price'))['total_price'] # total price to get the profit from  
+    if total_price is None:
+        total_price = Decimal('0.00')
+    else:
+        total_profit=total_price*Decimal('0.1') # decimal bc of the field decimal in the model , otherwise it will rais an error
+
+
+
+    # Query accepted registrations and aggregate monthly revenue
+    registrations = Registration.objects.filter(status="accepted")
+    monthly_revenue = registrations.annotate(
+        month=TruncMonth('created_at')
+    ).values(
+        'month'
+    ).annotate(
+        # Multiply total price by 0.1 directly in the query
+        total_price=ExpressionWrapper(
+            Sum('subscription__price') * Decimal('0.1'),
+            output_field=DecimalField()
+        )
+    ).order_by('month')
+
+    # Convert to list to pass to template
+    months = [revenue['month'].strftime("%Y-%m") for revenue in monthly_revenue]
+    prices = [float(revenue['total_price']) for revenue in monthly_revenue]
+
+    return render(request, 'nurseries/admin_statistics.html', {
+        "months": months,
+        "prices": prices,
+        "nurseries_count":nurseries_count,
+        "total_profit":total_profit,
+        "parent_count":parent_count,
+        "owners_count":owners_count
     })
