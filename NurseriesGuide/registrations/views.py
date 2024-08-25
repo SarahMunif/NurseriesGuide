@@ -60,13 +60,14 @@ def registration_create(request):
             try:
                 
                 # Create a new registration if the previous one is rejected or none exists
-                Registration.objects.create(
+                registration = Registration.objects.create(
                     child=child,
                     subscription=subscription,
                     status='reviewing'
                 )
+                
                 send_to = subscription.nursery.owner.email
-                content_html = render_to_string("main/mail/send_request_to_owner.html")
+                content_html = render_to_string("main/mail/send_request_to_owner.html",{"child":child,"subscription":subscription,"registration":registration})
                 email_message = EmailMessage("لديك طلب جديد", content_html, settings.EMAIL_HOST_USER, [send_to])
                 email_message.content_subtype = "html"
                 email_message.send()
@@ -104,15 +105,13 @@ def registration_update_status(request, pk):
         if form.is_valid():
             updated_registration = form.save(commit=False)
             updated_registration.save()
-            messages.success(request, 'تم تعديل الحالة بنجاح.','alert-success')
+            messages.success(request, 'تم تحديث الحالة بنجاح.','alert-success')
             send_to = registration.child.parent.user.email
-            print(send_to)
-            print(send_to)
-            content_html = render_to_string("main/mail/receive_request_from_owner.html")
+            content_html = render_to_string("main/mail/receive_request_from_owner.html",{"registration":registration})
             email_message = EmailMessage("تحديث حالة الطلب",content_html, settings.EMAIL_HOST_USER, [send_to])
             email_message.content_subtype = "html"
             email_message.send()
-            messages.success(request, 'تم إنشاء طلب التسجيل بنجاح.',"alert-success")
+            messages.success(request, 'تم ارسال ايميل بحالة الطلب الجديدة لولي الامر  .',"alert-success")
             return redirect('nurseries:children_requests')
         else:
             for field, errors in form.errors.items():

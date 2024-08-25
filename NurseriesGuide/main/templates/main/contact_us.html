@@ -68,7 +68,7 @@
                 <div class="card-body">
                     <h5 class="card-title">تواصل عبر البريد الإلكتروني</h5>
                     <p class="card-text">لأية استفسارات أو للمزيد من المعلومات، يمكنكم التواصل معنا عبر البريد الإلكتروني في أي وقت.</p>
-                    <a href="mailto:your-email@example.com" class="btn btn-light">أرسل بريداً إلكترونياً</a>
+                    <a href="mailto:test343py@gmail.com" class="btn btn-light">أرسل بريداً إلكترونياً</a>
                 </div>
             </div>
         </div>
@@ -82,13 +82,13 @@
 
         <div class="row g-3">
             <div class="col-md-6">
-                <input type="text" class="form-control" placeholder="الاسم الأول" name="first_name" required>
+                <input type="text" class="form-control" placeholder="الاسم الأول" value="{{request.user.first_name}}" name="first_name" required>
             </div>
             <div class="col-md-6">
-                <input type="text" class="form-control" placeholder="اسم العائلة" name="last_name" required>
+                <input type="text" class="form-control" placeholder="اسم العائلة" value="{{request.user.last_name}}" name="last_name" required>
             </div>
             <div class="col-12">
-                <input type="email" class="form-control" placeholder="البريد الإلكتروني" name="email"required>
+                <input type="email" class="form-control" placeholder="البريد الإلكتروني" value="{{request.user.email}}" name="email"required>
             </div>
             <div class="col-12">
                 <textarea class="form-control" placeholder="رسالتك" rows="3" name="message" required></textarea>
