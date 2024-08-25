@@ -4,9 +4,9 @@ from .forms import NurseryForm,ActivityForm,StaffForm,GalleryForm,NurseryOwnerFo
 from django.contrib import messages 
 from nurseries.models import Activity,Neighborhood,Nursery,Staff
 from django.core.paginator import Paginator
-from django.db.models import Avg,Max,Min, Q
+from django.db.models import Avg,Max,Min, Q,Count
 from django.urls import reverse
-from registrations.models import Registration,Subscription
+from registrations.models import Registration
 from parents.models import Child
 import stripe
 # Create your views here.
@@ -288,7 +288,8 @@ def children_requests(request):
     registrations = Registration.objects.filter(subscription__nursery__in=user_nurseries).order_by('-created_at')
     
     
-    return render(request, "nurseries/children_requests.html", {        'registrations': registrations,
+    return render(request, "nurseries/children_requests.html", {    
+        'registrations': registrations,
         'status_choices': Registration.STATUS_CHOICES })
 
 
@@ -400,3 +401,53 @@ def payment_success(request, child_id):
 def payment_cancel(request, child_id):
         return redirect("parents:requests_status")
 
+
+
+
+
+
+def nursery_statistics(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
+    verify_nurseries = Nursery.objects.filter(status='verified')
+    nurseries = verify_nurseries.filter(owner=request.user).annotate(
+        total_children=Count('subscriptions__registrations__child', distinct=True),
+        total_registrations=Count('subscriptions__registrations'),
+        accepted_registrations=Count('subscriptions__registrations', filter=Q(subscriptions__registrations__status='accepted')),
+        rejected_registrations=Count('subscriptions__registrations', filter=Q(subscriptions__registrations__status='rejected')),
+    )
+    
+    chart_data = {
+        'labels': [nursery.name for nursery in nurseries],
+        'children_count': [nursery.total_children for nursery in nurseries],
+        'registrations': {
+            'total': [nursery.total_registrations for nursery in nurseries],
+            'accepted': [nursery.accepted_registrations for nursery in nurseries],
+            'rejected': [nursery.rejected_registrations for nursery in nurseries],
+        }
+    }
+    
+    nursery_status_counts = Nursery.objects.filter(owner=request.user).values('status').annotate(total=Count('id')).order_by()
+    nurseries_status_labels = dict(Nursery._meta.get_field('status').choices)  # Corrected access to choices
+    
+    pie_chart_data = {
+        'labels': [nurseries_status_labels.get(status['status'], 'Unknown') for status in nursery_status_counts],
+        'values': [status['total'] for status in nursery_status_counts],
+    }
+    
+    registrations = Registration.objects.filter(subscription__nursery__owner=request.user)
+    status_counts = registrations.values('status').annotate(total=Count('id')).order_by()
+    
+    registrations_status_labels = dict(Registration.STATUS_CHOICES)
+    
+    registrations_pie_chart_data = {
+        'labels': [registrations_status_labels.get(status['status']) for status in status_counts],
+        'values': [status['total'] for status in status_counts],
+    }
+    
+    return render(request, 'nurseries/statistics.html', {
+        'chart_data': chart_data,
+        'pie_chart_data': pie_chart_data,
+        'registrations_pie_chart_data': registrations_pie_chart_data
+    })
