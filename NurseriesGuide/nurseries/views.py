@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from django.http import HttpRequest,HttpResponse
 from .forms import NurseryForm,ActivityForm,StaffForm,GalleryForm,NurseryOwnerForm
 from django.contrib import messages 
-from nurseries.models import Activity,Neighborhood,Nursery,Staff
+from nurseries.models import Activity,Neighborhood,Nursery,Staff,Gallery
 from django.core.paginator import Paginator
 from django.db.models import Avg,Max,Min, Q,Count,Sum,ExpressionWrapper, DecimalField
 from django.urls import reverse
@@ -147,7 +147,8 @@ def detail_nursery(request:HttpRequest,nursery_id:int):
 
     average_rating = nursery.reviews.aggregate(Avg('rating'))
     average_rating = average_rating['rating__avg']  
-    average_rating= round(average_rating) 
+    if average_rating:
+     average_rating= round(average_rating) 
 
     min = min['age_min__min']  # Extract the  age from the dictonary for a better disply in the web bage
     max = max['age_max__max']  
@@ -310,7 +311,7 @@ def children_requests(request):
 
 
 def nurseries_list(request):
-    nurseries = Nursery.objects.filter(status='verified')
+    nurseries = Nursery.objects.filter(status='verified').annotate(avg_rating=Avg('reviews__rating'))
 
     # Handle filtering by city, neighborhood, and special needs
     city = request.GET.get('city', '')
@@ -345,7 +346,7 @@ def nurseries_list(request):
     paginator = Paginator(nurseries, 3)
     page_number = request.GET.get('page')
     paginated_nurseries = paginator.get_page(page_number)
-
+    
 
     context = {
         'nurseries': paginated_nurseries,
@@ -356,6 +357,7 @@ def nurseries_list(request):
         'cities': cities,
         'neighborhoods': neighborhoods,
         'has_nurseries': has_nurseries,
+        "min_rating":min_rating
     }
 
     return render(request, 'nurseries/nurseries_list.html', context)

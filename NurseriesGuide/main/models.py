@@ -17,4 +17,5 @@ class Contact(models.Model):
     
 class Web_Review(models.Model):
     parent = models.ForeignKey(Parent, on_delete=models.CASCADE)
+    rating = models.IntegerField(choices=[(1, '1'), (2, '2'), (3, '3'), (4, '4'), (5, '5')],default="5")
     comment = models.TextField(blank=True)
