@@ -28,7 +28,8 @@
 
 <nav class="nav nav-underline">
   <li class="nav-item">
-    <a class="nav-link" aria-current="page" href="">احصائيات الموقع</a>
+    
+    <a class="nav-link {% if request.resolver_match.url_name == 'admin_nursery_statistics' %}active{% endif %}" href="{% url 'nurseries:admin_nursery_statistics' %}">احصائيات الموقع </a>
   </li>
 
   <li class="nav-item">

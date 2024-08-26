@@ -1,32 +1,104 @@
-{% extends "main/base.html" %}
-
-{% block title %}تواصل معنا{% endblock %}
+{% extends 'main/base.html' %}
 
 {% block content %}
-<div class="container">
-    <h1 class="text-center my-4">تواصل معنا</h1>
-    <p>إذا كان لديك أي استفسار أو سؤال، لا تتردد في التواصل معنا عبر التفاصيل التالية:</p>
-    <ul>
-        <li>رقم الهاتف: 123-456-789</li>
-        <li>البريد الإلكتروني: info@nursery.com</li>
-        <li>العنوان: شارع النور، المدينة، الدولة</li>
-    </ul>
+<style>
+    .card {
+        border-radius: 10px;
+        border: 1px solid #ccc; 
+        transition: transform .2s;
+    }
+    .card:hover {
+        transform: scale(1.05);
+    }
+    .card-header {
+        background-color: transparent;
+        border-bottom: none;
+    }
+    .color-square {
+    background-color: #F5888E;
+    width: 50px;  
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+}
 
-    <h2 class="mt-5">نموذج التواصل</h2>
-    <form>
-        <div class="mb-3">
-            <label for="name" class="form-label">الاسم</label>
-            <input type="text" class="form-control" id="name" placeholder="أدخل اسمك">
+.material-symbols-outlined {
+    font-size: 24px; 
+    color: white; 
+}
+    .btn-light {
+        border-color: #ccc;
+    }
+    .half-width-button {
+    width: 100%;
+    margin: 0 auto;  
+}
+</style>
+
+<div class="container py-5">
+    <h1 class="text-center mb-5">تواصل معنا</h1>
+    <p class="text-center text-muted">نسعد دائمًا بسماع آرائكم واستفساراتكم. إذا كان لديك أي سؤال أو تحتاج إلى مساعدة بخصوص خدماتنا، فلا تتردد في ملء النموذج أدناه وإرساله إلينا. فريقنا مستعد دائمًا لمساعدتك والرد على استفساراتك بأسرع وقت ممكن.</p>
+    <div class="row justify-content-center row-cols-1 row-cols-md-3 g-4 mt-3">
+        <div class="col">
+            <div class="card h-100">
+                <div class="card-header">
+                    <div class="color-square" style="background-color: #34366D;">
+                        <span class="material-symbols-outlined">
+                            call
+                            </span></div>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">اتصل بنا</h5>
+                    <p class="card-text">لأي استفسارات أو للحصول على دعم، يرجى الاتصال بنا. فريقنا جاهز لمساعدتك!</p>
+                    <a href="tel:+966562736534" class="btn btn-light"> اتصل </a>
+                </div>
+            </div>
         </div>
-        <div class="mb-3">
-            <label for="email" class="form-label">البريد الإلكتروني</label>
-            <input type="email" class="form-control" id="email" placeholder="أدخل بريدك الإلكتروني">
+        <div class="col">
+            <div class="card h-100">
+                <div class="card-header">
+                    <div class="color-square">
+                        <span class="material-symbols-outlined">
+                            contact_mail
+                        </span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">تواصل عبر البريد الإلكتروني</h5>
+                    <p class="card-text">لأية استفسارات أو للمزيد من المعلومات، يمكنكم التواصل معنا عبر البريد الإلكتروني في أي وقت.</p>
+                    <a href="mailto:test343py@gmail.com" class="btn btn-light">أرسل بريداً إلكترونياً</a>
+                </div>
+            </div>
         </div>
-        <div class="mb-3">
-            <label for="message" class="form-label">رسالتك</label>
-            <textarea class="form-control" id="message" rows="4" placeholder="أدخل رسالتك هنا"></textarea>
+    </div>
+    <div class="text-center mt-5">
+        <h1 class="mb-3">راسلنا</h1>
+        <p class="mb-5">سنعود إليك خلال 24 ساعة.</p>
+    </div>
+    <form action="{% url 'main:contact_view' %}" method="post">
+        {% csrf_token %}
+
+        <div class="row g-3">
+            <div class="col-md-6">
+                <input type="text" class="form-control" placeholder="الاسم الأول" value="{{request.user.first_name}}" name="first_name" required>
+            </div>
+            <div class="col-md-6">
+                <input type="text" class="form-control" placeholder="اسم العائلة" value="{{request.user.last_name}}" name="last_name" required>
+            </div>
+            <div class="col-12">
+                <input type="email" class="form-control" placeholder="البريد الإلكتروني" value="{{request.user.email}}" name="email"required>
+            </div>
+            <div class="col-12">
+                <textarea class="form-control" placeholder="رسالتك" rows="3" name="message" required></textarea>
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn bg-white half-width-button ">أرسل الرسالة</button>
+            </div>
         </div>
-        <button type="submit" class="btn btn-primary">إرسال</button>
     </form>
 </div>
 {% endblock %}
+
+

@@ -23,33 +23,35 @@ class Nursery(models.Model):
     address = models.URLField(max_length=3000)  # Changed from CharField to URLField
     contact_number = models.CharField(max_length=15)
     email = models.EmailField()
-    description = models.TextField()
+    description = models.TextField(blank=True, null=True)
     accepts_special_needs = models.BooleanField(default=False)
     verified = models.BooleanField(default=False)
     status = models.CharField(max_length=20, default='pending', choices=(
-        ('pending', 'Pending'),
-        ('verified', 'Verified'),
-        ('rejected', 'Rejected')
+        ('pending', 'تحت المراجعه'),
+        ('verified', 'موثق'),
+        ('rejected', 'مرفوض')
     ))
     rejection_reason = models.TextField(blank=True, null=True)
     neighborhood = models.ForeignKey(Neighborhood, on_delete=models.CASCADE, related_name='nurseries')
-    
+
     owner = models.ForeignKey(User, on_delete=models.CASCADE,  limit_choices_to={'is_staff': True})
 
+    commercial_registry_file = models.FileField(upload_to='commercial_registry/', null=True, blank=True)
+    license_file = models.FileField(upload_to='nursery_licenses/', null=True, blank=True)
     def __str__(self):
         return self.name
-    
 
 
-#Activity Model 
+
+#Activity Model
 class Activity(models.Model):
-    name = models.CharField(max_length=100)  
+    name = models.CharField(max_length=100)
     description = models.TextField()
     age_min = models.IntegerField(default=2)
     age_max = models.IntegerField(default=5)
-    image = models.ImageField(upload_to='images/', default="images/default.jpg")  
+    image = models.ImageField(upload_to='images/', default="images/default.jpg")
     nursery = models.ForeignKey(Nursery, on_delete=models.CASCADE)
-    
+
     def __str__(self):
         return self.name
 
@@ -60,7 +62,7 @@ class Gallery(models.Model):
     video = models.FileField(upload_to='videos/', blank=True, null=True)
     nursery = models.ForeignKey('Nursery', on_delete=models.CASCADE)
 
-#Staff Model 
+#Staff Model
 class Staff(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)

@@ -1,3 +1,6 @@
 from django.contrib import admin
+from .models import Contact,Web_Review
 
-# Register your models here.
+
+admin.site.register(Contact)
+admin.site.register(Web_Review)

@@ -110,12 +110,10 @@
                                 {% endfor %}
                             </div>
                             <a class="align-items-start"  href="{%url 'nurseries:nursery_detail' nursery.id %}">{{ nursery.name }}</a>
-                            {% if nursery.verified %}
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-patch-check" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd" d="M10.354 6.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708 0"/>
                                 <path d="m10.273 2.513-.921-.944.715-.698.622.637.89-.011a2.89 2.89 0 0 1 2.924 2.924l-.01.89.636.622a2.89 2.89 0 0 1 0 4.134l-.637.622.011.89a2.89 2.89 0 0 1-2.924 2.924l-.89-.01-.622.636a2.89 2.89 0 0 1-4.134 0l-.622-.637-.89.011a2.89 2.89 0 0 1-2.924-2.924l.01-.89-.636-.622a2.89 2.89 0 0 1 0-4.134l.637-.622-.011-.89a2.89 2.89 0 0 1 2.924-2.924l.89.01.622-.636a2.89 2.89 0 0 1 4.134 0l-.715.698a1.89 1.89 0 0 0-2.704 0l-.92.944-1.32-.016a1.89 1.89 0 0 0-1.911 1.912l.016 1.318-.944.921a1.89 1.89 0 0 0 0 2.704l.944.92-.016 1.32a1.89 1.89 0 0 0 1.912 1.911l1.318-.016.921.944a1.89 1.89 0 0 0 2.704 0l.92-.944 1.32.016a1.89 1.89 0 0 0 1.911-1.912l-.016-1.318.944-.921a1.89 1.89 0 0 0 0-2.704l-.944-.92.016-1.32a1.89 1.89 0 0 0-1.912-1.911z"/>
                                 </svg>                
-                            {% endif %}
             
                         </h5>
                         <div class="container">
@@ -152,7 +150,7 @@
     </div>
         {% endfor %}
         <br>
-        <a class="mt-4" href=""><h3 >أكتشف المزيد </h3></a>
+        <a class="mt-4" href="{% url 'nurseries:nurseries_list' %}"><h3 >أكتشف المزيد </h3></a>
 
 </section>
 
@@ -166,36 +164,118 @@
 
     <section class="reviews-section">
         <div class="wave-top"></div>
-        <div class="container">
+        {% if reviews %}
+            <h1 class="mb-5 mt-5" style="text-align: center;">اراء اولياء الامور</h1>
+    
+            <div class="row justify-content-center align-items-center">
+                <div class="col-auto">
+                    <a class="mb-3" href="#reviewCarousel" role="button" data-bs-slide="prev">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>
+                        </svg>
+                    </a>
+                </div>
+                <div class="col-lg-8">
+                    <div id="reviewCarousel" class="carousel slide" >
+                        <div class="carousel-inner">
+                            {% for review in reviews %}
+                                {% if forloop.counter0|divisibleby:3 %}
+                                    <div class="carousel-item {% if forloop.counter0 == 0 %}active{% endif %}">
+                                        <div class="container">
+                                            <div class="row">
+                                {% endif %}
+                                                <div class="col-md-4 col-sm-6 mb-4">
+                                                    <div class="card rounded-card ">
+                                                        <div class="card-body ">
+                                                            <div class="d-flex justify-content-md-start">
+                                                                <h3 class="mb-1">
+                                                                    {{ review.parent.user.first_name }} {{ review.parent.user.last_name }}
+                                                                </h3>
+                                                            </div>
+                                                            
+                                                            <div class="d-flex mt-2 ">
+                                                                {% if review.rating == 1 %}
+                                                                <span class="material-symbols-outlined">star</span>
+                                                                {% elif review.rating == 2 %}
+                                                                <span class="material-symbols-outlined">star</span>
+                                                                <span class="material-symbols-outlined">star</span>
+                                                                {% elif review.rating == 3 %}
+                                                                <span class="material-symbols-outlined">star</span>
+                                                                <span class="material-symbols-outlined">star</span>
+                                                                <span class="material-symbols-outlined">star</span>
+                                                                {% elif review.rating == 4 %}
+                                                                <span class="material-symbols-outlined">star</span>
+                                                                <span class="material-symbols-outlined">star</span>
+                                                                <span class="material-symbols-outlined">star</span>
+                                                                <span class="material-symbols-outlined">star</span>
+                                                                {% elif review.rating == 5 %}
+                                                                <span class="material-symbols-outlined">star</span>
+                                                                <span class="material-symbols-outlined">star</span>
+                                                                <span class="material-symbols-outlined">star</span>
+                                                                <span class="material-symbols-outlined">star</span>
+                                                                <span class="material-symbols-outlined">star</span>
+                                                                {% endif %}
+                                                            </div>
+                                                            <h5 class="card-title mb-1">
+                                                                <br>
+                                                                <span class="text-muted"> {{ review.comment }} </span>
+                                                            </h5>
 
-            <h2 class="text-center py-5 mt-5">آراء أولياء الأمور</h2>
-            <div class="row">
-                {% if reviews %}
-                    {% for review in reviews %}
-                    <div class="col-md-4">
-                        <div class="card p-3">
-                            <p>{{ review.review_text }}</p>
-                            <p><strong>{{ review.reviewer_name }}</strong></p>
-                            <p>{{ review.date }}</p>
-                            <p class="card-text">
-                                {% for i in "12345" %}
-                                    {% if i|add:"0" <= review.rating %}
-                                        ⭐
-                                    {% endif %}
-                                {% endfor %}
-                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                {% if forloop.counter|divisibleby:3 or forloop.last %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
                         </div>
                     </div>
-                    {% endfor %}
-                {% else %}
-                    <div class="col-12">
-                        <p class="text-center">لا توجد تقييمات حتى الآن.</p>
-                    </div>
-                {% endif %}
+                </div>
+                <div class="col-auto">
+                    <a class="mb-3" href="#reviewCarousel" role="button" data-bs-slide="next">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/>
+                        </svg>
+                    </a>
+                </div>
             </div>
-            
-            <div class="wave-bottom-p"></div>
+        {% else %}
+            <h1 style="text-align: center;">كن أول من يعبر عن رأيه!</h1>
+        {% endif %}
+    
+        {% if request.user.is_authenticated %}
+        {% if not request.user.is_superuser and not request.user.is_staff %}
+        <!-- Display the form for regular authenticated users -->
+            <h1 class="mt-5 mb-5" style="text-align: center;">عبر عن رأيك</h1>
+            <form method="post" action="{% url 'main:add_review' %}" style="display: flex; flex-direction: column; align-items: center; max-width: 500px; margin: auto;">  
+                {% csrf_token %}
+                <textarea class="form-control" name="comment" required minlength="3" placeholder="..." style="margin-bottom: 10px;"></textarea>
+                <select class="form-select" name="rating" required>
+                    <option value="">تقييمك</option>
+                    <option value="1">١</option>
+                    <option value="2">٢</option>
+                    <option value="3">٣</option>
+                    <option value="4">٤</option>
+                    <option value="5">٥</option>
+                </select>
+                <input type="submit" class="btn" value="أضف تعليقك" style="margin-top: 10px;background-color: #FFFFFF; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);"/>
+            </form>
+        {% else %}
+                <!-- Message for admins and staff -->
+
+            <div class="p-3 mt-4 d-flex flex-column gap-2" style="text-align: center;">
+                <h5 style="color: #FFFFFF;">فقط اولياء الامور يملكون صلاحية التعليق</h5>
+            </div>
+        {% endif %}
+    {% else %}
+        <!-- Message for non-authenticated users -->
+        <div class="p-3 mt-4 d-flex flex-column gap-2" style="text-align: center;">
+            <h5 style="color: #FFFFFF;">فقط المسجلون يملكون صلاحية التعليق</h5>
         </div>
+    {% endif %}
+        <br><br>
     </section>
 
 

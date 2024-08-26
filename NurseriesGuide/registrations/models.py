@@ -7,10 +7,10 @@ from parents.models import Child,Parent
 
 class Subscription(models.Model):
     DURATION_CHOICES = [
-        ('day', 'Daily'),
-        ('week', 'Weekly'),
-        ('month', 'Monthly'),
-        ('year', 'Yearly'),
+        ('day', 'يوم'),
+        ('week', 'اسبوع'),
+        ('month', 'شهر'),
+        ('year', 'سنه'),
     ]
 
     nursery = models.ForeignKey(Nursery, on_delete=models.CASCADE, related_name='subscriptions')
@@ -28,13 +28,14 @@ class Subscription(models.Model):
 
 class Registration(models.Model):
     STATUS_CHOICES = [
-        ('reviewing', ' تحت المراجعة'),
-        ('accepted', 'مقبول'),
-        ('rejected', 'مرفوض'),
+    ('reviewing', 'تحت المراجعة'),
+    ('accepted', 'مقبول'),
+    ('rejected', 'مرفوض'),
+    ('waiting_payment', 'بانتظار الدفع'),
     ]
     child = models.ForeignKey(Child, on_delete=models.CASCADE, related_name='registrations')
     subscription = models.ForeignKey(Subscription, on_delete=models.CASCADE, related_name='registrations')
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='reviewing')
+    status = models.CharField(max_length=30, choices=STATUS_CHOICES, default='reviewing')
     rejection_reason = models.TextField(blank=True, null=True)  
     created_at = models.DateTimeField(auto_now_add=True)
 

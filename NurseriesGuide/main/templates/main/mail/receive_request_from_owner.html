@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/NurseriesGuide/main/static/main/css/styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<style>
+    body {
+        background-color: #fefaf0;
+    }
+
+    .info {
+        background-color:#FFF3F4;
+        
+    }
+
+    .info-p {
+        text-align: right;
+    }
+
+    .rejected{
+        color: rgb(255, 106, 106);
+
+    }
+
+</style>
+
+<body>
+
+    <header class="sticky-top navbar nav-underline navbar-expand-lg navbar-light bg-white">
+        <a class="navbar-brand" href="#"><img src="https://i.postimg.cc/8c0h4dSx/temp-Image2-T1-On-K.avif" alt="Logo" /></a>
+    </header>
+
+
+    <main class="m-3 d-flex justify-content-center  min-vh-100">
+        <div class="m-5">
+            <h1 class="text-center mb-4"> تم تحديث حالة طلبك في {{registration.subscription.nursery.name}}</h1>
+            <div class="card mb-3  info" style="max-width: 540px;">
+                <div class="row g-0 ">
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h4 class="card-title">{{child.first_name}} {{child.last_name}}</h4>
+                            <p class="card-text info-p">
+                                {%if registration.status == 'rejected' %}
+                                <h3 >
+                                    حالة الطلب  : <span class="rejected">{{registration.get_status_display }} </span>
+
+
+                                </h3>
+                                <h3>سبب الرفض : {{registration.rejection_reason}} </h3>
+                            {% else %}
+                            <h3>
+                                حالة الطلب  : {{registration.get_status_display }} 
+
+                            </h3>
+                            {%endif%}
+                            </p>
+                            <a href="http://127.0.0.1:8000/parents/signin/?next=/" class="btn btn-primary">التفاصيل</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

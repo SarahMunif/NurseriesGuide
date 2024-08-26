@@ -9,7 +9,11 @@ urlpatterns = [
     path("view",views.nurseries_view,name="nurseries_view"),
     path("",views.nurseries_list,name="nurseries_list"),
     path("requests-admin/",views.verify_nurseries,name="verify_nurseries"),
+    path("admin/statistics/",views.admin_nursery_statistics,name="admin_nursery_statistics"),
+    
+
     path("owner/requests/",views.owner_requests_view,name="owner_requests_view"),
+    path("statistics/",views.owner_nursery_statistics,name="owner_nursery_statistics"),
 
     path("chlidren/requests/", views.children_requests, name="children_requests"),
     
@@ -27,6 +31,11 @@ urlpatterns = [
     path("delete/<int:staff_id>/staff/",views.delete_staff,name="delete_staff"),
 
     path("add/<int:nursery_id>/gallery/", views.add_gallery, name="add_gallery"),
-
     
+    path("check-out/<int:child_id>/",views.check_out, name="check_out"),
+    path('payment-success/<int:child_id>/', views.payment_success, name='payment_success'),
+    path('payment-cancel/<int:child_id>/', views.payment_cancel, name='payment_cancel'), 
+
+
+
 ]

@@ -3,8 +3,122 @@
 {% block title %}من نحن{% endblock %}
 
 {% block content %}
-<div class="container">
-    <h1 class="text-center my-4">من نحن</h1>
-    <p>هنا يمكنك إضافة نص يصف الحضانة، تاريخها، رؤيتها، رسالتها، والقيم التي تعمل وفقها. يمكن أن يشمل هذا أيضًا معلومات عن فريق العمل، ونقاط القوة التي تميز الحضانة عن غيرها.</p>
+<style>
+    .about {
+        background-color: #FDFAF0; 
+        border-radius: 15px; 
+        padding: 20px;
+        max-width: 1400px;
+        margin: auto;
+        height: auto;
+    }
+
+    .section h2 {
+        color: #343779; 
+        cursor: pointer;
+        margin-bottom: 0;
+        border-bottom: 2px solid transparent;
+        padding-bottom: 10px;
+        transition: border-color 0.3s ease;
+        margin-bottom: 3rem;
+    }
+
+    .section.active h2 {
+        border-color: #F5878E; 
+    }
+
+    .content p {
+        color: #666;
+        line-height: 1.5;
+        overflow: hidden;
+        transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out; 
+        max-height: 0; 
+        padding: 0 20px; 
+    }
+
+    .content.active p {
+        max-height: 500px; 
+        padding-top: 20px; 
+        font-size: 1.2rem; 
+    }
+
+    .note-title {
+        font-size: 24px; 
+        color: #333; 
+        margin-bottom: 20px; 
+    }
+    .note-text {
+        font-size: 18px; 
+        color: #666; 
+        line-height: 1.5; 
+    }
+</style>
+
+
+<div class="container about text-center">
+    <h2 class="mb-5 mt-4"> من نحن</h2>
+    <p class="note-text">
+    مرحبًا بكم في "دليل الحضانات"، مبادرتنا الشخصية لجعل رحلة البحث عن حضانة مثالية أكثر سلاسة وفاعلية لكل ولي أمر في المملكة العربية السعودية. بدأت رحلتي مع "دليل الحضانات" من تجربتي الشخصية في البحث عن بيئة تعليمية ورعاية مناسبة لأطفالي، ومن هنا ولدت الفكرة لإنشاء منصة تجمع الحضانات الموثوقة تحت سقف واحد.
+    </p>
+    <p class="note-text">
+    نحن في "دليل الحضانات" نسعى لتبسيط وتوضيح جميع العمليات المتعلقة بالبحث عن حضانات، من خلال توفير أدوات فعالة للفلترة والتصنيف تضمن لكم العثور على الخيار الأمثل بكل يسر وسهولة. نؤمن بأهمية الشفافية والمصداقية، لذا نقدم لكم إمكانية الوصول إلى التقييمات والمراجعات من أولياء أمور آخرين قد سبق لهم التعامل مع هذه الحضانات.
+    </p>
+    <p class="note-text mb-5">
+    نعدكم بأن نكون شريككم الأول في رحلة اختيار الحضانة، مع توفير كل الدعم اللازم لتسجيل أطفالكم ومتابعة حالة تسجيلهم. نهدف لأن تكون "دليل الحضانات" الأداة التي تثقون بها، والتي تضمن لأطفالكم بداية تعليمية ممتازة.
+    </p>
+
+<div class="container about mt-5">
+    <div class="row text-center  mt-5">
+        <div class="col-md-4">
+            <div class="section" id="visionSection" onmouseover="showContent('vision')" onmouseout="hideContent()">
+                <h2>رؤيتنا</h2>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="section" id="valueSection" onmouseover="showContent('value')" onmouseout="hideContent()">
+                <h2>مهمتنا</h2>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="section" id="howSection" onmouseover="showContent('how')" onmouseout="hideContent()">
+                <h2>كيف نعمل؟</h2>
+            </div>
+        </div>
+    </div>
+    <div id="content" class="content">
+        <p class="mt-5"></p>
+    </div>
 </div>
+
+<script>
+function showContent(section) {
+    var sections = document.querySelectorAll('.section');
+    sections.forEach(sec => {
+        sec.classList.remove('active');
+        if(sec.id === section + 'Section') {
+            sec.classList.add('active');
+        }
+    });
+
+    var contentText = {
+        'vision': 'نسعى في دليل الحضانات لأن نكون الوجهة الأولى لكل ولي أمر يبحث عن بيئة ورعاية مثالية لأطفاله. نحن نؤمن بأن اختيار الحضانة المناسبة هو الخطوة الأولى في مسيرة الطفل.',
+        'value': 'تتمثل مهمتنا في توفير منصة سهلة الاستخدام تمكن الأهالي من تصفح مختلف الحضانات المعتمدة والموثقة في المملكة، مع إمكانية الاطلاع على تفاصيل كل حضانة، من موقعها ونبذة عن الكادر التعليمي والتعليقات التي تركها أولياء الأمور الآخرون.',
+        'how': 'يمكن لملاك الحضانات إضافة حضاناتهم على الموقع بسهولة ويسر، حيث ستخضع كل إضافة لعملية تحقق لضمان تقديم معلومات دقيقة وموثوقة لأولياء الأمور. بمجرد التحقق من الحضانة، يتم عرضها على الموقع ليتمكن الزوار من البحث والتصفح وحجز الأماكن لأطفالهم بكل ثقة وأمان.',
+    };
+
+    var content = document.getElementById('content');
+    content.classList.add('active');
+    content.querySelector('p').innerText = contentText[section];
+}
+
+function hideContent() {
+    var content = document.getElementById('content');
+    content.classList.remove('active');
+    content.querySelector('p').innerText = '';
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    showContent('vision');
+});
+</script>
 {% endblock %}

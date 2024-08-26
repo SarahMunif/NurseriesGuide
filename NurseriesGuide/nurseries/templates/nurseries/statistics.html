@@ -1,0 +1,182 @@
+
+{% extends 'main/staff_dashboard.html' %}
+{% load static %}
+
+{% block title %}احصائيات{% endblock %}
+
+{% block Dashboard-content %}
+<!-- Load Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Styling for the charts to be side by side -->
+<style>
+    .chart-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        align-items: center;
+    }
+    .chart {
+        margin: 10px;
+    }
+    .chart-pie {
+        margin: 10px;
+    
+    }
+    .chart-row {
+        width: 50%; 
+        justify-content: space-around;
+    }
+</style>
+
+
+
+<div class="chart-container">
+    <!-- Bar Chart for Children -->
+    <h5 class="mt-5">عدد الاطفال لكل حضانة  </h5>
+
+    <canvas id="childrenChart" class="chart"></canvas>
+
+    <!-- Bar Chart for Registrations -->
+    <h5>حاله تسجيل الاطفال لكل حضانه </h5>
+
+    <canvas id="registrationsChart" class="chart"></canvas>
+
+    <!-- Pie Charts for Status, placed next to each other -->
+    <div class="chart-row" style="display: flex;">
+        <canvas id="nurseryStatusPieChart" class="chart-pie" ></canvas>
+        <canvas id="statusPieChart" class="chart-pie"></canvas>
+    </div>
+</div>
+
+<script>
+        // Existing Children Chart
+        var ctx = document.getElementById('childrenChart').getContext('2d');
+        var childrenChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: {{ chart_data.labels|safe }},
+                datasets: [{
+                    label: 'عدد الاطفال',
+                    data: {{ chart_data.children_count|safe }},
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor:'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Existing Registrations Chart
+        var ctxReg = document.getElementById('registrationsChart').getContext('2d');
+        var registrationsChart = new Chart(ctxReg, {
+            type: 'bar',
+            data: {
+                labels: {{ chart_data.labels|safe }},
+                datasets: [
+                    {
+                        label: 'مجموع الطلبات',
+                        data: {{ chart_data.registrations.total|safe }},
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'الطلبات المقبولة',
+                        data: {{ chart_data.registrations.accepted|safe }},
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'الطلبات المرفوضة',
+                        data: {{ chart_data.registrations.rejected|safe }},
+                        backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                        borderColor: 'rgba(153, 102, 255, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+    // Nursery Status Pie Chart
+        var ctxNurseryStatus = document.getElementById('nurseryStatusPieChart').getContext('2d');
+        var nurseryStatusPieChart = new Chart(ctxNurseryStatus, {
+            type: 'pie',
+            data: {
+                labels: {{ pie_chart_data.labels|safe }},
+                datasets: [{
+                    label: 'Nursery Registration Status',
+                    data: {{ pie_chart_data.values|safe }},
+                    backgroundColor: [
+                        'rgba(255, 206, 86, 0.7)', // Pending
+                        'rgba(54, 162, 235, 0.7)', // Verified
+                        'rgba(255, 99, 132, 0.7)'  // Rejected
+                    ],
+                    borderColor: [
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 99, 132, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                }
+            }
+        });
+
+    // Registration Status Pie Chart
+
+    var ctxStatus = document.getElementById('statusPieChart').getContext('2d');
+        var statusPieChart = new Chart(ctxStatus, {
+            type: 'pie',
+            data: {
+                labels: {{ registrations_pie_chart_data.labels|safe }},
+                datasets: [{
+                    label: 'Registration Status',
+                    data: {{ registrations_pie_chart_data.values|safe }},
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.7)', // Reviewing
+                        'rgba(54, 162, 235, 0.7)', // Accepted
+                        'rgba(255, 206, 86, 0.7)', // Rejected
+                        'rgba(75, 192, 192, 0.7)'  // Waiting for payment
+                    ],
+                    borderColor: [
+                        'rgba(255,99,132,1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                }
+            }
+        });
+</script>
+{% endblock %}

@@ -5,8 +5,9 @@ from .models import Registration
 from .forms import RegistrationForm, RegistrationStatusForm,SubscriptionForm,ReviewForm
 from parents.models import Child
 from .models import Nursery, Subscription,Review
-
-
+from django.core.mail import EmailMessage
+from django.conf import settings
+from django.template.loader import render_to_string
 
 
 # @login_required
@@ -30,44 +31,66 @@ from .models import Nursery, Subscription,Review
 
 #     return render(request, 'registrations/registration_form.html', {'form': form})
 
-
-
 @login_required
 def registration_create(request):
     if request.method == 'POST':
         child_id = request.POST.get('child')
-        subscription_id = request.POST.get('subscription_id')  # Ensure this is passed from the form
+        subscription_id = request.POST.get('subscription_id')
 
         # Retrieve the child and subscription objects
         child = Child.objects.get(id=child_id)
         subscription = Subscription.objects.get(id=subscription_id)
         nurseryid = subscription.nursery.pk
-        # Check if a registration already exists for this child
-        existing_registration = Registration.objects.filter(child=child).exists()
+        # if child.age not in range(subscription.age_min,subscription.age_max):
+        #     age = child.age().split(' ')
+        #     print("child",int(age[0]))
+        #     print("allowed",subscription.age_min,subscription.age_max)
+        #     messages.error(request, f'لايمكنك التسجيل في الحضانة لانها تقبل العمر بين {subscription.age_min} - {subscription.age_max}', "alert-warning")
+        #     return redirect('nurseries:nursery_detail', nursery_id=nurseryid)
+
+
+        # Check if a registration exists for this child with a status other than 'rejected'
+        existing_registration = Registration.objects.filter(child=child).exclude(status='rejected').exists()
 
         if existing_registration:
-            # If a registration already exists, do not create a new one
-            messages.error(request, 'لا يمكنك إنشاء طلب جديد لأن هذا الطفل لديه بالفعل طلب تحت المراجعة.',"alert-warning")
-            return redirect('nurseries:nursery_detail',nursery_id=nurseryid)   # Redirect to the appropriate page with an error message
+            # If a registration exists that isn't rejected, do not create a new one
+            messages.error(request, 'لا يمكنك إنشاء طلب جديد لأن هذا الطفل لديه بالفعل طلب تحت المراجعة أو مقبول.', "alert-warning")
+            return redirect('nurseries:nursery_detail', nursery_id=nurseryid)
         else:
-            # Create a new registration if none exists
-            Registration.objects.create(
-                child=child,
-                subscription=subscription,
-                status='reviewing'
-            )
-            messages.success(request, 'تم إنشاء طلب التسجيل بنجاح.',"alert-success")
-            return redirect('parents:requests_status')  # Redirect to the home page or the appropriate page
+            try:
+                
+                # Create a new registration if the previous one is rejected or none exists
+                registration = Registration.objects.create(
+                    child=child,
+                    subscription=subscription,
+                    status='reviewing'
+                )
+                
+                send_to = subscription.nursery.owner.email
+                content_html = render_to_string("main/mail/send_request_to_owner.html",{"child":child,"subscription":subscription,"registration":registration})
+                email_message = EmailMessage("لديك طلب جديد", content_html, settings.EMAIL_HOST_USER, [send_to])
+                email_message.content_subtype = "html"
+                email_message.send()
+                messages.success(request, 'تم إنشاء طلب التسجيل بنجاح.', "alert-success")
+                return redirect('parents:requests_status')
+            except Exception as e :
+                print(e)
+                messages.error(request, 'حدث خطأ غير متوقع.', "alert-warning")
+                return redirect('parents:requests_status')
+                
 
     return render(request, 'nurseries/nursery_detail.html')
-
 
 
 def delete_registration(request,registration_id:int):
     registration = Registration.objects.get(pk=registration_id)
     if registration.delete():
-             messages.success(request, f'تم حذف الطلب  بنجاح !',"alert-success")
-             return redirect('nurseries:children_requests')
+             messages.success(request, f'تم الغاء الطلب  بنجاح !',"alert-success")
+             if request.user.is_staff:
+                return redirect('nurseries:children_requests')
+             else:
+                return redirect('parents:requests_status')
+                 
     else:
          for field, errors in registration.errors.items():
              for error in errors:
@@ -82,7 +105,13 @@ def registration_update_status(request, pk):
         if form.is_valid():
             updated_registration = form.save(commit=False)
             updated_registration.save()
-            messages.success(request, 'تم تعديل الحالة بنجاح.','alert-success')
+            messages.success(request, 'تم تحديث الحالة بنجاح.','alert-success')
+            send_to = registration.child.parent.user.email
+            content_html = render_to_string("main/mail/receive_request_from_owner.html",{"registration":registration})
+            email_message = EmailMessage("تحديث حالة الطلب",content_html, settings.EMAIL_HOST_USER, [send_to])
+            email_message.content_subtype = "html"
+            email_message.send()
+            messages.success(request, 'تم ارسال ايميل بحالة الطلب الجديدة لولي الامر  .',"alert-success")
             return redirect('nurseries:children_requests')
         else:
             for field, errors in form.errors.items():
@@ -93,7 +122,6 @@ def registration_update_status(request, pk):
 
   
     return render(request, 'nurseries/children_requests.html', {'form': form, 'registration': registration})
-
 
 def add_subscription(request, nursery_id):
     nursery = get_object_or_404(Nursery, pk=nursery_id)
@@ -106,7 +134,7 @@ def add_subscription(request, nursery_id):
             subscription = subscriptionForm.save(commit=False)  # Get the unsaved Activity instance
             subscription.nursery=nursery  # Set the nursery for this activity            
             subscription.save()  # Now save the Activity instance into the database
-            messages.success(request, 'Activity added successfully!', 'alert-success')
+            messages.success(request, 'تم اضافه الباقه بنجاح!', 'alert-success')
             return redirect('nurseries:nursery_detail', nursery_id=nursery_id)
         else:
             for field, errors in subscriptionForm.errors.items():
@@ -127,6 +155,11 @@ def add_subscription(request, nursery_id):
 def add_review(request, nursery_id):
     nursery = Nursery.objects.get(pk=nursery_id)
     if request.method == 'POST':
+        # Check if the parent already has a review for this nursery
+        existing_review = Review.objects.filter(nursery=nursery, parent=request.user.parent).exists()
+        if existing_review:
+           messages.error(request, 'لديك بالفعل تعليق لا يمكنك اضافه تعليق اخر ', 'alert-danger')
+           return redirect('nurseries:nursery_detail', nursery_id=nursery_id)
         has_accepted_registration = Registration.objects.filter(
         subscription__nursery=nursery,
         child__parent=request.user.parent,
@@ -145,7 +178,7 @@ def add_review(request, nursery_id):
                 for error in errors:
                     messages.error(request, f"{field}: {error}", 'alert-danger')
         else:
-          messages.error(request, '  !', 'alert-danger')
+          messages.error(request, '  ليس لديك اطفال فيه هذه الحضانه ', 'alert-danger')
           print(messages.error)
           return redirect('nurseries:nursery_detail', nursery_id=nursery.id)
 

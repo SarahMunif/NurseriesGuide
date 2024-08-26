@@ -3,6 +3,8 @@
 
 {% block title %}{{nursery.name}}{% endblock %}
 {% block content %}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
 <link href="{% static 'css/main.css' %}?v=1.1" rel="stylesheet" />
 <style>
     .rounded-card {
@@ -19,7 +21,7 @@
     <div class="carousel-inner">
         {% for item in gallery_items %}
         <div class="carousel-item {% if forloop.first %}active{% endif %}">
-            {% if item.type == 'video' %}
+            {% if item.video %}
             <video class="d-block w-100" controls>
                 <source src="{{ item.video.url }}" type="video/mp4">
             </video>
@@ -39,6 +41,7 @@
     </button>
 </div>
 
+{% if is_owner %}
 
 <div class="row mt-4">
     <div class="col-12 ">
@@ -47,45 +50,77 @@
         </div>
     </div>
 </div>
+{% endif %}
+<div class="d-flex align-items-center mb-3 gap-4" >
 <h1>{{nursery.name}}</h1>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-patch-check" viewBox="0 0 16 16">
+    <path fill-rule="evenodd" d="M10.354 6.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708 0"/>
+    <path d="m10.273 2.513-.921-.944.715-.698.622.637.89-.011a2.89 2.89 0 0 1 2.924 2.924l-.01.89.636.622a2.89 2.89 0 0 1 0 4.134l-.637.622.011.89a2.89 2.89 0 0 1-2.924 2.924l-.89-.01-.622.636a2.89 2.89 0 0 1-4.134 0l-.622-.637-.89.011a2.89 2.89 0 0 1-2.924-2.924l.01-.89-.636-.622a2.89 2.89 0 0 1 0-4.134l.637-.622-.011-.89a2.89 2.89 0 0 1 2.924-2.924l.89.01.622-.636a2.89 2.89 0 0 1 4.134 0l-.715.698a1.89 1.89 0 0 0-2.704 0l-.92.944-1.32-.016a1.89 1.89 0 0 0-1.911 1.912l.016 1.318-.944.921a1.89 1.89 0 0 0 0 2.704l.944.92-.016 1.32a1.89 1.89 0 0 0 1.912 1.911l1.318-.016.921.944a1.89 1.89 0 0 0 2.704 0l.92-.944 1.32.016a1.89 1.89 0 0 0 1.911-1.912l-.016-1.318.944-.921a1.89 1.89 0 0 0 0-2.704l-.944-.92.016-1.32a1.89 1.89 0 0 0-1.912-1.911z"/>
+    </svg>   
+</div>
+<div class="d-flex align-items-center">
+    {% if average_rating == 1 %}
+    <span class="material-symbols-outlined">star</span>
+    {% elif average_rating == 2 %}
+    <span class="material-symbols-outlined">star</span>
+    <span class="material-symbols-outlined">star</span>
+    {% elif average_rating == 3 %}
+    <span class="material-symbols-outlined">star</span>
+    <span class="material-symbols-outlined">star</span>
+    <span class="material-symbols-outlined">star</span>
+    {% elif average_rating == 4 %}
+    <span class="material-symbols-outlined">star</span>
+    <span class="material-symbols-outlined">star</span>
+    <span class="material-symbols-outlined">star</span>
+    <span class="material-symbols-outlined">star</span>
+    {% elif average_rating == 5 %}
+    <span class="material-symbols-outlined">star</span>
+    <span class="material-symbols-outlined">star</span>
+    <span class="material-symbols-outlined">star</span>
+    <span class="material-symbols-outlined">star</span>
+    <span class="material-symbols-outlined">star</span>
+    {% endif %}
+</div>
+
+
 <br>
 <div class="row align-items-center">
-    <div class="col-auto">
-        <!-- icon -->
-    </div>
+
     <div class="d-flex align-items-center mb-3" >
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt" viewBox="0 0 16 16">
-            <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A32 32 0 0 1 8 14.58a32 32 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10"/>
-            <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4m0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
-          </svg>
-        <h6 class="mb-0">{{ nursery.neighborhood }}</h6>
+        <div class="rounded d-flex" style="background-color: #FFF3F4; height: .7cm">
+            <span class="material-symbols-outlined">location_on</span>
+            <h6 >{{ nursery.neighborhood }}</h6>
+        </div>
         <div style="width: 100px;"></div> <!-- Custom spacer -->
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-arms-up mx-2" viewBox="0 0 16 16">
-            <path d="M8 3a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"/>
-            <path d="m5.93 6.704-.846 8.451a.768.768 0 0 0 1.523.203l.81-4.865a.59.59 0 0 1 1.165 0l.81 4.865a.768.768 0 0 0 1.523-.203l-.845-8.451A1.5 1.5 0 0 1 10.5 5.5L13 2.284a.796.796 0 0 0-1.239-.998L9.634 3.84a.7.7 0 0 1-.33.235c-.23.074-.665.176-1.304.176-.64 0-1.074-.102-1.305-.176a.7.7 0 0 1-.329-.235L4.239 1.286a.796.796 0 0 0-1.24.998l2.5 3.216c.317.316.475.758.43 1.204Z"/>
-        </svg>
-        <span>{{ min }} - {{ max }}</span>
+
+        <div class="rounded d-flex " style="background-color: #FFF3F4; height: .7cm ">
+
+            <span class="material-symbols-outlined">child_care </span>
+            <span>{{ min }} - {{ max }}  عام</span>
+        </div>
+
         <div style="width: 100px;"></div> <!-- Custom spacer -->
         {% if nursery.accepts_special_needs %}
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-wheelchair" viewBox="0 0 16 16">
-            <path d="M12 3a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3m-.663 2.146a1.5 1.5 0 0 0-.47-2.115l-2.5-1.508a1.5 1.5 0 0 0-1.676.086l-2.329 1.75a.866.866 0 0 0 1.051 1.375L7.361 3.37l.922.71-2.038 2.445A4.73 4.73 0 0 0 2.628 7.67l1.064 1.065a3.25 3.25 0 0 1 4.574 4.574l1.064 1.063a4.73 4.73 0 0 0 1.09-3.998l1.043-.292-.187 2.991a.872.872 0 1 0 1.741.098l.206-4.121A1 1 0 0 0 12.224 8h-2.79zM3.023 9.48a3.25 3.25 0 0 0 4.496 4.496l1.077 1.077a4.75 4.75 0 0 1-6.65-6.65z"/>
-          </svg>
-          {% endif %}
-
+        <div class="rounded d-flex" style="background-color: #FFF3F4; height: .7cm">
+            <span class="material-symbols-outlined">accessible_forward</span>
+            {% endif %}
+        </div>
           <div style="width: 100px;"></div> <!-- Custom spacer -->
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telephone" viewBox="0 0 16 16">
-            <path d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.6 17.6 0 0 0 4.168 6.608 17.6 17.6 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.68.68 0 0 0-.58-.122l-2.19.547a1.75 1.75 0 0 1-1.657-.459L5.482 8.062a1.75 1.75 0 0 1-.46-1.657l.548-2.19a.68.68 0 0 0-.122-.58zM1.884.511a1.745 1.745 0 0 1 2.612.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877z"/>
-          </svg>
+          <div class="rounded d-flex" style="background-color: #FFF3F4; height: .7cm">
+
+          <span class="material-symbols-outlined"> support_agent </span>
+          
           <div style="width: 10px;"></div> <!-- Custom spacer -->
           <span>{{nursery.contact_number}}</span>
+        </div>
 
           <div style="width: 100px;"></div> <!-- Custom spacer -->
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope-at" viewBox="0 0 16 16">
-            <path d="M2 2a2 2 0 0 0-2 2v8.01A2 2 0 0 0 2 14h5.5a.5.5 0 0 0 0-1H2a1 1 0 0 1-.966-.741l5.64-3.471L8 9.583l7-4.2V8.5a.5.5 0 0 0 1 0V4a2 2 0 0 0-2-2zm3.708 6.208L1 11.105V5.383zM1 4.217V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v.217l-7 4.2z"/>
-            <path d="M14.247 14.269c1.01 0 1.587-.857 1.587-2.025v-.21C15.834 10.43 14.64 9 12.52 9h-.035C10.42 9 9 10.36 9 12.432v.214C9 14.82 10.438 16 12.358 16h.044c.594 0 1.018-.074 1.237-.175v-.73c-.245.11-.673.18-1.18.18h-.044c-1.334 0-2.571-.788-2.571-2.655v-.157c0-1.657 1.058-2.724 2.64-2.724h.04c1.535 0 2.484 1.05 2.484 2.326v.118c0 .975-.324 1.39-.639 1.39-.232 0-.41-.148-.41-.42v-2.19h-.906v.569h-.03c-.084-.298-.368-.63-.954-.63-.778 0-1.259.555-1.259 1.4v.528c0 .892.49 1.434 1.26 1.434.471 0 .896-.227 1.014-.643h.043c.118.42.617.648 1.12.648m-2.453-1.588v-.227c0-.546.227-.791.573-.791.297 0 .572.192.572.708v.367c0 .573-.253.744-.564.744-.354 0-.581-.215-.581-.8Z"/>
-          </svg>
+          <div class="rounded d-flex" style="background-color: #FFF3F4; height: .7cm">
+
+          <span class="material-symbols-outlined"> mail </span>
           <div style="width: 10px;"></div> <!-- Custom spacer -->
           <span>{{nursery.email}}</span>
+        </div>
 
 
 
@@ -93,8 +128,10 @@
 
 
     <!-- activites view -->
-<p class="mt-3">{{nursery.description}}</p>
+<h5 class="mt-5 mb-5">{{nursery.description}}</h5>
 <h1 class="mt-3  ">أنشطتنا</h1>
+{% if is_owner %}
+
 <div class="row ">
     <div class="col-12 ">
         <div class="d-flex justify-content-end">
@@ -102,18 +139,18 @@
         </div>
     </div>
 </div>
-
+{% endif %}
 <div class="container-fluid px-lg-5">
     <div class="row justify-content-center align-items-center">
         <div class="col-auto">
-            <a class=" mb-3" href="#activityCarousel" role="button" data-bs-slide="prev">
+            <a class=" mb-3" href="#activityCarousel" role="button" >
                 <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>
                   </svg>
             </a>
         </div>
         <div class="col-lg-8">
-            <div id="activityCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div id="activityCarousel" class="carousel slide" >
                 <div class="carousel-inner">
                     {% for activity in activities %}
                         {% if forloop.counter0|divisibleby:3 %}
@@ -127,6 +164,8 @@
                                                     <h5 class="card-title mb-1">
                                                        {{ activity.name }}
                                                         <!-- update icon -->
+                                                        {% if is_owner %}
+
                                                         <a data-bs-toggle="modal" data-bs-target="#updateModal-{{ activity.id }}" href="#">
 
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil me-3" viewBox="0 0 16 16">
@@ -140,7 +179,9 @@
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3 me-3" viewBox="0 0 16 16">
                                                                 <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
                                                             </svg>
-                                                        </a>                                                       
+                                                        </a>    
+                                                        {% endif %}
+                                                   
                                                     </h5>
                                                     <p class="mb-1">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-arms-up mx-2" viewBox="0 0 16 16">
@@ -233,11 +274,14 @@
 
     <h1 class="mt-4">كادرنا التعليمي</h1>
     <div class="row">
+        {% if is_owner %}
+
         <div class="col-12">
             <div class="d-flex justify-content-end">
                 <a href="{% url 'nurseries:add_staff' nursery.id %}" class="btn btn-light btn-lg rounded-pill shadow-sm" style="font-weight: bold; background-color:#FFFFFF;" data-bs-toggle="modal" data-bs-target="#addStaffModal"><h6>أضافة عضو</h6></a>
             </div>
         </div>
+        {% endif %}
     </div>
 <!-- all staff view -->
 <div class="container-fluid px-lg-5">
@@ -250,7 +294,7 @@
             </a>
         </div>
         <div class="col-lg-8">
-            <div id="staffCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div id="staffCarousel" class="carousel slide">
                 <div class="carousel-inner">
                     {% for staff in staffs %}
                         {% if forloop.counter0|divisibleby:3 %}
@@ -264,6 +308,8 @@
                                                     <img src="{{ staff.image.url }}" alt="Staff Image" class="rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
                                                     <h5 class="card-title mb-1"> 
                                                        {{ staff.first_name }} {{ staff.last_name }}
+                                                       {% if is_owner %}
+
                                                         <!-- update staff icon -->
                                                         <a data-bs-toggle="modal" data-bs-target="#updateStaffModal-{{ staff.id }}" href="#">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil me-3" viewBox="0 0 16 16">
@@ -277,7 +323,9 @@
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3 me-3" viewBox="0 0 16 16">
                                                                 <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
                                                             </svg>
-                                                        </a>                                                       
+                                                        </a> 
+                                                        {% endif %}
+                                                      
                                                     </h5>
                                                     <p class="text-muted">
                                                         {{ staff.specializations }}
@@ -391,7 +439,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="activity-description" class="form-label">وصف النشاط</label>
-                            <textarea class="form-control" id="activity-description" name="description" required></textarea>
+                            <textarea class="form-control" id="activity-description" name="description" ></textarea>
                         </div>
                         <div class="mb-3">
                             <label for="activity-age-min" class="form-label">العمر الأدنى</label>
@@ -417,6 +465,8 @@
 <!-- Subscription Section -->
 <h1 class="mt-3">باقاتنا</h1>
 <div class="row">
+    {% if is_owner %}
+
     <div class="col-12">
         <div class="d-flex justify-content-end">
             <a href="{% url 'registrations:add_subscription' nursery.id %}" class="btn btn-light btn-lg rounded-pill shadow-sm" style="font-weight: bold; background-color:#FFFFFF;" data-bs-toggle="modal" data-bs-target="#addSubscriptionModal">
@@ -424,6 +474,8 @@
             </a>
         </div>
     </div>
+    {% endif %}
+
 </div>
 
 <div class="container-fluid px-lg-5">
@@ -437,7 +489,7 @@
             </a>
         </div>
         <div class="col-lg-8">
-            <div id="subscriptionCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div id="subscriptionCarousel" class="carousel slide" >
                 <div class="carousel-inner">
                     {% for subscription in subscriptions %}
                         {% if forloop.counter0|divisibleby:3 %}
@@ -450,17 +502,7 @@
                                                 <div class="card-body color-activty">
                                                     <h1 class="mb-1">
                                                         
-                                                        {% if subscription.duration_unit == 'day' %}
-                                                        {{ subscription.duration_number }} يوم 
-                                                        {% elif subscription.duration_unit == 'week' %}
-                                                        {{ subscription.duration_number }} أسبوع
-                                                        {% elif subscription.duration_unit == 'month' %}
-                                                        {{ subscription.duration_number }} شهر
-                                                        {% elif subscription.duration_unit == 'year' %}
-                                                        {{ subscription.duration_number }} شهر
-                                                        {% else %}
-                                                          {{ subscription.duration_unit }}
-                                                        {% endif %}
+                                                        {{ subscription.duration_number }} {{subscription.get_duration_unit_display }}
                                                       </h1>
                                                     <h5 class="card-title mb-1">
                                                         <br>
@@ -497,17 +539,7 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         <div class="modal-body">
                                             <h1 class="modal-title" id="subscriptionModalLabel-{{ subscription.id }}">باقه
-                                                {% if subscription.duration_unit == 'day' %}
-                                                {{ subscription.duration_number }} يوم 
-                                                {% elif subscription.duration_unit == 'week' %}
-                                                {{ subscription.duration_number }} أسبوع
-                                                {% elif subscription.duration_unit == 'month' %}
-                                                {{ subscription.duration_number }} شهر
-                                                {% elif subscription.duration_unit == 'year' %}
-                                                {{ subscription.duration_number }} شهر
-                                                {% else %}
-                                                  {{ subscription.duration_unit }}
-                                                {% endif %}
+                                                {{ subscription.duration_number }} {{subscription.get_duration_unit_display }}
                                             </h1>
                                             <h5 class="card-title mb-1">
                                                 <br>
@@ -595,7 +627,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="subscription-description" class="form-label">وصف الباقة</label>
-                            <textarea class="form-control" id="subscription-description" name="description" required></textarea>
+                            <textarea class="form-control" id="subscription-description" name="description" ></textarea>
                         </div>
                         <div class="d-flex justify-content-center mt-4">
                             <button type="submit" class="btn" style="background-color: #FFFFFF; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);width: 150px;">أضف</button>
@@ -679,7 +711,7 @@
         </div>
     </div>
 </div>
-
+<!-- reviews -->
 <section class="rounded mt-5" style="background-color: #F5888E; min-height: 40vh; box-sizing: border-box; padding: 20px;">
         {% if reviews %}
             <h1 class="mb-5 mt-5" style="text-align: center;">اراء اولياء الامور</h1>
@@ -693,7 +725,7 @@
                     </a>
                 </div>
                 <div class="col-lg-8">
-                    <div id="reviewCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <div id="reviewCarousel" class="carousel slide" >
                         <div class="carousel-inner">
                             {% for review in reviews %}
                                 {% if forloop.counter0|divisibleby:3 %}
@@ -709,8 +741,27 @@
                                                             </h3>
                                                             <br>
                                                             <div class="d-flex align-items-center">
+                                                                {% if review.rating == 1 %}
                                                                 <span class="material-symbols-outlined">star</span>
-                                                                <h5 class="m-0 p-0">{{review.rating}}</h5>
+                                                                {% elif review.rating == 2 %}
+                                                                <span class="material-symbols-outlined">star</span>
+                                                                <span class="material-symbols-outlined">star</span>
+                                                                {% elif review.rating == 3 %}
+                                                                <span class="material-symbols-outlined">star</span>
+                                                                <span class="material-symbols-outlined">star</span>
+                                                                <span class="material-symbols-outlined">star</span>
+                                                                {% elif review.rating == 4 %}
+                                                                <span class="material-symbols-outlined">star</span>
+                                                                <span class="material-symbols-outlined">star</span>
+                                                                <span class="material-symbols-outlined">star</span>
+                                                                <span class="material-symbols-outlined">star</span>
+                                                                {% elif review.rating == 5 %}
+                                                                <span class="material-symbols-outlined">star</span>
+                                                                <span class="material-symbols-outlined">star</span>
+                                                                <span class="material-symbols-outlined">star</span>
+                                                                <span class="material-symbols-outlined">star</span>
+                                                                <span class="material-symbols-outlined">star</span>
+                                                                {% endif %}
                                                             </div>
                                                             <h5 class="card-title mb-1">
                                                                 <br>
@@ -742,7 +793,9 @@
         {% endif %}
     
         {% if request.user.is_authenticated %}
-            <h1 class="mt-5 mb-5"  style="text-align: center;">عبر عن رأيك</h1>
+        {% if not request.user.is_superuser and not request.user.is_staff %}
+            <!-- Display the form for regular authenticated users who are neither superusers nor staff -->
+            <h1 class="mt-5 mb-5" style="text-align: center;">عبر عن رأيك</h1>
             <form method="post" action="{% url 'registrations:add_review' nursery.id %}" style="display: flex; flex-direction: column; align-items: center; max-width: 500px; margin: auto;">  
                 {% csrf_token %}
                 <textarea class="form-control" name="comment" required minlength="3" placeholder="..." style="margin-bottom: 10px;"></textarea>
@@ -754,13 +807,20 @@
                     <option value="4">٤</option>
                     <option value="5">٥</option>
                 </select>
-                <input type="submit" class="btn " value="أضف تعليقك" style="margin-top: 10px;background-color: #FFFFFF; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);"/>
+                <input type="submit" class="btn" value="أضف تعليقك" style="margin-top: 10px;background-color: #FFFFFF; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);"/>
             </form>
         {% else %}
-            <div class="p-3  mt-4 d-flex flex-column gap-2" style="text-align: center;">
-                <h5 style="color: #FFFFFF;">فقط المسجلون في هذه الحضانه يملكون صلاحية التعليق </h5>
+            <!-- Specific message for superusers or staff -->
+            <div class="p-3 mt-4 d-flex flex-column gap-2" style="text-align: center;">
+                <h5 style="color: #FFFFFF;">فقط اولياء الامور يملكون صلاحية التعليق</h5>
             </div>
         {% endif %}
+    {% else %}
+        <!-- Message for non-authenticated users -->
+        <div class="p-3 mt-4 d-flex flex-column gap-2" style="text-align: center;">
+            <h5 style="color: #FFFFFF;">فقط المسجلون في هذه الحضانه يملكون صلاحية التعليق</h5>
+        </div>
+    {% endif %}
         <br><br>
     </section>
 

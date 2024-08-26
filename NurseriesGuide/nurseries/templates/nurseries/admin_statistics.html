@@ -1,0 +1,118 @@
+{% extends 'main/admin_dashboard.html' %}
+{% load static %}
+
+{% block title %}الاحصائيات {% endblock %}
+
+{% block Dashboard-content %}
+<style>       
+ .profit-positive { color: green; }
+ .profit-negative { color: red; }
+    </style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<div class="container my-3">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card  shadow-lg">
+        <div class="card-body text-end">
+            <div class="d-flex align-items-start justify-content-start">
+            <span class="material-symbols-outlined"> attach_money</span>
+          <p class="card-title  ms-2"> العائد الكلي</p>
+        </div>
+            
+          <h3 class="card-text me-2 mt-2"> {{total_profit}} ريال</h3>
+          
+          
+            {% if profit_difference > 0 %}
+            <p class="profit-positive">
+                +{{ profit_difference }} $  من الشهر السابق
+            </p>
+            
+            {% else %}
+            <p class="profit-negative">
+                -{{ profit_difference }}$ من الشهر السابق
+            </p>
+            {% endif %}
+        
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="col-md-6">
+      <div class="card shadow-lg">
+        <div class="card-body text-end">
+            <div class="d-flex align-items-start justify-content-start">
+                <span class="material-symbols-outlined">person</span> 
+             <p class="card-title  me-2  ms-2"> مستخدمين</p>
+        </div>
+            
+          <h3 class="card-text me-2 mt-2"> {{parent_count}} </h3>
+          {% if user_count_difference > 0 %}
+                <p class="profit-positive">
+                    +{{ user_count_difference }} مستخدم جديد من الشهر السابق
+                </p>
+            {% else %}
+                <p class="profit-negative">
+                    -{{ user_count_difference }} مستخدم جديد من الشهر السابق
+                </p>
+            {% endif %}
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</div>
+<div class="mb-5"></div>
+
+<canvas id="revenueChart" width="400" height="200" style="margin: 10px; padding-top: 2rem;"></canvas>
+<canvas id="userChart" width="400" height="200" style="margin: 10px; padding-top: 2rem;"></canvas>
+<script>
+    var ctx = document.getElementById('revenueChart').getContext('2d');
+    var revenueChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: {{ months|safe }},
+            datasets: [{
+                label: 'العائد الشهري',
+                data: {{ prices|safe }},
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+
+    var ctxUser = document.getElementById('userChart').getContext('2d');
+    var userChart = new Chart(ctxUser, {
+        type: 'line',
+        data: {
+            labels: {{ user_months|safe }},
+            datasets: [{
+                label: 'المستخدمين الجدد شهرياً',
+                data: {{ user_counts|safe }},
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+
+{% endblock %}

@@ -28,7 +28,9 @@
 
 <nav class="nav nav-underline">
   <li class="nav-item">
-    <a class="nav-link" aria-current="page" href="">احصائيات الحضانة</a>
+    
+    <a class="nav-link {% if request.resolver_match.url_name == 'owner_nursery_statistics' %}active{% endif %}" href="{% url 'nurseries:owner_nursery_statistics' %}">احصائيات الحضانة</a>
+
   </li>
   <li class="nav-item">
     <a class="nav-link {% if request.resolver_match.url_name == 'owner_requests_view' %}active{% endif %}" href="{% url 'nurseries:owner_requests_view' %}">طلباتي</a>

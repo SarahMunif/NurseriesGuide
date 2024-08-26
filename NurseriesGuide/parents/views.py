@@ -57,15 +57,11 @@ def add_child(request:HttpRequest):
 
     return render(request, 'parents/profile.html', {"gender": Child.GenderChoices.choices})
 
-def update_parent(request: HttpRequest):
-    # print(parent_id)
+def update_user(request: HttpRequest):
     if not request.user.is_authenticated:
         return redirect("main:home")  # Redirect non-authenticated users to home page
 
-    # parent = get_object_or_404(Parent, pk=parent_id)
-
     if request.method == "POST":
-        print("im here")
         try:
             with transaction.atomic():
                 user:User = request.user
@@ -75,23 +71,20 @@ def update_parent(request: HttpRequest):
                 user.email = request.POST["email"]
                 user.username = request.POST["username"]
                 user.save()
+                if not (request.user.is_superuser or request.user.is_staff ):
 
-                parent:Parent = user.parent
-                parent.phone_number = request.POST["phone_number"]
-                parent.Work_number = request.POST["Work_number"]
-
-                parent.save()
+                    if "phone_number" or "Work_number" in request.POST:
+                        parent:Parent = user.parent
+                        parent.phone_number = request.POST["phone_number"]
+                        parent.Work_number = request.POST["Work_number"]
+                        parent.save()
 
             messages.success(request, "تم تحديث البيانات بنجاح", 'alert-success')
+
         except Exception as e:
             messages.error(request, "تم إدخال معلومات خاطئة، أدخل معلومات صحيحة", 'alert-danger')
-            print(e)
-    
-    return render(request, 'parents/profile.html', {'parent': parent})
-
-def child_detail(request:HttpRequest):
-    pass
-
+            print("error",e)
+        return redirect(request.GET.get("next", "/"))
 
 def delete_child(request:HttpRequest,child_id):
 
@@ -107,7 +100,6 @@ def delete_child(request:HttpRequest,child_id):
         messages.error(request, f"{child.first_name} لم نتمكن من ازالة معلومات","alert-danger")    
 
     return redirect(request.GET.get("next", "/"))
-
 
 
 def update_child(request:HttpRequest,child_id):
@@ -129,7 +121,6 @@ def update_child(request:HttpRequest,child_id):
         return redirect(request.GET.get("next", "/"))
 
     return render(request, 'parents/profile.html', {"gender": Child.GenderChoices.choices})
-
 
 
 def signup_manager(request:HttpRequest):
@@ -209,14 +200,18 @@ def log_out(request: HttpRequest):
 
     return redirect(request.GET.get("next", "/"))
 
-def parent_profile(request:HttpRequest, user_id):
+def parent_profile(request:HttpRequest):
 
+    if not request.user.is_authenticated or request.user.is_staff or request.user.is_superuser :
+        return redirect(request.GET.get("next", "/"))
     
-    parent = get_object_or_404(Parent, user=request.user)
+    parent = request.user.parent
     children = Child.objects.filter(parent=parent)
 
 
-    return render(request, 'parents/profile.html', {"parent":parent ,"children":children,"gender": Child.GenderChoices.choices})
+    return render(request, 'parents/parent_profile.html', {"parent":parent ,"children":children,"gender": Child.GenderChoices.choices})
+
+    
 
 
 
