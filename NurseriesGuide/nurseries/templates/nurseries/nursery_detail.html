@@ -14,7 +14,7 @@
     .color-activty ,.modal-content  {
         background-color: #FFF3F4; /* Background color applied directly to card-body */
     }
-    
+
 </style>
 <br>
 <div id="galleryCarousel" class="carousel slide" data-bs-ride="carousel">
@@ -56,7 +56,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-patch-check" viewBox="0 0 16 16">
     <path fill-rule="evenodd" d="M10.354 6.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708 0"/>
     <path d="m10.273 2.513-.921-.944.715-.698.622.637.89-.011a2.89 2.89 0 0 1 2.924 2.924l-.01.89.636.622a2.89 2.89 0 0 1 0 4.134l-.637.622.011.89a2.89 2.89 0 0 1-2.924 2.924l-.89-.01-.622.636a2.89 2.89 0 0 1-4.134 0l-.622-.637-.89.011a2.89 2.89 0 0 1-2.924-2.924l.01-.89-.636-.622a2.89 2.89 0 0 1 0-4.134l.637-.622-.011-.89a2.89 2.89 0 0 1 2.924-2.924l.89.01.622-.636a2.89 2.89 0 0 1 4.134 0l-.715.698a1.89 1.89 0 0 0-2.704 0l-.92.944-1.32-.016a1.89 1.89 0 0 0-1.911 1.912l.016 1.318-.944.921a1.89 1.89 0 0 0 0 2.704l.944.92-.016 1.32a1.89 1.89 0 0 0 1.912 1.911l1.318-.016.921.944a1.89 1.89 0 0 0 2.704 0l.92-.944 1.32.016a1.89 1.89 0 0 0 1.911-1.912l-.016-1.318.944-.921a1.89 1.89 0 0 0 0-2.704l-.944-.92.016-1.32a1.89 1.89 0 0 0-1.912-1.911z"/>
-    </svg>   
+    </svg>
 </div>
 <div class="d-flex align-items-center">
     {% if average_rating == 1 %}
@@ -109,7 +109,7 @@
           <div class="rounded d-flex" style="background-color: #FFF3F4; height: .7cm">
 
           <span class="material-symbols-outlined"> support_agent </span>
-          
+
           <div style="width: 10px;"></div> <!-- Custom spacer -->
           <span>{{nursery.contact_number}}</span>
         </div>
@@ -179,9 +179,9 @@
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3 me-3" viewBox="0 0 16 16">
                                                                 <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
                                                             </svg>
-                                                        </a>    
+                                                        </a>
                                                         {% endif %}
-                                                   
+
                                                     </h5>
                                                     <p class="mb-1">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-arms-up mx-2" viewBox="0 0 16 16">
@@ -208,7 +208,7 @@
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="updateModalLabel-{{ activity.id }}"> تعديل بيانات النشاط</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>                                        
+                                        </div>
                                         <div class="modal-body">
                                             <form method="post" action="{% url 'nurseries:update_activity' activity.id %}" enctype="multipart/form-data">
                                                 {% csrf_token %}
@@ -243,7 +243,7 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                           هل انت متاكد من حذف 
+                                           هل انت متاكد من حذف
                                            "{{ activity.name }}"
                                            ؟
                                         </div>
@@ -306,7 +306,7 @@
                                             <div class="card bg-transparent border-0">
                                                 <div class="card-body text-center">
                                                     <img src="{{ staff.image.url }}" alt="Staff Image" class="rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
-                                                    <h5 class="card-title mb-1"> 
+                                                    <h5 class="card-title mb-1">
                                                        {{ staff.first_name }} {{ staff.last_name }}
                                                        {% if is_owner %}
 
@@ -323,9 +323,9 @@
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3 me-3" viewBox="0 0 16 16">
                                                                 <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
                                                             </svg>
-                                                        </a> 
+                                                        </a>
                                                         {% endif %}
-                                                      
+
                                                     </h5>
                                                     <p class="text-muted">
                                                         {{ staff.specializations }}
@@ -394,7 +394,7 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            هل انت متاكد من حذف 
+                                            هل انت متاكد من حذف
                                             {{ staff.first_name }} {{ staff.last_name }}؟
                                         </div>
                                         <div class="modal-footer">
@@ -417,7 +417,7 @@
         </div>
     </div>
 </div>
-</div>  
+</div>
 
 
 
@@ -461,7 +461,7 @@
             </div>
         </div>
     </div>
-</div>         
+</div>
 <!-- Subscription Section -->
 <h1 class="mt-3">باقاتنا</h1>
 <div class="row">
@@ -501,7 +501,7 @@
                                             <div class="card rounded-card">
                                                 <div class="card-body color-activty">
                                                     <h1 class="mb-1">
-                                                        
+
                                                         {{ subscription.duration_number }} {{subscription.get_duration_unit_display }}
                                                       </h1>
                                                     <h5 class="card-title mb-1">
@@ -514,13 +514,13 @@
                                                             <path d="m5.93 6.704-.846 8.451a.768.768 0 0 0 1.523.203l.81-4.865a.59.59 0 0 1 1.165 0l.810 4.865a.768.768 0 0 0 1.523-.203l-.845-8.451A1.5 1.5 0 0 1 10.5 5.5L13 2.284a.796.796 0 0 0-1.239-.998L9.634 3.84a.7.7 0 0 1-.33.235c-.23.074-.665.176-1.304.176-.64 0-1.074-.102-1.305-.176a.7.7 0 0 1-.329-.235L4.239 1.286a.796.796 0 0 0-1.24.998l2.5 3.216c.317.316.475.758.43 1.204Z"/>
                                                         </svg>
                                                         <span>{{ subscription.age_min }} - {{ subscription.age_max }}</span>
-                                                    </p> 
+                                                    </p>
                                                     <p class="card-text">
                                                         {{ subscription.description }}
                                                     </p>
                                                     <h6 class="mb-1" data-bs-toggle="modal" data-bs-target="#subscriptionModal-{{ subscription.id }}">
                                                         للحجز
-                                                      </h6>                                                    
+                                                      </h6>
                                                 </div>
                                             </div>
                                         </div>
@@ -534,8 +534,8 @@
                                 <div class="modal-dialog modal-dialog-centered">
                                     <div class="modal-content">
                         <form method="post" action="{% url 'registrations:registration_create' %}"" enctype="multipart/form-data">
-                                            {% csrf_token %}  
-                                            <input type="hidden" name="subscription_id" value="{{ subscription.id }}"> 
+                                            {% csrf_token %}
+                                            <input type="hidden" name="subscription_id" value="{{ subscription.id }}">
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         <div class="modal-body">
                                             <h1 class="modal-title" id="subscriptionModalLabel-{{ subscription.id }}">باقه
@@ -551,7 +551,7 @@
                                                     <path d="m5.93 6.704-.846 8.451a.768.768 0 0 0 1.523.203l.81-4.865a.59.59 0 0 1 1.165 0l.810 4.865a.768.768 0 0 0 1.523-.203l-.845-8.451A1.5 1.5 0 0 1 10.5 5.5L13 2.284a.796.796 0 0 0-1.239-.998L9.634 3.84a.7.7 0 0 1-.33.235c-.23.074-.665.176-1.304.176-.64 0-1.074-.102-1.305-.176a.7.7 0 0 1-.329-.235L4.239 1.286a.796.796 0 0 0-1.24.998l2.5 3.216c.317.316.475.758.43 1.204Z"/>
                                                 </svg>
                                                 <span>{{ subscription.age_min }} - {{ subscription.age_max }}</span>
-                                            </p> 
+                                            </p>
                                             <label class="mt-4" for="child-selection-{{ subscription.id }}" class="form-label"> الطفل:</label>
                                             <select class="form-select mt-4" id="child-selection-{{ subscription.id }}" name="child">
                                                 {% for child in request.user.parent.child_set.all %}
@@ -560,12 +560,12 @@
                                             </select>
                                             <br>
                                             <br>
-                                            <div class="mb-3 text-center"> 
-                                                <button type="submit" class="btn  w-75"  style="background-color: #FFFFFF; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);"><h5>أحجز</h5></button> 
+                                            <div class="mb-3 text-center">
+                                                <button type="submit" class="btn  w-75"  style="background-color: #FFFFFF; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);"><h5>أحجز</h5></button>
                                               </div>
                                         </div>
 
-                                        
+
                                     </div>
                                 </div>
                             </div>
@@ -599,7 +599,7 @@
                 <form method="post" action="{% url 'registrations:add_subscription' nursery.id %}">
                     {% csrf_token %}
                     <div class="form-container" >
-                      
+
                         <div class="mb-3">
                             <label for="subscription-duration-number" class="form-label">مدة الباقة (رقم)</label>
                             <input type="number" class="form-control" id="subscription-duration-number" name="duration_number" required>
@@ -679,7 +679,7 @@
             </div>
         </div>
     </div>
-</div>    
+</div>
 
 <!-- Modal for Adding Gallery Items -->
 <div class="modal fade" id="addGalleryModal" tabindex="-1" aria-labelledby="addGalleryModalLabel" aria-hidden="true">
@@ -711,118 +711,122 @@
         </div>
     </div>
 </div>
-<!-- reviews -->
-<section class="rounded mt-5" style="background-color: #F5888E; min-height: 40vh; box-sizing: border-box; padding: 20px;">
-        {% if reviews %}
-            <h1 class="mb-5 mt-5" style="text-align: center;">اراء اولياء الامور</h1>
-    
-            <div class="row justify-content-center align-items-center">
-                <div class="col-auto">
-                    <a class="mb-3" href="#reviewCarousel" role="button" data-bs-slide="prev">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>
-                        </svg>
-                    </a>
-                </div>
-                <div class="col-lg-8">
-                    <div id="reviewCarousel" class="carousel slide" >
-                        <div class="carousel-inner">
-                            {% for review in reviews %}
-                                {% if forloop.counter0|divisibleby:3 %}
-                                    <div class="carousel-item {% if forloop.counter0 == 0 %}active{% endif %}">
-                                        <div class="container">
-                                            <div class="row">
-                                {% endif %}
-                                                <div class="col-md-4 col-sm-6 mb-4">
-                                                    <div class="card rounded-card">
-                                                        <div class="card-body">
-                                                            <h3 class="mb-1">
-                                                            {{ review.parent.user.first_name }} {{ review.parent.user.last_name }}
-                                                            </h3>
-                                                            <br>
-                                                            <div class="d-flex align-items-center">
-                                                                {% if review.rating == 1 %}
-                                                                <span class="material-symbols-outlined">star</span>
-                                                                {% elif review.rating == 2 %}
-                                                                <span class="material-symbols-outlined">star</span>
-                                                                <span class="material-symbols-outlined">star</span>
-                                                                {% elif review.rating == 3 %}
-                                                                <span class="material-symbols-outlined">star</span>
-                                                                <span class="material-symbols-outlined">star</span>
-                                                                <span class="material-symbols-outlined">star</span>
-                                                                {% elif review.rating == 4 %}
-                                                                <span class="material-symbols-outlined">star</span>
-                                                                <span class="material-symbols-outlined">star</span>
-                                                                <span class="material-symbols-outlined">star</span>
-                                                                <span class="material-symbols-outlined">star</span>
-                                                                {% elif review.rating == 5 %}
-                                                                <span class="material-symbols-outlined">star</span>
-                                                                <span class="material-symbols-outlined">star</span>
-                                                                <span class="material-symbols-outlined">star</span>
-                                                                <span class="material-symbols-outlined">star</span>
-                                                                <span class="material-symbols-outlined">star</span>
-                                                                {% endif %}
-                                                            </div>
-                                                            <h5 class="card-title mb-1">
-                                                                <br>
-                                                                <span class="text-muted"> {{ review.comment }} </span>
-                                                            </h5>
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                {% if forloop.counter|divisibleby:3 or forloop.last %}
-                                            </div>
-                                        </div>
-                                    </div>
-                                {% endif %}
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
-                <div class="col-auto">
-                    <a class="mb-3" href="#reviewCarousel" role="button" data-bs-slide="next">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/>
-                        </svg>
-                    </a>
-                </div>
-            </div>
-        {% else %}
-            <h1 style="text-align: center;">كن أول من يعبر عن رأيه!</h1>
-        {% endif %}
-    
-        {% if request.user.is_authenticated %}
-        {% if not request.user.is_superuser and not request.user.is_staff %}
-            <!-- Display the form for regular authenticated users who are neither superusers nor staff -->
-            <h1 class="mt-5 mb-5" style="text-align: center;">عبر عن رأيك</h1>
-            <form method="post" action="{% url 'registrations:add_review' nursery.id %}" style="display: flex; flex-direction: column; align-items: center; max-width: 500px; margin: auto;">  
-                {% csrf_token %}
-                <textarea class="form-control" name="comment" required minlength="3" placeholder="..." style="margin-bottom: 10px;"></textarea>
-                <select class="form-select" name="rating" required>
-                    <option value="">تقييمك</option>
-                    <option value="1">١</option>
-                    <option value="2">٢</option>
-                    <option value="3">٣</option>
-                    <option value="4">٤</option>
-                    <option value="5">٥</option>
-                </select>
-                <input type="submit" class="btn" value="أضف تعليقك" style="margin-top: 10px;background-color: #FFFFFF; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);"/>
-            </form>
-        {% else %}
-            <!-- Specific message for superusers or staff -->
-            <div class="p-3 mt-4 d-flex flex-column gap-2" style="text-align: center;">
-                <h5 style="color: #FFFFFF;">فقط اولياء الامور يملكون صلاحية التعليق</h5>
-            </div>
-        {% endif %}
-    {% else %}
-        <!-- Message for non-authenticated users -->
-        <div class="p-3 mt-4 d-flex flex-column gap-2" style="text-align: center;">
-            <h5 style="color: #FFFFFF;">فقط المسجلون في هذه الحضانه يملكون صلاحية التعليق</h5>
-        </div>
-    {% endif %}
-        <br><br>
-    </section>
-
 {% endblock %}
 
+{% block reviews %}
+
+<!-- reviews -->
+<section class="reviews-section">
+  <div class="wave-top"></div>
+    {% if reviews %}
+        <h3 class="py-5 mb-5 mt-5" style="text-align: center; margin-top: 5rem;">آراء أولياء الأمور</h3>
+
+        <div class="row justify-content-center align-items-center">
+            <div class="col-auto">
+                <a class="mb-3" href="#reviewCarousel" role="button" data-bs-slide="prev">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>
+                    </svg>
+                </a>
+            </div>
+            <div class="col-lg-8">
+                <div id="reviewCarousel" class="carousel slide" >
+                    <div class="carousel-inner">
+                        {% for review in reviews %}
+                            {% if forloop.counter0|divisibleby:3 %}
+                                <div class="carousel-item {% if forloop.counter0 == 0 %}active{% endif %}">
+                                    <div class="container">
+                                        <div class="row">
+                            {% endif %}
+                                            <div class="col-md-4 col-sm-6 mb-4">
+                                                <div class="card rounded-card">
+                                                    <div class="card-body">
+                                                        <h3 class="mb-1">
+                                                        {{ review.parent.user.first_name }} {{ review.parent.user.last_name }}
+                                                        </h3>
+                                                        <br>
+                                                        <div class="d-flex align-items-center">
+                                                            {% if review.rating == 1 %}
+                                                            <span class="material-symbols-outlined">star</span>
+                                                            {% elif review.rating == 2 %}
+                                                            <span class="material-symbols-outlined">star</span>
+                                                            <span class="material-symbols-outlined">star</span>
+                                                            {% elif review.rating == 3 %}
+                                                            <span class="material-symbols-outlined">star</span>
+                                                            <span class="material-symbols-outlined">star</span>
+                                                            <span class="material-symbols-outlined">star</span>
+                                                            {% elif review.rating == 4 %}
+                                                            <span class="material-symbols-outlined">star</span>
+                                                            <span class="material-symbols-outlined">star</span>
+                                                            <span class="material-symbols-outlined">star</span>
+                                                            <span class="material-symbols-outlined">star</span>
+                                                            {% elif review.rating == 5 %}
+                                                            <span class="material-symbols-outlined">star</span>
+                                                            <span class="material-symbols-outlined">star</span>
+                                                            <span class="material-symbols-outlined">star</span>
+                                                            <span class="material-symbols-outlined">star</span>
+                                                            <span class="material-symbols-outlined">star</span>
+                                                            {% endif %}
+                                                        </div>
+                                                        <h5 class="card-title mb-1">
+                                                            <br>
+                                                            <span class="text-muted"> {{ review.comment }} </span>
+                                                        </h5>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                            {% if forloop.counter|divisibleby:3 or forloop.last %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-auto">
+                <a class="mb-3" href="#reviewCarousel" role="button" data-bs-slide="next">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    {% else %}
+        <h3 class="py-3 mt-5 text-center">كن أول من يعبر عن رأيه!</h3>
+    {% endif %}
+
+    {% if request.user.is_authenticated %}
+    {% if not request.user.is_superuser and not request.user.is_staff %}
+        <!-- Display the form for regular authenticated users who are neither superusers nor staff -->
+        <h1 class="mt-5 mb-5" style="text-align: center;">عبر عن رأيك</h1>
+        <form method="post" action="{% url 'registrations:add_review' nursery.id %}" style="display: flex; flex-direction: column; align-items: center; max-width: 500px; margin: auto;">
+            {% csrf_token %}
+            <textarea class="form-control" name="comment" required minlength="3" placeholder="..." style="margin-bottom: 10px;"></textarea>
+            <select class="form-select" name="rating" required>
+                <option value="">تقييمك</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+            <input type="submit" class="btn" value="أضف تعليقك" style="margin-top: 10px;background-color: #FFFFFF; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);"/>
+        </form>
+    {% else %}
+        <!-- Specific message for superusers or staff -->
+        <div class="p-3 mt-4 d-flex flex-column gap-2" style="text-align: center;">
+            <h5 style="color: #FFFFFF;">فقط اولياء الامور يملكون صلاحية التعليق</h5>
+        </div>
+    {% endif %}
+{% else %}
+    <!-- Message for non-authenticated users -->
+    <div class="p-3 mt-4 d-flex flex-column gap-2" style="text-align: center;">
+        <h5 style="color: #FFFFFF;">فقط المسجلون في هذه الحضانه يملكون صلاحية التعليق</h5>
+    </div>
+{% endif %}
+    <br><br>
+  <div class="wave-bottom-p"></div>
+</section>
+{% endblock %}
