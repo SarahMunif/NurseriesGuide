@@ -33,35 +33,36 @@ class Nursery(models.Model):
     ))
     rejection_reason = models.TextField(blank=True, null=True)
     neighborhood = models.ForeignKey(Neighborhood, on_delete=models.CASCADE, related_name='nurseries')
-     
+
     owner = models.ForeignKey(User, on_delete=models.CASCADE,  limit_choices_to={'is_staff': True})
-    
+
     commercial_registry_file = models.FileField(upload_to='commercial_registry/', null=True, blank=True)
     license_file = models.FileField(upload_to='nursery_licenses/', null=True, blank=True)
     def __str__(self):
         return self.name
-#Activity Model 
+
+
+
+#Activity Model
 class Activity(models.Model):
-    name = models.CharField(max_length=100)  
+    name = models.CharField(max_length=100)
     description = models.TextField()
     age_min = models.IntegerField(default=2)
     age_max = models.IntegerField(default=5)
-    image = models.ImageField(upload_to='images/', default="images/default.jpg")  
+    image = models.ImageField(upload_to='images/', default="images/default.jpg")
     nursery = models.ForeignKey(Nursery, on_delete=models.CASCADE)
-    
+
     def __str__(self):
         return self.name
 
-#Gallery Model 
 
-from django.db import models
-
+#Gallery Model
 class Gallery(models.Model):
     image = models.ImageField(upload_to='images/', default="images/default.jpg")
     video = models.FileField(upload_to='videos/', blank=True, null=True)
     nursery = models.ForeignKey('Nursery', on_delete=models.CASCADE)
 
-#Staff Model 
+#Staff Model
 class Staff(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)

@@ -11,10 +11,10 @@
                     <i class="fas fa-filter me-1"></i>
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-filter" viewBox="0 0 24 24">
                         <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
-                    </svg> 
+                    </svg>
                 </button>
-              
-        
+
+
                 <div class="dropdown">
                     <select name="age" class="form-select custom-select rounded-pill" onchange="this.form.submit()">
                         <option value="">العمر</option>
@@ -41,7 +41,7 @@
                         {% endfor %}
                     </select>
                 </div>
-        
+
                 <div class="dropdown">
                     <select name="neighborhood" class="form-select custom-select rounded-pill" onchange="this.form.submit()">
                         <option value="">الحي</option>
@@ -50,22 +50,22 @@
                         {% endfor %}
                     </select>
                 </div>
-        
+
                 <div class="form-check mx-end">
                     <input type="checkbox" class="form-check-input" name="special_needs" value="1" {% if special_needs %}checked{% endif %} onchange="this.form.submit()">
                     <label class="form-check-label">ذوي احتياجات خاصة</label>
                 </div>
-        
-                <div class="w-100"></div> <!-- Clear after the last element -->
+
+                <div class="w-100"></div>
             </div>
-        
-            <!-- Search Bar and Submit Button -->
+
+
             <div class="col-md-4 d-flex justify-content-center justify-content-md-end mt-2 mt-md-0 gap-2">
                 <input type="text" name="searched" value="{{ search_term }}" class="form-control me-2 rounded-pill" placeholder="بحث...">
                 <button type="submit" class="btn btn-dark rounded-pill ">البحث</button>
             </div>
 
-            <!-- Clear Filters Button on a New Row -->
+
             <div class="col-12 d-flex justify-content-center justify-content-md-start mt-3">
                 <a href="{% url 'nurseries:nurseries_list' %}" class="btn btn-outline-secondary rounded-pill btn-outline-pink">إزالة التصفية</a>
             </div>
@@ -82,22 +82,21 @@
 
 {% block content %}
 <div class="container mt-4" id="nurseries-container">
-    <!-- Nurseries List -->
-    <div class="row mt-4 gy-4">  <!-- Added gy-4 for gap between cards -->
+    <div class="row mt-4 gy-4">
         {% if has_nurseries %}
             {% for nursery in nurseries %}
             <div class="col-lg-12">
                 <div class="d-flex flex-lg-row{% if forloop.counter|divisibleby:2 %} flex-lg-row-reverse{% endif %}">
                     <div class="col-lg-6 p-3">
-                        <div class="nursery-card border rounded bg-light h-100 d-flex align-items-center justify-content-center" 
+                        <div class="nursery-card border rounded bg-light h-100 d-flex align-items-center justify-content-center"
                             style="border: 3px dotted {% if forloop.counter|divisibleby:2 %}#F4C93A{% else %}#F5888E{% endif %};">
-                            <img src="https://placehold.co/400x300/e3e2de/787674" alt="Image of {{ nursery.name }}" class="img-fluid">
+                            <img src="{% if nursery.image %}{{ nursery.image.url }}{% else %}https://placehold.co/400x300/e3e2de/787674{% endif %}" alt="Image of {{ nursery.name }}" class="img-fluid">
                         </div>
                     </div>
                     <div class="col-lg-6 d-flex flex-column justify-content-between p-3">
-                        <div class="d-flex align-items-start gap-2">
-                            <h2 class="h5 mb-2">{{ nursery.name }} </h2>
-
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h2 class="h5 mb-2">{{ nursery.name }}</h2>
+                            {% if nursery.verified %}
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#F5888E" class="bi bi-patch-check" viewBox="0 0 16 16">  <!-- Increased size and changed color -->
                                     <path fill-rule="evenodd" d="M10.354 6.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708 0"/>
                                     <path d="m10.273 2.513-.921-.944.715-.698.622.637.89-.011a2.89 2.89 0 0 1 2.924 2.924l-.01.89.636.622a2.89 2.89 0 0 1 0 4.134l-.637.622.011.89a2.89 2.89 0 0 1-2.924 2.924l-.89-.01-.622.636a2.89 2.89 0 0 1-4.134 0l-.622-.637-.89.011a2.89 2.89 0 0 1-2.924-2.924l.01-.89-.636-.622a2.89 2.89 0 0 1 0-4.134l.637-.622-.011-.89a2.89 2.89 0 0 1 2.924-2.924l.89.01.622-.636a2.89 2.89 0 0 1 4.134 0l-.715.698a1.89 1.89 0 0 0-2.704 0l-.92.944-1.32-.016a1.89 1.89 0 0 0-1.911 1.912l.016 1.318-.944.921a1.89 1.89 0 0 0 0 2.704l.944.92-.016 1.32a1.89 1.89 0 0 0 1.912 1.911l1.318-.016.921.944a1.89 1.89 0 0 0 2.704 0l.92-.944 1.32.016a1.89 1.89 0 0 0 1.911-1.912l-.016-1.318.944-.921a1.89 1.89 0 0 0 0-2.704l-.944-.92.016-1.32a1.89 1.89 0 0 0-1.912-1.911z"/>
@@ -149,7 +148,7 @@
                         </div>
 
                         <div class="d-flex justify-content-end align-items-center">
-                            <a href="{% url 'nurseries:nursery_detail' nursery.id %}" class="btn btn-dark rounded-pill btn-size" 
+                            <a href="{% url 'nurseries:nursery_detail' nursery.id %}" class="btn btn-dark rounded-pill btn-size"
                                 style="background-color: {% if forloop.counter|divisibleby:2 %}#F5888E{% else %}#343779{% endif %}; border-color: {% if forloop.counter|divisibleby:2 %}#F5888E{% else %}#343779{% endif %};">
                                 المزيد
                             </a>
@@ -199,6 +198,7 @@
     {% endif %}
 </div>
 {% endblock %}
+
 
 
 <script type="text/javascript">
