@@ -1,10 +1,10 @@
 {% extends 'main/base.html' %}
 
-{% block content %}
+{% block hero %}
 <style>
     .card {
         border-radius: 10px;
-        border: 1px solid #ccc; 
+        border: 1px solid #ccc;
         transition: transform .2s;
     }
     .card:hover {
@@ -16,7 +16,7 @@
     }
     .color-square {
     background-color: #F5888E;
-    width: 50px;  
+    width: 50px;
     height: 50px;
     display: flex;
     align-items: center;
@@ -25,22 +25,25 @@
 }
 
 .material-symbols-outlined {
-    font-size: 24px; 
-    color: white; 
+    font-size: 24px;
+    color: white;
 }
     .btn-light {
         border-color: #ccc;
     }
     .half-width-button {
     width: 100%;
-    margin: 0 auto;  
+    margin: 0 auto;
 }
 </style>
 
+
+<section class="ylo-section-wrapper">
 <div class="container py-5">
-    <h1 class="text-center mb-5">تواصل معنا</h1>
+    <h1 class="text-center py-5 mb-5">تواصل معنا</h1>
     <p class="text-center text-muted">نسعد دائمًا بسماع آرائكم واستفساراتكم. إذا كان لديك أي سؤال أو تحتاج إلى مساعدة بخصوص خدماتنا، فلا تتردد في ملء النموذج أدناه وإرساله إلينا. فريقنا مستعد دائمًا لمساعدتك والرد على استفساراتك بأسرع وقت ممكن.</p>
-    <div class="row justify-content-center row-cols-1 row-cols-md-3 g-4 mt-3">
+
+    <div class="row justify-content-center row-cols-1 row-cols-md-3 g-4 mt-3 pb-5 mb-5">
         <div class="col">
             <div class="card h-100">
                 <div class="card-header">
@@ -73,9 +76,14 @@
             </div>
         </div>
     </div>
+
+  </section>
+  {% endblock %}
+
+  {% block content %}
     <div class="text-center mt-5">
         <h1 class="mb-3">راسلنا</h1>
-        <p class="mb-5">سنعود إليك خلال 24 ساعة.</p>
+        <p class="mb-5">سنعود إليك خلال 24 ساعة</p>
     </div>
     <form action="{% url 'main:contact_view' %}" method="post">
         {% csrf_token %}
@@ -94,11 +102,11 @@
                 <textarea class="form-control" placeholder="رسالتك" rows="3" name="message" required></textarea>
             </div>
             <div class="col-12">
-                <button type="submit" class="btn bg-white half-width-button ">أرسل الرسالة</button>
+                <button type="submit" class="btn btn-outline-pink half-width-button ">أرسل الرسالة</button>
             </div>
         </div>
     </form>
 </div>
+
+
 {% endblock %}
-
-
