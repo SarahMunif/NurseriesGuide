@@ -2,6 +2,14 @@
 {% block title %} التسجيل  كمالك حضانة{% endblock %}
 
 {% block content %}
+
+{%if error_message %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    {{error_message}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{%endif%}
+
 <div class="d-flex flex-column gap-3 mb-3 justify-content-center align-items-center">
 
     <h2>انشئ حساب كمالك حضانة</h2>
@@ -11,37 +19,37 @@
 
 
         <div class="form-floating">
-            <input type="text" class="form-control" id="username" placeholder="username" name="username" required>
+            <input type="text" class="form-control" id="username" placeholder="username" name="username" value="{{username}}" required>
             <label for="username">اسم المستخدم</label>
         </div>
-
+  
         <div class="form-floating">
-            <input type="text" class="form-control" id="first_name" placeholder="First name" name="first_name"
+            <input type="text" class="form-control" id="first_name" placeholder="First name" value="{{first_name}}" name="first_name"
                 required>
             <label for="first_name">الاسم الاول</label>
         </div>
-
+  
         <div class="form-floating">
-            <input type="text" class="form-control" id="last_name" placeholder="Last name" name="last_name"
+            <input type="text" class="form-control" id="last_name" placeholder="Last name" value="{{last_name}}" name="last_name"
                 required>
             <label for="last_name">الاسم الاخير</label>
         </div>
-
+  
         <div class="form-floating">
             <label for="floatingEmail">البريد الالكتروني</label>
-            <input type="email" class="form-control" id="floatingEmail" placeholder="name@example.com" name="email"
+            <input type="email" class="form-control" id="floatingEmail" placeholder="name@example.com" value="{{email}}" name="email"
                 required>
         </div>
 
         <div class="form-floating position-relative">
-            <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password"
+            <input type="password" class="form-control" id="floatingPassword" value="{{password}}" placeholder="كلمة المرور" name="password"
                 required>
             <label for="floatingPassword">كلمة المرور</label>
             <span onclick="togglePasswordVisibility('floatingPassword')" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;">Show</span>
         </div>
   
         <div class="form-floating position-relative">
-          <input type="password" class="form-control" id="floatingConfirmPassword" placeholder="Confirm Password" name="password_confirmation" required>
+          <input type="password" class="form-control" id="floatingConfirmPassword" placeholder="Confirm Password" value="{{confirm_password}}" name="confirm_password" required>
           <label for="floatingConfirmPassword">اعد كتابة كلمة المرور</label>
           <span onclick="togglePasswordVisibility('floatingConfirmPassword')" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;">Show</span>
         </div>
@@ -49,7 +57,7 @@
         <div id="error-message" style="color: red;"></div>
   
 
-        <button class="btn btn-primary w-100 py-2" type="submit">انشاء حساب</button>
+        <button class="btn btn-outline-pink w-100 py-2" type="submit">انشاء حساب</button>
     </form>
     <h5>لديك حساب ؟ <a href="{% url 'parents:signin' %}"> سجل الدخول</a> او <a
             href="{% url 'parents:signup_parent' %}"> سجل كولي امر</a></h5>
