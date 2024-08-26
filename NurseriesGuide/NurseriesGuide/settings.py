@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     "nurseries",
     "parents",
     "registrations",
-    
+
 ]
 
 MIDDLEWARE = [
@@ -141,7 +141,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-#stripe settings 
+#stripe settings
 
 STRIPE_SECRET_KEY=os.environ.get('STRIPE_SECRET_KEY')
 

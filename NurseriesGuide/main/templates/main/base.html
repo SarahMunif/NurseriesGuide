@@ -205,11 +205,9 @@
 
             <!-- end profile  -->
 
-    {% block hero %}
 
-    {% endblock %}
 
-    <main class="container mt-4">
+
         {% if messages %}
             {% for message in messages %}
             <div class="alert {{message.tags}} alert-dismissible fade show" role="alert">
@@ -220,10 +218,23 @@
         {% endif %}
 
 
+
+
+        {% block hero %}
+
+        {% endblock %}
+
+
+
+
+
+    <main class="container mt-4 ">
         {% block content %}
 
         {% endblock %}
     </main>
+
+
 
     {% block reviews %}
     {% endblock %}

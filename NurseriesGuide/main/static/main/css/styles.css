@@ -318,3 +318,37 @@ main {
   height: 24px;
   fill: #F5888E;
 }
+
+
+
+#galleryCarousel .carousel-item img,
+#galleryCarousel .carousel-item video {
+    height: 60vh;
+    object-fit: contain;
+}
+
+
+#galleryCarousel .carousel-control-prev-icon,
+#galleryCarousel .carousel-control-next-icon {
+    background-image: none;
+}
+
+#galleryCarousel .carousel-control-prev-icon::after,
+#galleryCarousel .carousel-control-next-icon::after {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: solid #343779;
+    border-width: 0 3px 3px 0;
+}
+
+#galleryCarousel .carousel-control-prev-icon::after {
+    transform: rotate(135deg);
+    margin-right: 4px;
+}
+
+#galleryCarousel .carousel-control-next-icon::after {
+    transform: rotate(-45deg);
+    margin-left: 4px;
+}
