@@ -10,6 +10,112 @@ from .models import Parent
 from .models import Child
 from .forms import ChildForm ,ParentForm
 from registrations.models import Registration
+from django.core.exceptions import ValidationError
+from django.core.validators import RegexValidator, EmailValidator
+import re 
+
+def signup_parent(request: HttpRequest):
+    if request.method == "POST":
+        username = request.POST.get("username")
+        first_name = request.POST.get("first_name")
+        last_name = request.POST.get("last_name")
+        password = request.POST.get("password")
+        confirm_password = request.POST.get("confirm_password")
+        email = request.POST.get("email")
+        phone_number = request.POST.get("phone_number")
+        work_number = request.POST.get("Work_number")
+        
+        # Server-side validation
+        error_message = None
+        
+        # Check if username already exists
+        if User.objects.filter(username=username).exists():
+            error_message = "اسم المستخدم موجود مسبقًا. يرجى اختيار اسم مستخدم آخر."
+        
+        # Check if email already exists
+        if User.objects.filter(email=email).exists():
+            error_message = "البريد الإلكتروني مستخدم مسبقًا. يرجى استخدام بريد إلكتروني آخر."
+        
+        # Validate username (only alphanumeric characters and underscores)
+        if not error_message and (not username or not username.isalnum()):
+            error_message = "اسم المستخدم يجب أن يحتوي فقط على أحرف إنجليزية وأرقام."
+        
+        # Validate first and last names (Arabic and English letters)
+        name_regex = r'^[a-zA-Z\u0621-\u064A\u066E-\u066F]+$'
+        if not error_message and not re.match(name_regex, first_name):
+            error_message = "الاسم الأول يجب أن يحتوي فقط على أحرف عربية أو إنجليزية."
+        elif not error_message and not re.match(name_regex, last_name):
+            error_message = "الاسم الأخير يجب أن يحتوي فقط على أحرف عربية أو إنجليزية."
+
+        # Validate password length and content
+        if not error_message and len(password) < 8:
+            error_message = "يجب أن تحتوي كلمة المرور على ٨ أحرف أو أرقام على الأقل."
+        elif not error_message and not re.match(r'^(?=.*[0-9])(?=.*[a-zA-Z]).{8,}$', password):
+            error_message = "يجب أن تحتوي كلمة المرور على أحرف وأرقام."
+        elif not error_message and password != confirm_password:
+            error_message = "كلمة المرور غير متطابقة."
+        
+        # Validate email format and domain
+        if not error_message:
+            email_validator = EmailValidator()
+            allowed_domains = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'icloud.com']
+            try:
+                email_validator(email)
+                domain = email.split('@')[-1]
+                if domain not in allowed_domains:
+                    error_message = "يجب أن يكون البريد الإلكتروني صحيحا وضمن الايميلات المسموح تسجيلها (gmail, hotmail, yahoo, outlook, icloud)."
+            except ValidationError:
+                error_message = "البريد الإلكتروني غير صحيح."
+        
+        # Validate phone numbers
+        if not error_message:
+            phone_regex = r'^05[0-9]{8}$'
+            phone_validator = RegexValidator(phone_regex, message="رقم الهاتف يجب أن يبدأ بـ '05' ويليه 8 أرقام.")
+            try:
+                phone_validator(phone_number)
+                phone_validator(work_number)
+            except ValidationError:
+                error_message = "رقم الهاتف أو رقم هاتف العمل غير صحيح."
+        
+        if error_message:
+            # Pass the current POST data back to the template to preserve user input
+            return render(request, "parents/sign_up_parent.html", {
+                "username": username,
+                "first_name": first_name,
+                "last_name": last_name,
+                "email": email,
+                "phone_number": phone_number,
+                "work_number": work_number,
+                "password":password,
+                "confirm_password":confirm_password,
+                "error_message": error_message,
+            })
+
+        # If no validation errors, proceed to save user and profile
+        try:
+            with transaction.atomic():
+                new_parent = User.objects.create_user(
+                    username=username,
+                    password=password,
+                    email=email,
+                    first_name=first_name,
+                    last_name=last_name
+                )
+                profile = Parent(user=new_parent, Work_number=work_number, phone_number=phone_number)
+                profile.save()
+                login(request, new_parent)
+
+            messages.success(request, "تم تسجيلك كولي امر بنجاح ", "alert-success")
+            return redirect(request.GET.get("next", "/"))
+
+        except IntegrityError:
+            messages.error(request, "تم ادخال معلومات خاطئة ، ادخل  معلومات صحيحة", "alert-danger")
+        except Exception as e:
+            messages.error(request, "حدث خطأ غير متوقع يرجى المحاولة مرة أخرى", "alert-danger")
+            print(e)
+
+    return render(request, "parents/sign_up_parent.html")
+
 
 def requests_status(request):
     if not request.user.is_authenticated or request.user.is_superuser or request.user.is_staff:
@@ -122,56 +228,93 @@ def update_child(request:HttpRequest,child_id):
 
     return render(request, 'parents/profile.html', {"gender": Child.GenderChoices.choices})
 
-
-def signup_manager(request:HttpRequest):
-    
+def signup_manager(request: HttpRequest):
     if request.method == "POST":
+        username = request.POST.get("username")
+        first_name = request.POST.get("first_name")
+        last_name = request.POST.get("last_name")
+        password = request.POST.get("password")
+        confirm_password = request.POST.get("confirm_password")
+        email = request.POST.get("email")
+        
+        # Server-side validation
+        error_message = None
 
+        # Check if username already exists
+        if User.objects.filter(username=username).exists():
+            error_message = "اسم المستخدم موجود مسبقًا. يرجى اختيار اسم مستخدم آخر."
+        
+        # Check if email already exists
+        if User.objects.filter(email=email).exists():
+            error_message = "البريد الإلكتروني مستخدم مسبقًا. يرجى استخدام بريد إلكتروني آخر."
+        
+        # Validate username (only alphanumeric characters)
+        if not error_message and (not username or not username.isalnum()):
+            error_message = "اسم المستخدم يجب أن يحتوي فقط على أحرف إنجليزية وأرقام."
+        
+        # Validate first and last names (Arabic and English letters)
+        name_regex = r'^[a-zA-Z\u0621-\u064A\u066E-\u066F]+$'
+        if not error_message and not re.match(name_regex, first_name):
+            error_message = "الاسم الأول يجب أن يحتوي فقط على أحرف عربية أو إنجليزية."
+        elif not error_message and not re.match(name_regex, last_name):
+            error_message = "الاسم الأخير يجب أن يحتوي فقط على أحرف عربية أو إنجليزية."
+
+        # Validate password length and content
+        if not error_message and len(password) < 8:
+            error_message = "يجب أن تحتوي كلمة المرور على ٨ أحرف أو أرقام على الأقل."
+        elif not error_message and not re.match(r'^(?=.*[0-9])(?=.*[a-zA-Z]).{8,}$', password):
+            error_message = "يجب أن تحتوي كلمة المرور على أحرف وأرقام."
+        elif not error_message and password != confirm_password:
+            error_message = "كلمة المرور غير متطابقة."
+        
+        # Validate email format and domain
+        if not error_message:
+            email_validator = EmailValidator()
+            allowed_domains = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'icloud.com']
+            try:
+                email_validator(email)
+                domain = email.split('@')[-1]
+                if domain not in allowed_domains:
+                    error_message = "يجب أن يكون البريد الإلكتروني صحيحا وضمن الايميلات المسموح تسجيلها (gmail, hotmail, yahoo, outlook, icloud)."
+            except ValidationError:
+                error_message = "البريد الإلكتروني غير صحيح."
+        
+        if error_message:
+            # Pass the current POST data back to the template to preserve user input
+            return render(request, "parents/sign_up_manager.html", {
+                "username": username,
+                "first_name": first_name,
+                "last_name": last_name,
+                "password":password,
+                "confirm_password":confirm_password,
+                "email": email,
+                "error_message": error_message,
+            })
+
+        # If no validation errors, proceed to save user
         try:
             with transaction.atomic():
-                new_manager = User.objects.create_user(username=request.POST["username"],password=request.POST["password"],email=request.POST["email"], first_name=request.POST["first_name"], last_name=request.POST["last_name"],is_staff=True  )
+                new_manager = User.objects.create_user(
+                    username=username,
+                    password=password,
+                    email=email,
+                    first_name=first_name,
+                    last_name=last_name,
+                    is_staff=True  # Set manager role
+                )
                 new_manager.save()
-
                 login(request, new_manager)
-
 
             messages.success(request, "تم تسجيلك كمالك حضانة بنجاح ", "alert-success")
             return redirect(request.GET.get("next", "/"))
 
-        except IntegrityError as e:
+        except IntegrityError:
             messages.error(request, "تم ادخال معلومات خاطئة ، ادخل  معلومات صحيحة", "alert-danger")
-            print(e)
         except Exception as e:
-            messages.error(request, "حدث خطأ غير متوقع يرجى الحاولة مره اخرى", "alert-danger")
+            messages.error(request, "حدث خطأ غير متوقع يرجى المحاولة مرة أخرى", "alert-danger")
             print(e)
 
-    return render(request,"parents/sign_up_manager.html")
-
-
-def signup_parent(request:HttpRequest):
-    
-    if request.method == "POST":
-
-        try:
-            with transaction.atomic():
-                new_parent = User.objects.create_user(username=request.POST["username"],password=request.POST["password"],email=request.POST["email"], first_name=request.POST["first_name"], last_name=request.POST["last_name"])
-                new_parent.save()
-                profile = Parent(user=new_parent, Work_number=request.POST["Work_number"],phone_number=request.POST["phone_number"])
-                profile.save()
-                login(request, new_parent)
-
-
-            messages.success(request, "تم تسجيلك كولي امر بنجاح ", "alert-success")
-            return redirect(request.GET.get("next", "/"))
-        
-        except IntegrityError as e:
-            messages.error(request, "تم ادخال معلومات خاطئة ، ادخل  معلومات صحيحة", "alert-danger")
-            print(e)
-        except Exception as e:
-            messages.error(request, "حدث خطأ غير متوقع يرجى الحاولة مره اخرى", "alert-danger")
-            print(e)
-
-    return render(request,"parents/sign_up_parent.html")
+    return render(request, "parents/sign_up_manager.html")
 
 
 def signin(request:HttpRequest):
