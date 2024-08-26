@@ -255,35 +255,25 @@
                                 <label for="license-file" class="form-label">رخصة الحضانة</label>
                                 <input type="file" class="form-control" id="license-file" name="license_file" required>
                             </div>
-                            <div class="mb-3">
-                                <label for="nursery-min-age" class="form-label">العمر الأدنى</label>
-                                <input type="number" class="form-control" id="nursery-min-age" name="min_age" required>
+                            <label for="min-age" class="form-label">العمر الأدنى</label>
+                            <input type="number" class="form-control" id="min-age" name="min_age" required>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="min-age-years" name="min_age_years">
+                                <label class="form-check-label" for="min-age-years">
+                                    بالسنوات
+                                </label>
                             </div>
-
-                            <div class="mb-3">
-                                <label for="nursery-min-age-unit" class="form-label">وحدة العمر الأدنى</label>
-                                <select class="form-control" id="nursery-min-age-unit" name="min_age_unit" required>
-                                    <option value="months">أشهر</option>
-                                    <option value="years">سنوات</option>
-                                </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="max-age" class="form-label">العمر الأقصى</label>
+                            <input type="number" class="form-control" id="max-age" name="max_age" required>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="max-age-years" name="max_age_years">
+                                <label class="form-check-label" for="max-age-years">
+                                    بالسنوات
+                                </label>
                             </div>
-
-                         
-                            <div class="mb-3">
-                                <label for="nursery-max-age" class="form-label">العمر الأقصى</label>
-                                <input type="number" class="form-control" id="nursery-max-age" name="max_age" required>
-                            </div>
-
-                           
-                            <div class="mb-3">
-                                <label for="nursery-max-age-unit" class="form-label">وحدة العمر الأقصى</label>
-                                <select class="form-control" id="nursery-max-age-unit" name="max_age_unit" required>
-                                    <option value="months">أشهر</option>
-                                    <option value="years">سنوات</option>
-                                </select>
-                            </div>
-
-                            
+                        </div>
                             <div class="mb-3">
                                 <button type="submit" class="btn btn-primary">أضف الحضانة</button>
                             </div>
@@ -294,3 +284,32 @@
         </div>
     </div>
 {% endblock %}
+
+<!-- <div class="mb-3">
+    <label for="nursery-min-age" class="form-label">العمر الأدنى</label>
+    <input type="number" class="form-control" id="nursery-min-age" name="min_age" required>
+</div>
+
+<div class="mb-3">
+    <label for="nursery-min-age-unit" class="form-label">وحدة العمر الأدنى</label>
+    <select class="form-control" id="nursery-min-age-unit" name="min_age_unit" required>
+        <option value="months">أشهر</option>
+        <option value="years">سنوات</option>
+    </select>
+</div>
+
+
+<div class="mb-3">
+    <label for="nursery-max-age" class="form-label">العمر الأقصى</label>
+    <input type="number" class="form-control" id="nursery-max-age" name="max_age" required>
+</div>
+
+
+<div class="mb-3">
+    <label for="nursery-max-age-unit" class="form-label">وحدة العمر الأقصى</label>
+    <select class="form-control" id="nursery-max-age-unit" name="max_age_unit" required>
+        <option value="months">أشهر</option>
+        <option value="years">سنوات</option>
+    </select>
+</div> -->
+

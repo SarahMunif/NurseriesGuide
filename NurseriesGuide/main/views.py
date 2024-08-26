@@ -20,13 +20,26 @@ def home(request):
     reviews=Web_Review.objects.all()
     for nursery in nurseries:
         nursery.gallery_items = Gallery.objects.filter(nursery=nursery)[:1]
-    # Get aggregate minimum and maximum ages from activities of verified nurseries
-    activities = Activity.objects.filter(nursery__status='verified')
-    min = activities.aggregate(Min('age_min'))['age_min__min']
-    max = activities.aggregate(Max('age_max'))['age_max__max']
+ 
+        min_age = nursery.min_age
+        if min_age >= 12:
+            min_age = int(min_age / 12)
+            min_unit = "سنوات"
+        else:
+            min_unit = "أشهر"
+        nursery.min_display = f"{min_age} {min_unit}"
+
+        max_age = nursery.max_age
+        if max_age >= 12:
+            max_age = int(max_age / 12)
+            max_unit = "سنوات"
+        else:
+            max_unit = "أشهر"
+        nursery.max_display = f"{max_age} {max_unit}"
+
 
     return render(request, 'main/home.html',{"nurseries_count":nurseries_count,"cities_count":cities_count,"parents_count":parents_count,
-                                             "nurseries":nurseries,"min":min,"max":max,
+                                             "nurseries":nurseries,
                                              "reviews":reviews})
 
 

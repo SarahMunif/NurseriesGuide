@@ -95,6 +95,14 @@ def add_nursery(request:HttpRequest):
          if nurseryForm.is_valid():
             nursery = nurseryForm.save(commit=False)
             nursery.owner = request.user  # Set the owner to the current user  
+            min_age = int(request.POST['min_age'])
+            max_age = int(request.POST['max_age'])
+            if 'min_age_years' in request.POST:
+                min_age *= 12    # to be as months to better the search filltring later 
+            if 'max_age_years' in request.POST:
+                max_age *= 12 
+            nursery.min_age=min_age    # age in months 
+            nursery.max_age=max_age                           
             nursery.save()           
             messages.success(request, f'تم أضافة الحضانة{nursery.name}  بنجاح  ! يمكنك تتبع حاله الطلب في "طلباتي"','alert-success')
             return redirect("nurseries:nurseries_view")
@@ -141,21 +149,27 @@ def detail_nursery(request:HttpRequest,nursery_id:int):
     
     is_owner = request.user == nursery.owner # to restrict the update icons in the frontend for the owner only
 
-    # # this calculate the min and max age the nursery takes based on the activities it offers
     activities = nursery.activity_set.all() 
-    # min = activities.aggregate(Min('age_min'))  # This will return a dictionary
-    # max = activities.aggregate(Max('age_max'))  
-    
 
     average_rating = nursery.reviews.aggregate(Avg('rating'))
     average_rating = average_rating['rating__avg']  
     if average_rating:
      average_rating= round(average_rating) 
 
-    # min = min['age_min__min']  # Extract the  age from the dictonary for a better disply in the web bage
-    # max = max['age_max__max']  
-    
-    # Pass the nursery and the calculated ages to the template
+
+    min=nursery.min_age 
+    if min >= 12:
+        min=int(min/12) 
+        min_unit="سنوات" 
+    else:
+      min_unit="أشهر" 
+    max=nursery.max_age
+    if max >= 12:
+        max=int(max/12)
+        max_unit="سنوات"  
+    else:
+      max_unit="أشهر"
+
     return render(request, "nurseries/nursery_detail.html", {
         "nursery": nursery,
 
@@ -165,8 +179,13 @@ def detail_nursery(request:HttpRequest,nursery_id:int):
         "subscriptions":subscriptions,
         "reviews":reviews,
         "is_owner":is_owner,
-        "average_rating": average_rating if average_rating is not None else "  لا توجد تقييمات "
+        "average_rating": average_rating if average_rating is not None else "  لا توجد تقييمات ",
+        'min':min,
+        "max":max,
+        "max_unit":max_unit,
+        "min_unit":min_unit,
     })
+
 # activity model views 
 
 def add_activity(request:HttpRequest,nursery_id:int):
@@ -319,7 +338,7 @@ def nurseries_list(request):
     neighborhood = request.GET.get('neighborhood', '')
     special_needs = request.GET.get('special_needs', '')
     min_rating = request.GET.get('min_rating', None)  # Retrieve the minimum rating from the request
-
+    age_range= request.GET.get('age_range', None)
     if city:
         nurseries = nurseries.filter(neighborhood__city__name=city)
     if neighborhood:
@@ -342,12 +361,33 @@ def nurseries_list(request):
     # Fetch distinct cities and neighborhoods for filtering options
     cities = Neighborhood.objects.values_list('city__name', flat=True).distinct()
     neighborhoods = Neighborhood.objects.values_list('name', flat=True).distinct()
-
+    
+    if age_range:
+        age_min, age_max = map(int, age_range.split('-'))  # split the values in the html the first value is the min , the last is the max
+        nurseries = nurseries.filter(min_age__lte=age_max, max_age__gte=age_min) # get the nurseries the have range between the min and max 
     # Handle pagination
+    for nursery in nurseries:
+        nursery.gallery_items = Gallery.objects.filter(nursery=nursery)[:1]
+ 
+        min_age = nursery.min_age
+        if min_age >= 12:
+            min_age = int(min_age / 12)
+            min_unit = "سنوات"
+        else:
+            min_unit = "أشهر"
+        nursery.min_display = f"{min_age} {min_unit}"
+
+        max_age = nursery.max_age
+        if max_age >= 12:
+            max_age = int(max_age / 12)
+            max_unit = "سنوات"
+        else:
+            max_unit = "أشهر"
+        nursery.max_display = f"{max_age} {max_unit}"
     paginator = Paginator(nurseries, 3)
     page_number = request.GET.get('page')
     paginated_nurseries = paginator.get_page(page_number)
-    
+
 
     context = {
         'nurseries': paginated_nurseries,
@@ -358,7 +398,8 @@ def nurseries_list(request):
         'cities': cities,
         'neighborhoods': neighborhoods,
         'has_nurseries': has_nurseries,
-        "min_rating":min_rating
+        "min_rating":min_rating,
+        "age_range":age_range
     }
 
     return render(request, 'nurseries/nurseries_list.html', context)
