@@ -50,6 +50,13 @@
           <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password"
               required>
           <label for="floatingPassword">كلمة المرور</label>
+          <span onclick="togglePasswordVisibility('floatingPassword')" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;">Show</span>
+      </div>
+
+      <div class="form-floating position-relative">
+        <input type="password" class="form-control" id="floatingConfirmPassword" placeholder="Confirm Password" name="password_confirmation" required>
+        <label for="floatingConfirmPassword">اعد كتابة كلمة المرور</label>
+        <span onclick="togglePasswordVisibility('floatingConfirmPassword')" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;">Show</span>
       </div>
 
       <button class="btn btn-primary w-100 py-2" type="submit">انشاء حساب</button>
@@ -58,5 +65,14 @@
           href="{% url 'parents:signup_manager' %}"> سجل كمالك حضانة</a></h5>
 
 </div>
+
+
+<script>
+    function togglePasswordVisibility(fieldId) {
+        var inputField = document.getElementById(fieldId);
+        var type = inputField.type === 'password' ? 'text' : 'password';
+        inputField.type = type;
+    }
+</script>
 
 {% endblock %}
