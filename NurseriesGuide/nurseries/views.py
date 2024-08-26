@@ -1,15 +1,22 @@
 from django.shortcuts import render,redirect
 from django.http import HttpRequest,HttpResponse
 from .forms import NurseryForm,ActivityForm,StaffForm,GalleryForm,NurseryOwnerForm
-from django.contrib import messages
+from django.contrib import messages 
 from nurseries.models import Activity,Neighborhood,Nursery,Staff,Gallery
 from django.core.paginator import Paginator
-from django.db.models import Avg,Max,Min, Q
+from django.db.models import Avg,Max,Min, Q,Count,Sum,ExpressionWrapper, DecimalField
+from django.urls import reverse
+from registrations.models import Registration
+from parents.models import Child
+import stripe
 
-from registrations.models import Review,Registration
+from django.contrib.auth.models import User
+from django.db.models.functions import TruncMonth
+from decimal import Decimal
+
 # Create your views here.
 
-# nursery model views
+# nursery model views 
 
 def nurseries_view(request:HttpRequest):
     if not request.user.is_authenticated or not request.user.is_staff:
@@ -17,10 +24,10 @@ def nurseries_view(request:HttpRequest):
 
     user_nurseries = Nursery.objects.filter(owner=request.user)
     nurseries = user_nurseries.filter(status='verified')
-
+    
     neighborhoods = Neighborhood.objects.all()
 
-
+    
     # Check if a search was made
     searched = request.GET.get('searched', '')
     if searched:
@@ -29,7 +36,7 @@ def nurseries_view(request:HttpRequest):
 
     page_number = request.GET.get("page", 1)
     paginator = Paginator(nurseries, 6)
-    nurseries = paginator.get_page(page_number)
+    nurseries = paginator.get_page(page_number)   
     if request.user.is_staff:
      return render(request, "nurseries/nurseries_view.html", {"nurseries" : nurseries,"search_term": searched,"neighborhoods":neighborhoods})
     if not request.user.is_staff:
@@ -37,7 +44,7 @@ def nurseries_view(request:HttpRequest):
 
 def verify_nurseries(request):
     if not request.user.is_superuser:
-        return redirect('main:home')
+        return redirect('main:home') 
     else:
         if request.method == 'POST':
             nursery_id = request.POST.get('nursery_id')
@@ -71,7 +78,7 @@ def owner_requests_view(request):
     nurseries = Nursery.objects.filter(owner=request.user)
     neighborhoods = Neighborhood.objects.all()
 
-    unverified_nurseries = nurseries.filter(Q(status='pending') | Q(status='rejected'))
+    unverified_nurseries = nurseries.filter(Q(status='pending') | Q(status='rejected'))    
     return render(request, "nurseries/owner_requests.html", {
             "unverified_nurseries": unverified_nurseries,"neighborhoods":neighborhoods
         })
@@ -87,16 +94,16 @@ def add_nursery(request:HttpRequest):
          nurseryForm=NurseryOwnerForm(request.POST,request.FILES)
          if nurseryForm.is_valid():
             nursery = nurseryForm.save(commit=False)
-            nursery.owner = request.user  # Set the owner to the current user
-            nursery.save()
+            nursery.owner = request.user  # Set the owner to the current user  
+            nursery.save()           
             messages.success(request, f'تم أضافة الحضانة{nursery.name}  بنجاح  ! يمكنك تتبع حاله الطلب في "طلباتي"','alert-success')
             return redirect("nurseries:nurseries_view")
-         else:
+         else:    
             for field, errors in nurseryForm.errors.items():
                  for error in errors:
                      messages.error(request, f"{field}: {error}",'alert-danger')
-        return render(request, "nurseries/nurseries_view.html",{"nurseryForm":nurseryForm,"neighborhoods":neighborhoods})
-
+        return render(request, "nurseries/nurseries_view.html",{"nurseryForm":nurseryForm,"neighborhoods":neighborhoods})  
+    
 def delete_nursery(request:HttpRequest,nursery_id:int):
     nursery = Nursery.objects.get(pk=nursery_id)
     if nursery.delete():
@@ -105,7 +112,7 @@ def delete_nursery(request:HttpRequest,nursery_id:int):
     else:
          for field, errors in nursery.errors.items():
              for error in errors:
-                 messages.error(request, f"{field}: {error}","alert-danger")
+                 messages.error(request, f"{field}: {error}","alert-danger")    
     return redirect('nurseries:nurseries_view')
 
 def update_nursery(request:HttpRequest,nursery_id:int):
@@ -121,31 +128,31 @@ def update_nursery(request:HttpRequest,nursery_id:int):
                  for error in errors:
                      messages.error(request, f"{field}: {error}","alert-danger")
     return render(request, "nurseries/nurseries_view.html")
-
+      
 
 def detail_nursery(request:HttpRequest,nursery_id:int):
     nursery = Nursery.objects.get(pk=nursery_id)
-    staffs=nursery.staff_set.all()
-    gallery_items=nursery.gallery_set.all()
+    staffs=nursery.staff_set.all() 
+    gallery_items=nursery.gallery_set.all() 
     subscriptions = nursery.subscriptions.all()
     reviews= nursery.reviews.all()
-
+    
     is_owner = request.user == nursery.owner # to restrict the update icons in the frontend for the owner only
 
     # this calculate the min and max age the nursery takes based on the activities it offers
-    activities = nursery.activity_set.all()
+    activities = nursery.activity_set.all() 
     min = activities.aggregate(Min('age_min'))  # This will return a dictionary
-    max = activities.aggregate(Max('age_max'))
-
+    max = activities.aggregate(Max('age_max'))  
+    
 
     average_rating = nursery.reviews.aggregate(Avg('rating'))
-    average_rating = average_rating['rating__avg']
+    average_rating = average_rating['rating__avg']  
     if average_rating:
-     average_rating= round(average_rating)
+     average_rating= round(average_rating) 
 
     min = min['age_min__min']  # Extract the  age from the dictonary for a better disply in the web bage
-    max = max['age_max__max']
-
+    max = max['age_max__max']  
+    
     # Pass the nursery and the calculated ages to the template
     return render(request, "nurseries/nursery_detail.html", {
         "nursery": nursery,
@@ -159,7 +166,7 @@ def detail_nursery(request:HttpRequest,nursery_id:int):
         "is_owner":is_owner,
         "average_rating": average_rating if average_rating is not None else "  لا توجد تقييمات "
     })
-# activity model views
+# activity model views 
 
 def add_activity(request:HttpRequest,nursery_id:int):
     nursery = Nursery.objects.get(pk=nursery_id)
@@ -168,7 +175,7 @@ def add_activity(request:HttpRequest,nursery_id:int):
         activityForm = ActivityForm(request.POST, request.FILES)
         if activityForm.is_valid():
             activity = activityForm.save(commit=False)  # Get the unsaved Activity instance
-            activity.nursery=nursery  # Set the nursery for this activity
+            activity.nursery=nursery  # Set the nursery for this activity            
             activity.save()  # Now save the Activity instance into the database
             messages.success(request, f'تم أضافة النشاط{activity.name} بنجاج  !', 'alert-success')
             return redirect('nurseries:nursery_detail', nursery_id=nursery_id)
@@ -184,7 +191,7 @@ def add_activity(request:HttpRequest,nursery_id:int):
 
 def delete_activity(request:HttpRequest, activity_id:int):
     activity = Activity.objects.get(pk=activity_id)
-    nursery_id = activity.nursery.id
+    nursery_id = activity.nursery.id  
     activity.delete()
     messages.success(request, f'تم حذف النشاط {activity.name} بنجاج  !', 'alert-success')
     return redirect('nurseries:nursery_detail', nursery_id=nursery_id)
@@ -204,10 +211,10 @@ def update_activity(request:HttpRequest, activity_id:int):
                     messages.error(request, f"{field}: {error}", 'alert-danger')
     else:
         activityForm = ActivityForm(instance=activity)
-
+    
     return render(request, 'nurseries/detail_nursery.html', {'activityForm': activityForm, 'activity': activity})
 
-# staff model views
+# staff model views 
 
 def add_staff(request: HttpRequest, nursery_id: int):
     nursery = Nursery.objects.get(pk=nursery_id)
@@ -282,14 +289,14 @@ def add_gallery(request: HttpRequest, nursery_id: int):
 def children_requests(request):
     if not request.user.is_staff:
         return redirect("main:home")
-
+    
     # Fetch all nurseries owned by the logged-in user
     user_nurseries = Nursery.objects.filter(owner=request.user)
     # Fetch registrations linked to any of the nurseries owned by the user
     registrations = Registration.objects.filter(subscription__nursery__in=user_nurseries).order_by('-created_at')
-
-
-    return render(request, "nurseries/children_requests.html", {
+    
+    
+    return render(request, "nurseries/children_requests.html", {    
         'registrations': registrations,
         'status_choices': Registration.STATUS_CHOICES })
 
@@ -298,11 +305,6 @@ def children_requests(request):
 
 
 
-
-
-from django.views.generic import ListView
-from .models import Nursery
-from registrations.models import Review
 
 
 
@@ -344,7 +346,7 @@ def nurseries_list(request):
     paginator = Paginator(nurseries, 3)
     page_number = request.GET.get('page')
     paginated_nurseries = paginator.get_page(page_number)
-
+    
 
     context = {
         'nurseries': paginated_nurseries,
@@ -360,7 +362,7 @@ def nurseries_list(request):
 
     return render(request, 'nurseries/nurseries_list.html', context)
 
-
+    
 stripe.api_key = ''
 
 
@@ -401,7 +403,7 @@ def payment_success(request, child_id):
     child = Child.objects.get(id=child_id)
     registration = Registration.objects.filter(child=child).first()
     registration.status="accepted"
-    registration.save()
+    registration.save() 
     return redirect("parents:requests_status")
 
 def payment_cancel(request, child_id):
@@ -415,7 +417,7 @@ def payment_cancel(request, child_id):
 def owner_nursery_statistics(request):
     if not request.user.is_staff:
         return redirect('main:home')
-
+    
     verify_nurseries = Nursery.objects.filter(status='verified')
     nurseries = verify_nurseries.filter(owner=request.user).annotate(
         total_children=Count('subscriptions__registrations__child', distinct=True),
@@ -423,7 +425,7 @@ def owner_nursery_statistics(request):
         accepted_registrations=Count('subscriptions__registrations', filter=Q(subscriptions__registrations__status='accepted')),
         rejected_registrations=Count('subscriptions__registrations', filter=Q(subscriptions__registrations__status='rejected')),
     )
-
+    
     chart_data = {
         'labels': [nursery.name for nursery in nurseries],
         'children_count': [nursery.total_children for nursery in nurseries],
@@ -433,25 +435,25 @@ def owner_nursery_statistics(request):
             'rejected': [nursery.rejected_registrations for nursery in nurseries],
         }
     }
-
+    
     nursery_status_counts = Nursery.objects.filter(owner=request.user).values('status').annotate(total=Count('id')).order_by()
     nurseries_status_labels = dict(Nursery._meta.get_field('status').choices)  # Corrected access to choices
-
+    
     pie_chart_data = {
         'labels': [nurseries_status_labels.get(status['status'], 'Unknown') for status in nursery_status_counts],
         'values': [status['total'] for status in nursery_status_counts],
     }
-
+    
     registrations = Registration.objects.filter(subscription__nursery__owner=request.user)
     status_counts = registrations.values('status').annotate(total=Count('id')).order_by()
-
+    
     registrations_status_labels = dict(Registration.STATUS_CHOICES)
-
+    
     registrations_pie_chart_data = {
         'labels': [registrations_status_labels.get(status['status']) for status in status_counts],
         'values': [status['total'] for status in status_counts],
     }
-
+    
     return render(request, 'nurseries/statistics.html', {
         'chart_data': chart_data,
         'pie_chart_data': pie_chart_data,
@@ -463,10 +465,10 @@ def owner_nursery_statistics(request):
 
 def admin_nursery_statistics(request):
     parent_count = User.objects.count() # all users count
-
+    
     # Query verified nurseries
-    # verify_nurseries = Nursery.objects.filter(status='verified')
-    # nurseries_count = verify_nurseries.count()
+    # verify_nurseries = Nursery.objects.filter(status='verified') 
+    # nurseries_count = verify_nurseries.count() 
 
     # Calculate total profits
     registration = Registration.objects.filter(status="accepted")
