@@ -16,11 +16,13 @@
               
         
                 <div class="dropdown">
-                    <select name="age" class="form-select custom-select rounded-pill" onchange="this.form.submit()">
-                        <option value="">العمر</option>
-                        {% for age_option in ages %}
-                            <option value="{{ age_option }}" {% if age == age_option %}selected{% endif %}>{{ age_option }}</option>
-                        {% endfor %}
+                    <select name="age_range" class="form-select custom-select rounded-pill" onchange="this.form.submit()">
+                        <option value="">اختر الفئة العمرية</option>
+                        <option value="3-6" {% if age_range == "3-6" %}selected{% endif %}>3-6 أشهر</option>
+                        <option value="6-12" {% if age_range == "6-12" %}selected{% endif %}>6 أشهر - 1 سنة</option>
+                        <option value="12-24" {% if age_range == "12-24" %}selected{% endif %}>1-2 سنوات</option>
+                        <option value="24-36" {% if age_range == "24-36" %}selected{% endif %}>2-3 سنوات</option>
+                        <option value="48-60" {% if age_range == "48-60" %}selected{% endif %}>4-5 سنوات</option>
                     </select>
                 </div>
                 <div class="dropdown">
@@ -144,7 +146,7 @@
                                     <path d="M8 3a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"/>
                                     <path d="m5.93 6.704-.846 8.451a.768.768 0 0 0 1.523.203l.81-4.865a.59.59 0 0 1 1.165 0l.81 4.865a.768.768 0 0 0 1.523-.203l-.845-8.451A1.5 1.5 0 0 1 10.5 5.5L13 2.284a.796.796 0 0 0-1.239-.998L9.634 3.84a.7.7 0 0 1-.33.235c-.23.074-.665.176-1.304.176-.64 0-1.074-.102-1.305-.176a.7.7 0 0 1-.329-.235L4.239 1.286a.796.796 0 0 0-1.24.998l2.5 3.216c.317.316.475.758.43 1.204Z"/>
                                 </svg>
-                                {{ nursery.age_group }} أعوام
+                                {{ nursery.min_display }} - {{ nursery.max_display }}
                             </p>
                         </div>
 

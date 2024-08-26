@@ -41,8 +41,8 @@ class Nursery(models.Model):
 
     min_age = models.PositiveIntegerField(default=1)
     max_age = models.PositiveIntegerField(default=5)
-    max_age_unit = models.CharField(max_length=10, choices=(('months', 'أشهر'), ('years', 'سنوات')), default='years')
-    min_age_unit = models.CharField(max_length=10, choices=(('months', 'أشهر'), ('years', 'سنوات')), default='years')
+    # max_age_unit = models.CharField(max_length=10, choices=(('months', 'أشهر'), ('years', 'سنوات')), default='years')
+    # min_age_unit = models.CharField(max_length=10, choices=(('months', 'أشهر'), ('years', 'سنوات')), default='years')
     main_image = models.ImageField(upload_to='images/', default="images/nursery_default.jpg")
 
     
