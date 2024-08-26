@@ -2,51 +2,49 @@
 
 {% block title %} التسجيل كولي امر{% endblock %}
 
-
 {% block content %}
 
 <div class="d-flex flex-column gap-3 mb-3 justify-content-center align-items-center">
 
   <h2>انشئ حساب كولي امر </h2>
   <form class="d-flex flex-column gap-3 w-50 m-4" action="{% url 'parents:signup_parent' %}" method="POST"
-      enctype="multipart/form-data">
+      enctype="multipart/form-data" onsubmit="return validateForm()">
       {% csrf_token %}
 
-
       <div class="form-floating">
-          <input type="text" class="form-control" id="floatingInput" placeholder="username" name="username" required>
-          <label for="floatingInput">اسم المستخدم</label>
+          <input type="text" class="form-control" id="username" placeholder="username" name="username" required>
+          <label for="username">اسم المستخدم</label>
       </div>
 
       <div class="form-floating">
-          <input type="text" class="form-control" id="floatingInput" placeholder="First name" name="first_name"
+          <input type="text" class="form-control" id="first_name" placeholder="First name" name="first_name"
               required>
-          <label for="floatingInput">الاسم الاول</label>
+          <label for="first_name">الاسم الاول</label>
       </div>
 
       <div class="form-floating">
-          <input type="text" class="form-control" id="floatingInput" placeholder="Last name" name="last_name"
+          <input type="text" class="form-control" id="last_name" placeholder="Last name" name="last_name"
               required>
-          <label for="floatingInput">الاسم الاخير</label>
+          <label for="last_name">الاسم الاخير</label>
       </div>
 
       <div class="form-floating">
-          <label for="floatingInput">البريد الالكتروني</label>
-          <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" name="email"
+          <label for="floatingEmail">البريد الالكتروني</label>
+          <input type="email" class="form-control" id="floatingEmail" placeholder="name@example.com" name="email"
               required>
       </div>
 
       <div class="form-floating">
-        <input type="text" class="form-control" id="floatingInput" placeholder="9665555555555" name="phone_number" maxlength="10" minlength="10" required>
-        <label for="floatingInput">رقم الهاتف</label>
+        <input type="text" class="form-control" id="floatingPhone" placeholder="9665555555555" name="phone_number" maxlength="10" minlength="10" required>
+        <label for="floatingPhone">رقم الهاتف</label>
     </div>
 
     <div class="form-floating">
-      <input type="text" class="form-control" id="floatingInput" placeholder="9665555555555" name="Work_number" maxlength="10" minlength="10" required>
-      <label for="floatingInput">رقم هاتف العمل</label>
+      <input type="text" class="form-control" id="floatingWorkPhone" placeholder="9665555555555" name="Work_number" maxlength="10" minlength="10" required>
+      <label for="floatingWorkPhone">رقم هاتف العمل</label>
   </div>
 
-      <div class="form-floating">
+      <div class="form-floating position-relative">
           <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password"
               required>
           <label for="floatingPassword">كلمة المرور</label>
@@ -59,6 +57,8 @@
         <span onclick="togglePasswordVisibility('floatingConfirmPassword')" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;">Show</span>
       </div>
 
+      <div id="error-message" style="color: red;"></div>
+
       <button class="btn btn-primary w-100 py-2" type="submit">انشاء حساب</button>
   </form>
   <h5>لديك حساب ؟ <a href="{% url 'parents:signin' %}"> سجل الدخول</a> او <a
@@ -66,13 +66,96 @@
 
 </div>
 
-
 <script>
     function togglePasswordVisibility(fieldId) {
         var inputField = document.getElementById(fieldId);
         var type = inputField.type === 'password' ? 'text' : 'password';
         inputField.type = type;
     }
+
+    function validateForm() {
+        var username = document.getElementById('username').value;
+        var firstName = document.getElementById('first_name').value;
+        var lastName = document.getElementById('last_name').value;
+        var password = document.getElementById('floatingPassword').value;
+        var confirmPassword = document.getElementById('floatingConfirmPassword').value;
+        var email = document.getElementById('floatingEmail').value;
+        var phoneNumber = document.getElementById('floatingPhone').value;
+        var workNumber = document.getElementById('floatingWorkPhone').value;
+        var errorMessage = document.getElementById('error-message');
+
+        errorMessage.textContent = ""; // Clear any previous error messages
+
+        // تحقق من أن اسم المستخدم يحتوي فقط على أحرف إنجليزية وأرقام
+        var usernameRegex = /^[a-zA-Z0-9_]+$/;
+        if (!usernameRegex.test(username)) {
+            errorMessage.textContent = "اسم المستخدم يجب أن يحتوي فقط على أحرف إنجليزية وأرقام.";
+            return false;
+        }
+
+        // تحقق من أن الاسم الأول يحتوي فقط على أحرف عربية أو إنجليزية
+        var nameRegex = /^[a-zA-Z\u0621-\u064A\u066E-\u066F]+$/;
+        if (!nameRegex.test(firstName)) {
+            errorMessage.textContent = "الاسم الأول يجب أن يحتوي فقط على أحرف عربية أو إنجليزية.";
+            return false;
+        }
+
+        // تحقق من أن الاسم الأخير يحتوي فقط على أحرف عربية أو إنجليزية
+        if (!nameRegex.test(lastName)) {
+            errorMessage.textContent = "الاسم الأخير يجب أن يحتوي فقط على أحرف عربية أو إنجليزية.";
+            return false;
+        }
+
+        // تحقق من طول كلمة المرور
+        if (password.length < 8) {
+            errorMessage.textContent = "يجب أن تحتوي كلمة المرور على ٨ أحرف أو أرقام على الأقل.";
+            return false;
+        }
+
+        // تحقق من احتواء كلمة المرور على أحرف وأرقام
+        var passwordRegex = /^(?=.*[0-9])(?=.*[a-zA-Z]).{8,}$/;
+        if (!passwordRegex.test(password)) {
+            errorMessage.textContent = "يجب أن تحتوي كلمة المرور على أحرف وأرقام.";
+            return false;
+        }
+
+        // تحقق من تطابق كلمة المرور
+        if (password !== confirmPassword) {
+            errorMessage.textContent = "كلمة المرور غير متطابقة.";
+            return false;
+        }
+
+        // تحقق من صحة البريد الإلكتروني
+        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            errorMessage.textContent = "البريد الإلكتروني غير صحيح.";
+            return false;
+        }
+
+        // تحقق من النطاقات المسموح بها للبريد الإلكتروني
+        var allowedDomains = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'icloud.com'];
+        var emailDomain = email.split('@')[1];
+        if (!allowedDomains.includes(emailDomain)) {
+            errorMessage.textContent = "يجب أن يكون البريد الإلكتروني صحيحا وضمن الايميلات المسموح تسجيلها (gmail, hotmail, yahoo, outlook, icloud).";
+            return false;
+        }
+
+        // تحقق من النمط الصحيح لرقم الهاتف
+        var phoneRegex = /^05[0-9]{8}$/;
+        if (!phoneRegex.test(phoneNumber)) {
+            errorMessage.textContent = "رقم الهاتف يجب أن يبدأ بـ '05' ويليه 8 أرقام.";
+            return false;
+        }
+
+        // تحقق من النمط الصحيح لرقم هاتف العمل
+        if (!phoneRegex.test(workNumber)) {
+            errorMessage.textContent = "رقم هاتف العمل يجب أن يبدأ بـ '05' ويليه 8 أرقام.";
+            return false;
+        }
+
+        return true;
+    }
 </script>
+
 
 {% endblock %}
