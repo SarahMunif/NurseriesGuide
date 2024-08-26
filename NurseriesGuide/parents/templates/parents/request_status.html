@@ -57,7 +57,7 @@
                 <div class="card-body">
                     
                     <h5 class="card-title mb-3 d-flex justify-content-between">
-                        <a href="#">{{ request.subscription.nursery }}</a>
+                        <a href="{% url 'nurseries:nursery_detail' request.subscription.nursery.id %}">{{ request.subscription.nursery }}</a>
                     </h5>
 
                     <div class="row align-items-center">

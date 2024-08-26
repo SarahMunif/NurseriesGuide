@@ -29,9 +29,9 @@ class Child(models.Model):
     last_name = models.CharField(max_length=124,default=None)
     birth_date = models.DateField()
     national_id = models.CharField(max_length=10)
-    about = models.TextField(default= None)
-    Disease = models.TextField(default= None)
-    Allergy = models.TextField(default= None)
+    about = models.TextField(blank=True, default='')  
+    Disease = models.TextField(blank=True, default='لايوجد') 
+    Allergy = models.TextField(blank=True, default='لا يوجد') 
     parent = models.ForeignKey(Parent,on_delete=models.CASCADE)
     photo = models.ImageField(upload_to="images/", default="images/default.jpg")
 
