@@ -139,10 +139,10 @@ def detail_nursery(request:HttpRequest,nursery_id:int):
     
     is_owner = request.user == nursery.owner # to restrict the update icons in the frontend for the owner only
 
-    # this calculate the min and max age the nursery takes based on the activities it offers
+    # # this calculate the min and max age the nursery takes based on the activities it offers
     activities = nursery.activity_set.all() 
-    min = activities.aggregate(Min('age_min'))  # This will return a dictionary
-    max = activities.aggregate(Max('age_max'))  
+    # min = activities.aggregate(Min('age_min'))  # This will return a dictionary
+    # max = activities.aggregate(Max('age_max'))  
     
 
     average_rating = nursery.reviews.aggregate(Avg('rating'))
@@ -150,14 +150,13 @@ def detail_nursery(request:HttpRequest,nursery_id:int):
     if average_rating:
      average_rating= round(average_rating) 
 
-    min = min['age_min__min']  # Extract the  age from the dictonary for a better disply in the web bage
-    max = max['age_max__max']  
+    # min = min['age_min__min']  # Extract the  age from the dictonary for a better disply in the web bage
+    # max = max['age_max__max']  
     
     # Pass the nursery and the calculated ages to the template
     return render(request, "nurseries/nursery_detail.html", {
         "nursery": nursery,
-        "min": min,
-        "max": max,
+
         "activities":activities,
         "staffs":staffs,
         "gallery_items":gallery_items,

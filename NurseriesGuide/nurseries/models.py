@@ -38,6 +38,15 @@ class Nursery(models.Model):
 
     commercial_registry_file = models.FileField(upload_to='commercial_registry/', null=True, blank=True)
     license_file = models.FileField(upload_to='nursery_licenses/', null=True, blank=True)
+
+    min_age = models.PositiveIntegerField(default=1)
+    max_age = models.PositiveIntegerField(default=5)
+    max_age_unit = models.CharField(max_length=10, choices=(('months', 'أشهر'), ('years', 'سنوات')), default='years')
+    min_age_unit = models.CharField(max_length=10, choices=(('months', 'أشهر'), ('years', 'سنوات')), default='years')
+    
+    
+
+
     def __str__(self):
         return self.name
 

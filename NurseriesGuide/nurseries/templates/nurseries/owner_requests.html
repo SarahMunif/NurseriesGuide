@@ -86,52 +86,79 @@
                         </div>
 
             </div>
-        <!-- Modal for Update Form -->
-        <div class="modal fade" id="updateModal-{{ nursery.id }}" tabindex="-1" aria-labelledby="updateModalLabel-{{ nursery.id }}" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="updateModalLabel-{{ nursery.id }}">تعديل بيانات الحضانه </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form method="post" action="{% url 'nurseries:update_nursery' nursery.id %}">
-                            {% csrf_token %}
-                            <label for="nursery-name-{{ nursery.id }}" class="form-label">الاسم</label>
-                            <input type="text" class="form-control mb-3" id="nursery-name-{{ nursery.id }}" name="name" value="{{ nursery.name }}" required>
-
-                            <label for="nursery-address-{{ nursery.id }}" class="form-label">الموقع</label>
-                            <input type="url" class="form-control mb-3" id="nursery-address-{{ nursery.id }}" name="address" value="{{ nursery.address }}" required>
-
-                            <label for="nursery-contact_number-{{ nursery.id }}" class="form-label">رقم التواصل</label>
-                            <input type="text" class="form-control mb-3" id="nursery-contact_number-{{ nursery.id }}" name="contact_number" value="{{ nursery.contact_number }}" required>
-
-                            <label for="nursery-email-{{ nursery.id }}" class="form-label">الايميل</label>
-                            <input type="email" class="form-control mb-3" id="nursery-email-{{ nursery.id }}" name="email" value="{{ nursery.email }}" required>
-
-                            <label for="nursery-description-{{ nursery.id }}" class="form-label">نبذه عن الحضانة</label>
-                            <textarea class="form-control mb-3" id="nursery-description-{{ nursery.id }}" name="description">{{ nursery.description }}</textarea>
-
-                            <div class="mb-3">
-                                <label for="nursery-neighborhood-{{ nursery.id }}" class="form-label">الحي</label>
-                                <select class="form-control" id="nursery-neighborhood-{{ nursery.id }}" name="neighborhood" required>
-                                    {% for neighborhood in neighborhoods %}
-                                        <option value="{{ neighborhood.id }}" {% if neighborhood.id == nursery.neighborhood_id %}selected{% endif %}>{{ neighborhood.name }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-
-                            <div class="form-check mb-3">
-                                <input class="form-check-input" type="checkbox" id="nursery-special_needs-{{ nursery.id }}" name="accepts_special_needs" value="True" {% if nursery.accepts_special_needs %}checked{% endif %}>
-                                <label class="form-check-label" for="nursery-special_needs-{{ nursery.id }}"> تقبل بذوي الاحتياجات الخاصة</label>
-                            </div>
-
-                            <button type="submit" class="btn btn-primary">أحفظ التعديلات</button>
-                        </form>
-                    </div>
-                </div>
+<!-- Modal for Update Form -->
+<div class="modal fade" id="updateModal-{{ nursery.id }}" tabindex="-1" aria-labelledby="updateModalLabel-{{ nursery.id }}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateModalLabel-{{ nursery.id }}">تعديل بيانات الحضانه</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-        </div>    
+            <div class="modal-body">
+                <form method="post" action="{% url 'nurseries:update_nursery' nursery.id %}">
+                    {% csrf_token %}
+                    <label for="nursery-name-{{ nursery.id }}" class="form-label">الاسم</label>
+                    <input type="text" class="form-control mb-3" id="nursery-name-{{ nursery.id }}" name="name" value="{{ nursery.name }}" required>
+
+                    <label for="nursery-address-{{ nursery.id }}" class="form-label">الموقع</label>
+                    <input type="url" class="form-control mb-3" id="nursery-address-{{ nursery.id }}" name="address" value="{{ nursery.address }}" required>
+
+                    <label for="nursery-contact_number-{{ nursery.id }}" class="form-label">رقم التواصل</label>
+                    <input type="text" class="form-control mb-3" id="nursery-contact_number-{{ nursery.id }}" name="contact_number" value="{{ nursery.contact_number }}" required>
+
+                    <label for="nursery-email-{{ nursery.id }}" class="form-label">الايميل</label>
+                    <input type="email" class="form-control mb-3" id="nursery-email-{{ nursery.id }}" name="email" value="{{ nursery.email }}" required>
+
+                    <label for="nursery-description-{{ nursery.id }}" class="form-label">نبذه عن الحضانة</label>
+                    <textarea class="form-control mb-3" id="nursery-description-{{ nursery.id }}" name="description">{{ nursery.description }}</textarea>
+
+                    <div class="mb-3">
+                        <label for="nursery-min-age" class="form-label">العمر الأدنى</label>
+                        <input type="number" class="form-control" id="nursery-min-age" name="min_age" required value="{{ nursery.min_age }}">
+                    </div>
+
+                 
+                    <div class="mb-3">
+                        <label for="nursery-min-age-unit" class="form-label">وحدة العمر الأدنى</label>
+                        <select class="form-control" id="nursery-min-age-unit" name="min_age_unit" required>
+                            <option value="months" {% if nursery.min_age_unit == 'months' %}selected{% endif %}>أشهر</option>
+                            <option value="years" {% if nursery.min_age_unit == 'years' %}selected{% endif %}>سنوات</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="nursery-max-age" class="form-label">العمر الأقصى</label>
+                        <input type="number" class="form-control" id="nursery-max-age" name="max_age" required value="{{ nursery.max_age }}">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="nursery-max-age-unit" class="form-label">وحدة العمر الأقصى</label>
+                        <select class="form-control" id="nursery-max-age-unit" name="max_age_unit" required>
+                            <option value="months" {% if nursery.max_age_unit == 'months' %}selected{% endif %}>أشهر</option>
+                            <option value="years" {% if nursery.max_age_unit == 'years' %}selected{% endif %}>سنوات</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="nursery-neighborhood-{{ nursery.id }}" class="form-label">الحي</label>
+                        <select class="form-control" id="nursery-neighborhood-{{ nursery.id }}" name="neighborhood" required>
+                            {% for neighborhood in neighborhoods %}
+                                <option value="{{ neighborhood.id }}" {% if neighborhood.id == nursery.neighborhood_id %}selected{% endif %}>{{ neighborhood.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="nursery-special_needs-{{ nursery.id }}" name="accepts_special_needs" value="True" {% if nursery.accepts_special_needs %}checked{% endif %}>
+                        <label class="form-check-label" for="nursery-special_needs-{{ nursery.id }}">تقبل بذوي الاحتياجات الخاصة</label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">أحفظ التعديلات</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
         
 
@@ -209,6 +236,44 @@
                                     {% endfor %}
                                 </select>
                             </div>
+                            <div class="mb-3">
+                                <label for="commercial-registry" class="form-label">السجل التجاري</label>
+                                <input type="file" class="form-control" id="commercial-registry" name="commercial_registry_file" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="license-file" class="form-label">رخصة الحضانة</label>
+                                <input type="file" class="form-control" id="license-file" name="license_file" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="nursery-min-age" class="form-label">العمر الأدنى</label>
+                                <input type="number" class="form-control" id="nursery-min-age" name="min_age" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="nursery-min-age-unit" class="form-label">وحدة العمر الأدنى</label>
+                                <select class="form-control" id="nursery-min-age-unit" name="min_age_unit" required>
+                                    <option value="months">أشهر</option>
+                                    <option value="years">سنوات</option>
+                                </select>
+                            </div>
+
+                         
+                            <div class="mb-3">
+                                <label for="nursery-max-age" class="form-label">العمر الأقصى</label>
+                                <input type="number" class="form-control" id="nursery-max-age" name="max_age" required>
+                            </div>
+
+                           
+                            <div class="mb-3">
+                                <label for="nursery-max-age-unit" class="form-label">وحدة العمر الأقصى</label>
+                                <select class="form-control" id="nursery-max-age-unit" name="max_age_unit" required>
+                                    <option value="months">أشهر</option>
+                                    <option value="years">سنوات</option>
+                                </select>
+                            </div>
+
+                            
                             <div class="mb-3">
                                 <button type="submit" class="btn btn-primary">أضف الحضانة</button>
                             </div>
