@@ -82,11 +82,16 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form method="post" action="{% url 'nurseries:update_nursery' nursery.id %}">
+                        <form method="post" action="{% url 'nurseries:update_nursery' nursery.id %}" enctype="multipart/form-data"> 
+
                             {% csrf_token %}
                             <label for="nursery-name-{{ nursery.id }}" class="form-label">الاسم</label>
                             <input type="text" class="form-control mb-3" id="nursery-name-{{ nursery.id }}" name="name" value="{{ nursery.name }}" required>
-
+                            <div class="mb-3">
+                                <label for="nursery-main-image-{{ nursery.id }}" class="form-label">صورة</label>
+                                <input type="file" class="form-control" id="nursery-main-image-{{ nursery.id }}" name="main_image" accept="image/*" >
+                                <img id="image-preview-{{ nursery.id }}" src="{{ nursery.main_image.url }}" alt="Current Image" class="img-thumbnail mt-2" style="max-width: 100%; display: block;">
+                            </div>
                             <label for="nursery-address-{{ nursery.id }}" class="form-label">الموقع</label>
                             <input type="url" class="form-control mb-3" id="nursery-address-{{ nursery.id }}" name="address" value="{{ nursery.address }}" required>
 
@@ -193,6 +198,10 @@
                             <div class="mb-3">
                                 <label for="nursery-name" class="form-label">الأسم</label>
                                 <input type="text" class="form-control" id="nursery-name" name="name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="nursery-main-image" class="form-label">صورة</label>
+                                <input type="file" class="form-control" id="nursery-main-image" name="main_image" accept="image/*" >
                             </div>
                             <div class="mb-3">
                                 <label for="nursery-address" class="form-label">الموقع</label>

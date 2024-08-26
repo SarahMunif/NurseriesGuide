@@ -120,9 +120,11 @@ def update_nursery(request:HttpRequest,nursery_id:int):
     if request.method == "POST":
          nurseryForm=NurseryOwnerForm(request.POST, request.FILES, instance=nursery)
          if nurseryForm.is_valid():
-             nurseryForm.save()
-             messages.success(request, 'تم حفظ تعديلاتك بنجاح  !',"alert-success")
-             return redirect("nurseries:nurseries_view")
+            if 'main_image' in request.FILES:
+                nurseryForm.main_image = request.FILES['main_image']
+            nurseryForm.save()
+            messages.success(request, 'تم حفظ تعديلاتك بنجاح  !',"alert-success")
+            return redirect("nurseries:nurseries_view")
          else:
              for field, errors in nurseryForm.errors.items():
                  for error in errors:

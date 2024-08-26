@@ -91,7 +91,7 @@
                     <div class="col-lg-6 p-3">
                         <div class="nursery-card border rounded bg-light h-100 d-flex align-items-center justify-content-center" 
                             style="border: 3px dotted {% if forloop.counter|divisibleby:2 %}#F4C93A{% else %}#F5888E{% endif %};">
-                            <img src="https://placehold.co/400x300/e3e2de/787674" alt="Image of {{ nursery.name }}" class="img-fluid">
+                            <img src="{{ nursery.main_image.url }}" alt="Image of {{ nursery.name }}" class="img-fluid">
                         </div>
                     </div>
                     <div class="col-lg-6 d-flex flex-column justify-content-between p-3">

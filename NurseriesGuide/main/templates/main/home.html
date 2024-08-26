@@ -94,11 +94,10 @@
                     <div class="card-body">
                         <h5 class="card-title mb-3">
                             <div class="gallery-container">
-                                {% for item in nursery.gallery_items %}
                                 <div class="gallery-item">
-                                    <img src="{{ item.image.url }}" alt="Gallery image" class="responsive-img mb-4">
-                                </div>
-                                {% endfor %}
+                                    <img src="{{ nursery.main_image.url }} " alt="Gallery image" class="responsive-img mb-4">
+                                
+                           
                             </div>
                             <a class="align-items-start" href="{%url 'nurseries:nursery_detail' nursery.id %}">{{ nursery.name }}</a>
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-patch-check" viewBox="0 0 16 16">
