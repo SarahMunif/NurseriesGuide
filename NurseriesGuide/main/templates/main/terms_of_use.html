@@ -4,7 +4,15 @@
 
 {% block hero %}
 <style>
-    /* .about {
+    .terms {
+        background-color: #FDFAF0;
+        height: fit-content;
+        width: 100%;
+        overflow: hidden;
+        padding: auto;
+    }
+
+    .about {
         background-color: #FDFAF0;
         border-radius: 15px;
         padding: 20px;
@@ -13,96 +21,181 @@
         height: auto;
     }
 
-    .section h2 {
-        color: #343779;
-        cursor: pointer;
-        margin-bottom: 0;
-        border-bottom: 2px solid transparent;
-        padding-bottom: 10px;
-        transition: border-color 0.3s ease;
-        margin-bottom: 3rem;
-    }
-
-    .section.active h2 {
-        border-color: #F5878E;
-    }
-
-    .content p {
-        color: #666;
-        line-height: 1.5;
-        overflow: hidden;
-        transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
-        max-height: 0;
-        padding: 0 20px;
-    }
-
-    .content.active p {
-        max-height: 500px;
-        padding-top: 20px;
-        font-size: 1.2rem;
-    }
-
-    .note-title {
-        font-size: 24px;
-        color: #333;
-        margin-bottom: 20px;
-    }
-
     .note-text {
         font-size: 18px;
         color: #666;
         line-height: 1.5;
-    } */
+    }
+
+    .accordion-item {
+        border: none; /* إلغاء الحدود للـ accordion-item */
+        margin: 2rem;
+    }
+
+    .accordion-button {
+        border: none; /* إلغاء الحدود للـ accordion-button */
+    }
+
+    .accordion-body {
+        border: none; /* إلغاء الحدود للـ accordion-body */
+        line-height: 1.9;
+
+
+    }
+
+    .accordion-body strong {
+        padding-left: .7rem;
+    }
 </style>
 
 <section class="ylo-section-wrapper">
     <div class="container py-5 text-center">
-        <h2 class="py-5 mb-3 mt-4">  سياسة الاستخدام      </h2>
+        <h2 class="py-5 mb-3 mt-4"> سياسة الاستخدام </h2>
         <p class="note-text">
-            مرحبًا بكم في دليل الحضانات، المنصة الإلكترونية المصممة لتسهيل عملية البحث والتسجيل في حضانات الأطفال في السعودية. باستخدام هذا الموقع، فإنك توافق على الالتزام بشروط وأحكام هذه السياسة. يرجى قراءة هذه السياسة بعناية قبل استخدام الموقع
+            مرحبًا بكم في دليل الحضانات، المنصة الإلكترونية المصممة لتسهيل عملية البحث والتسجيل في حضانات الأطفال في
+            السعودية. باستخدام هذا الموقع، فإنك توافق على الالتزام بشروط وأحكام هذه السياسة. يرجى قراءة هذه السياسة
+            بعناية قبل استخدام الموقع.
         </p>
     </div>
+</section>
 
-
-<div class="container">
-    <div class="accordion" id="accordionExample">
-        <div class="accordion">
-          <h2 class="accordion">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                <h3>
-                    التسجيل والحسابات
-
-                </h3>
-            </button>
-          </h2>
-          <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
-            <div class="accordion-body">
-                <p><strong>أولياء الأمور</strong></p>
-                <p><strong>مدراء الحضانات</strong></p>
+<div class="terms">
+    <div class="container mt-4 mb-4">
+        <div class="accordion" id="accordionExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <h3>التسجيل والحسابات</h3>
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <p><strong>أولياء الأمور:</strong> يتعين على المستخدمين الراغبين في البحث عن حضانات أو تسجيل أطفالهم في الحضانة إنشاء حساب شخصي. يجب تقديم معلومات دقيقة وحديثة عند التسجيل.</p>
+                        <p><strong>مدراء الحضانات:</strong> يتعين على أصحاب الحضانات الراغبين في إضافة حضاناتهم وإدارة بياناتهم إنشاء حساب خاص بمالك الحضانة. يشترط تقديم معلومات صحيحة وكاملة عن الحضانة لضمان قبولها في الموقع.</p>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-        <div class="accordion">
-          <h2 class="accordion">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                <h3>
-                    التسجيل والحسابات
 
-                </h3>
-            </button>
-          </h2>
-          <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
-            <div class="accordion-body">
-                <p><strong>أولياء الأمور</strong></p>
-                <p><strong>مدراء الحضانات</strong></p>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        <h3>استخدام الموقع</h3>
+                    </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <p>
+                            يمكن لأولياء الأمور استخدام الموقع للبحث عن حضانات مناسبة لأطفالهم، وتصفية النتائج بناءً على الموقع الجغرافي، الخدمات، التقييمات، وغيرها من المعايير.
+                            يُتاح للأولياء تقديم التقييمات والمراجعات حول الحضانات، على أن تكون هذه التقييمات موضوعية ولا تحتوي على معلومات مضللة أو مسيئة.
+                            يُسمح لمدراء الحضانات بإدارة بيانات حضاناتهم وتحديثها بانتظام، بالإضافة إلى متابعة طلبات التسجيل واتخاذ القرارات المناسبة بخصوصها.
+                        </p>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
 
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingThree">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        <h3>البيانات والمعلومات الشخصية</h3>
+                    </button>
+                </h2>
+                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <p>
+                            يلتزم الموقع بحماية خصوصية مستخدميه. يتم جمع ومعالجة البيانات الشخصية وفقًا لسياسة الخصوصية الخاصة بنا.
+                            على المستخدمين الحفاظ على سرية بيانات الدخول الخاصة بهم وعدم مشاركتها مع أي طرف آخر. الموقع غير مسؤول عن أي استخدام غير مصرح به لحساب المستخدم.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingFour">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                        <h3>التزامات المستخدمين</h3>
+                    </button>
+                </h2>
+                <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <p>
+                            يلتزم المستخدمون باستخدام الموقع لأغراض مشروعة فقط، والامتناع عن أي نشاط يخل بأمن الموقع أو يعرض المستخدمين الآخرين للخطر.
+                            يُحظر على المستخدمين نشر أو توزيع أي محتوى غير لائق، أو احتيالي، أو ينتهك حقوق الملكية الفكرية لأي طرف آخر.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingFive">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                        <h3>التقييمات والمراجعات</h3>
+                    </button>
+                </h2>
+                <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <p>
+                            يحتفظ الموقع بالحق في مراجعة وحذف أي تقييمات أو مراجعات تعتبر غير لائقة أو تفتقر إلى المصداقية.
+                            يجب أن تكون جميع التقييمات والمراجعات صادقة وتعكس تجربة المستخدم الشخصية مع الحضانة المعنية.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingSix">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                        <h3>إخلاء المسؤولية</h3>
+                    </button>
+                </h2>
+                <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <p>
+                            دليل الحضانات هو منصة تتيح التواصل بين أولياء الأمور والحضانات. الموقع ليس مسؤولاً عن جودة الخدمات المقدمة من قبل الحضانات المدرجة في الموقع.
+                            لا يضمن الموقع صحة أو دقة المعلومات المقدمة من قبل المستخدمين أو الحضانات، ويجب على المستخدمين إجراء التحقق اللازم قبل اتخاذ أي قرارات استنادًا إلى هذه المعلومات.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingSeven">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
+                        <h3>تعديلات على سياسة الاستخدام</h3>
+                    </button>
+                </h2>
+                <div id="collapseSeven" class="accordion-collapse collapse" aria-labelledby="headingSeven" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <p>
+                            يحتفظ الموقع بالحق في تعديل أو تحديث هذه السياسة في أي وقت. سيتم إشعار المستخدمين بأي تغييرات مهمة عبر البريد الإلكتروني أو من خلال إشعار على الموقع.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingEight">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseEight" aria-expanded="false" aria-controls="collapseEight">
+                        <h3>الاتصال بنا</h3>
+                    </button>
+                </h2>
+                <div id="collapseEight" class="accordion-collapse collapse" aria-labelledby="headingEight" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <p>
+                            اذا كان لديك أي استفسارات أو تعليقات بخصوص سياسة الاستخدام هذه، يمكنك التواصل معنا عبر <a href="mailto:test343py@gmail.com">info@care.com</a> <a href="tel:+96655667777"> +96655667777 </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
-</section>
-
-
-{% endblock hero %}
+{% endblock %}
