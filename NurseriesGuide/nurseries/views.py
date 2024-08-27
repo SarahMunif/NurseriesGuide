@@ -169,6 +169,23 @@ def detail_nursery(request:HttpRequest,nursery_id:int):
         max_unit="سنوات"  
     else:
       max_unit="أشهر"
+    
+    for subscription in subscriptions:
+        age_min = subscription.age_min
+        if age_min >= 12:
+            age_min = int(age_min / 12)
+            min_unit = "سنوات"
+        else:
+            min_unit = "أشهر"
+        subscription.min_display = f"{age_min} {min_unit}"
+
+        age_max = subscription.age_max
+        if age_max >= 12:
+            age_max = int(age_max / 12)
+            max_unit = "سنوات"
+        else:
+            max_unit = "أشهر"
+        subscription.max_display = f"{age_max} {max_unit}"
 
     return render(request, "nurseries/nursery_detail.html", {
         "nursery": nursery,

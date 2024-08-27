@@ -133,13 +133,23 @@ def add_subscription(request, nursery_id):
         if subscriptionForm.is_valid():
             subscription = subscriptionForm.save(commit=False)  # Get the unsaved Activity instance
             subscription.nursery=nursery  # Set the nursery for this activity
-            subscription.save()  # Now save the Activity instance into the database
+            age_min = int(request.POST['age_min'])
+            age_max = int(request.POST['age_max'])
+            if 'min_age_years' in request.POST:
+                age_min *= 12    # to be as months to better the search filltring later 
+            if 'max_age_years' in request.POST:
+                age_max *= 12 
+            subscription.age_min=age_min    # age in months 
+            subscription.age_max=age_max                           
+            subscription.save()  
             messages.success(request, 'تم اضافه الباقه بنجاح!', 'alert-success')
             return redirect('nurseries:nursery_detail', nursery_id=nursery_id)
         else:
             for field, errors in subscriptionForm.errors.items():
                 for error in errors:
                     messages.error(request, f"{field}: {error}", 'alert-danger')
+                    return redirect('nurseries:nursery_detail', nursery_id=nursery_id)
+
     else:
         subscriptionForm = subscriptionForm()
 
