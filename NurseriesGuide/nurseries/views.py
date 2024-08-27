@@ -185,7 +185,7 @@ def detail_nursery(request:HttpRequest,nursery_id:int):
             max_unit = "سنوات"
         else:
             max_unit = "أشهر"
-        subscription.max_display = f"{age_max} {max_unit}"
+        nursery.max_display = f"{age_max} {max_unit}"
 
     return render(request, "nurseries/nursery_detail.html", {
         "nursery": nursery,

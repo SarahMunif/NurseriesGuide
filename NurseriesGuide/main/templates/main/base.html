@@ -12,7 +12,8 @@
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'main/css/styles.css' %}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 </head>
 
 <style>
@@ -35,175 +36,231 @@
     .nav-underline .nav-link.active {
         border-color: #F5888E;
     }
+
+    .symbols {
+  color: #343779;
+}
+
+/* Blur background when modal is active */
+.modal-backdrop.show {
+    opacity: 0.5;
+}
+
+.modal-open .modal {
+    background-color: transparent;
+}
+
+
+.modal-open .modal-backdrop {
+  opacity: 0.5; /* semi-transparent backdrop */
+}
+
+.modal-open .modal-content {
+  background-color: transparent;
+  border: none;
+  backdrop-filter: blur(10px); /* Blurring effect */
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.blur-background {
+  filter: blur(5px); /* Amount of blur */
+}
+
+.icon-link svg {
+  fill: #343779;
+  transition: transform 0.3s ease, fill 0.3s ease;
+}
+
+.icon-link:hover svg {
+  transform: scale(1.2);
+  fill: #F5888E;
+}
+
+
+.modal-dialog-centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100% - 1rem);
+}
+
+.modal-content {
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 1rem;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.modal-header .btn-close {
+  margin-left: auto;
+  color: #fff;
+  border: none;
+  opacity: 0.7;
+}
+
 </style>
 
 <body>
 
+  <div id="activitiesToBlur">
 
-    <header class="sticky-top navbar nav-underline navbar-expand-lg navbar-light bg-white">
-        <a class="navbar-brand" href="{% url 'main:home' %}"><img src="{% static '/main/images/logo.png' %}" alt="Logo" /></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+  <header class="sticky-top navbar nav-underline navbar-expand-lg navbar-light bg-white">
+    <a class="navbar-brand" href="{% url 'main:home' %}"><img src="{% static '/main/images/logo.png' %}" alt="Logo" /></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'main:home' %}">الرئيسية</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'nurseries_list' %}active{% endif %}" href="{% url 'nurseries:nurseries_list' %}">حضاناتنا</a>
+            </li>
+            {% if request.user.is_authenticated and not request.user.is_superuser and not request.user.is_staff %}
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'requests_status' %}active{% endif %}" href="{% url 'parents:requests_status' %}">طلباتي</a>
+            </li>
+            {% endif %}
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'about_us' %}active{% endif %}" href="{% url 'main:about_us' %}">من نحن</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'contact_view' %}active{% endif %}" href="{% url 'main:contact_view' %}">تواصل معنا</a>
+            </li>
+            {% if request.user.is_superuser %}
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'admin_dashboard' %}active{% endif %}" href="{%url 'main:admin_dashboard'%}">لوحة التحكم</a>
+            </li>
+            {% elif request.user.is_staff %}
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'staff_dashboard' %}active{% endif %}" href="{%url 'main:staff_dashboard'%}">لوحة التحكم</a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+    {% if request.user.is_authenticated and not request.user.is_superuser and not request.user.is_staff %}
+    <div class="d-flex gap-1 align-items-center">
+        <a class="nav-link {% if request.resolver_match.url_name == 'parent_profile' %}active{% endif %}" href="{%url 'parents:parent_profile'%}">
+            <span class="material-symbols-outlined">
+                account_circle
+            </span>
+        </a>
+    </div>
+    <div class="d-flex gap-1 align-items-center ms-3">
+        <a class="nav-link" href="{% url 'parents:log_out' %}?next={{request.path}}">تسجيل خروج</a>
+    </div>
+    {% elif request.user.is_superuser or request.user.is_staff %}
+    <div class="d-flex gap-1 align-items-center">
+        <a class="nav-link" data-bs-toggle="modal" data-bs-target="#view">
+            <span class="material-symbols-outlined">
+                account_circle
+            </span>
+        </a>
+    </div>
+    <div class="d-flex gap-1 align-items-center ms-3">
+        <a class="nav-link" href="{% url 'parents:log_out' %}?next={{request.path}}">تسجيل خروج</a>
+    </div>
+    {% else %}
+    <div class="nav-item dropdown px-5">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            حسابي
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href='{% url 'parents:signin' %}?next={{request.path}}'>تسجيل الدخول</a></li>
+            <li><a class="dropdown-item" href='{% url 'parents:signup_parent' %}?next={{request.path}}'>تسجيل</a></li>
+        </ul>
+    </div>
+    {% endif %}
+    <!-- Dark Mode Toggle Button -->
+    <div class="d-flex align-items-center px-5">
+        <button id="modeToggle" class="btn btn-secondary me-3">
+            <i id="modeIcon" class="fas fa-moon"></i>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'main:home' %}">الرئيسية</a></li>
-                <li class="nav-item">
-                    <a class="nav-link {% if request.resolver_match.url_name == 'nurseries_list' %}active{% endif %}" href="{% url 'nurseries:nurseries_list' %}">حضاناتنا</a></li>
 
-                    {% if request.user.is_authenticated and not request.user.is_superuser and not request.user.is_staff %}
-                    <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'requests_status' %}active{% endif %}" href="{% url 'parents:requests_status' %}">طلباتي</a></li>
-                    {% endif %}
+    </div>
+</header>
 
-                <li class="nav-item">
-                    <a class="nav-link {% if request.resolver_match.url_name == 'about_us' %}active{% endif %}" href="{% url 'main:about_us' %}">من نحن</a></li>
-                <li class="nav-item">
-                    <a class="nav-link {% if request.resolver_match.url_name == 'contact_view' %}active{% endif %}" href="{% url 'main:contact_view' %}">تواصل معنا</a></li>
-
-                {% if request.user.is_superuser %}
-                <li class="nav-item">
-                    <a class="nav-link {% if request.resolver_match.url_name == 'admin_dashboard' %}active{% endif %}" href="{%url 'main:admin_dashboard'%}">لوحة التحكم </a></li>
-
-                {% elif request.user.is_staff %}
-                <li class="nav-item">
-                    <a class="nav-link {% if request.resolver_match.url_name == 'staff_dashboard' %}active{% endif %}" href="{%url 'main:staff_dashboard'%}">لوحة التحكم </a></li>
-                {% endif %}
-
-
-            </ul>
+<!-- user profile modal for view and update -->
+<div class="modal fade" id="view" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="view">الملف الشخصي</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <a class="" data-bs-toggle="modal" data-bs-target="#updateModal-{{ request.user.id }}" href="#">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil me-3" viewBox="0 0 16 16">
+                        <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325" />
+                    </svg>
+                </a>
+                <div class="d-flex flex-column justify-content-center align-items-center">
+                    <img src="{% static 'images/profile_default.jpg' %}" class="w-25 rounded-circle" />
+                    <h2>{{user.first_name}} {{user.last_name}}</h2>
+                    <div class="d-flex justify-content-center w-75">
+                        <h5>{{user.username}}</h5>
+                        <span class="material-symbols-outlined">
+                            alternate_email
+                        </span>
+                    </div>
+                    <div class="d-flex justify-content-center w-75">
+                        <h5>{{user.email}}</h5>
+                        <span class="material-symbols-outlined">
+                            mail
+                        </span>
+                    </div>
+                </div>
+            </div>
         </div>
-                {% if request.user.is_authenticated and not request.user.is_superuser and not request.user.is_staff %}
-                     <div class="d-flex gap-1 align-items-center">
-                        <a class="nav-link {% if request.resolver_match.url_name == 'parent_profile' %}active{% endif %}" href="{%url 'parents:parent_profile'%}">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
-                                <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>
-                              </svg>
-                          </a>
-                     </div>
-                     <div class="d-flex gap-1 align-items-center ms-3">
-                        <a  class="nav-link" href="{% url 'parents:log_out' %}?next={{request.path}}"> تسجيل خروج</a>
-                       </div>
-                     {% elif request.user.is_superuser or request.user.is_staff %}
-                     <div class="d-flex gap-1 align-items-center">
-                        <a class="nav-link" data-bs-toggle="modal" data-bs-target="#view">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
-                                <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>
-                              </svg>
-                          </a>
-                     </div>
-                     <div class="d-flex gap-1 align-items-center ms-3">
-                         <a  class="nav-link" href="{% url 'parents:log_out' %}?next={{request.path}}"> تسجيل خروج</a>
-                        </div>
-                        {% else %}
-                        <div class="nav-item dropdown px-5">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                تسجيل الدخول / تسجيل
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+    </div>
+</div>
 
-                                <li><a class="dropdown-item" href='{% url 'parents:signin' %}?next={{request.path}}'>تسجيل الدخول</a></li>
-                                <li><a class="dropdown-item" href='{% url 'parents:signup_parent' %}?next={{request.path}}'>تسجيل</a></li>
-
-                            </ul>
-                        </div>
-                    {% endif %}
-
-    </header>
-
-        <!-- user profile modal for view and update -->
-        <div class="modal fade" id="view" tabindex="-1"  aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="view"> الملف الشخصي  </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                      <a class="" data-bs-toggle="modal" data-bs-target="#updateModal-{{ request.user.id }}" href="#">
-
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil me-3" viewBox="0 0 16 16">
-                              <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
-                          </svg>
-                      </a>
-                      <div class="d-flex flex-column justify-content-center align-items-center">
-
-                        <img src="{% static 'images/profile_default.jpg' %}" class="w-25 rounded-circle"/>
-                        <h2>{{user.first_name}} {{user.last_name}}</h2>
-                        <div class="d-flex justify-content-center w-75">
-                            <h5>{{user.username}}</h5>
-                            <span class="material-symbols-outlined">
-                                alternate_email
-                            </span>
-
-                        </div>
-                        <div class="d-flex justify-content-center w-75">
-                            <h5>{{user.email}}</h5>
-                            <span class="material-symbols-outlined">
-                                mail
-                            </span>
-
-                        </div>
-
-
-                    </div>
-                    </div>
-                </div>
+<div class="modal fade" id="updateModal-{{ request.user.id }}" tabindex="-1" aria-labelledby="updateModalLabel-{{ child.id }}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateModalLabel-{{ request.user.first_name }}">تعديل بياناتك</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            </div>
-          </div>
-
-            <div class="modal fade" id="updateModal-{{ request.user.id }}" tabindex="-1" aria-labelledby="updateModalLabel-{{ child.id }}" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="updateModalLabel-{{ request.user.first_name }}"> تعديل بياناتك  </h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-body">
+                <form method="post" action="{%url 'parents:update_user'%}?next={{request.path}}">
+                    {% csrf_token %}
+                    <div class="form-container">
+                        <div class="mb-3">
+                            <label for="child-first-name" class="form-label">الأسم الاول</label>
+                            <input type="text" class="form-control" id="child-first-name" name="first_name" value="{{ request.user.first_name }}">
                         </div>
-                        <div class="modal-body">
-                            <form method="post" action="{%url 'parents:update_user'%}?next={{request.path}}">
-                                {% csrf_token %}
-                                <div class="form-container">
-
-                                    <div class="mb-3">
-                                        <label for="child-first-name" class="form-label">الأسم الاول</label>
-                                        <input type="text" class="form-control" id="child-first-name" name="first_name" value="{{ request.user.first_name }}"
-                                            >
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="child-last-name" class="form-label">الأسم الثاني</label>
-                                        <input type="text" class="form-control" id="child-last-name" name="last_name" value="{{ request.user.last_name }}"
-                                            >
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="floatingInput">اسم المستخدم</label>
-                                        <input type="text" class="form-control" id="floatingInput" placeholder="username" name="username" value="{{request.user.username}}">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="floatingInput">البريد الالكتروني</label>
-                                        <input type="email" class="form-control" id="floatingInput" placeholder="" name="email" value="{{request.user.email}}">
-                                    </div>
-
-                                    {% if request.user.is_authenticated and not request.user.is_superuser and not request.user.is_staff %}
-                                    <div class="mb-3">
-                                        <label for="floatingInput">رقم الهاتف</label>
-                                        <input type="text" value="{{request.user.parent.phone_number}}" class="form-control" id="floatingInput" placeholder="9665555555555" name="phone_number" maxlength="10" minlength="10" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="floatingInput">رقم هاتف العمل</label>
-                                        <input type="text" value="{{request.user.parent.Work_number}}" class="form-control" id="floatingInput" placeholder="9665555555555" name="Work_number" maxlength="10" minlength="10" required>
-                                    </div>
-                                    {%endif%}
-
-                                <button type="submit" class="btn btn-primary">أحفظ التعديلات</button>
-                            </form>
+                        <div class="mb-3">
+                            <label for="child-last-name" class="form-label">الأسم الثاني</label>
+                            <input type="text" class="form-control" id="child-last-name" name="last_name" value="{{ request.user.last_name }}">
                         </div>
+                        <div class="mb-3">
+                            <label for="floatingInput">اسم المستخدم</label>
+                            <input type="text" class="form-control" id="floatingInput" name="username" value="{{request.user.username}}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="floatingInput">البريد الالكتروني</label>
+                            <input type="email" class="form-control" id="floatingInput" name="email" value="{{request.user.email}}">
+                        </div>
+                        {% if request.user.is_authenticated and not request.user.is_superuser and not request.user.is_staff %}
+                        <div class="mb-3">
+                            <label for="floatingInput">رقم الهاتف</label>
+                            <input type="text" value="{{request.user.parent.phone_number}}" class="form-control" id="floatingInput" name="phone_number" maxlength="10" minlength="10" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="floatingInput">رقم هاتف العمل</label>
+                            <input type="text" value="{{request.user.parent.Work_number}}" class="form-control" id="floatingInput" name="Work_number" maxlength="10" minlength="10" required>
+                        </div>
+                        {% endif %}
+                        <button type="submit" class="btn btn-primary">أحفظ التعديلات</button>
                     </div>
-                </div>
-                </div>
+                </form>
             </div>
+        </div>
+    </div>
+</div>
 
-            <!-- end profile  -->
 
 
 
@@ -275,5 +332,8 @@
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
 </body>
 </html>
