@@ -88,7 +88,7 @@
 
   </li>
   <li class="nav-item">
-    <a class="nav-link {% if request.resolver_match.url_name == 'nurseries_view' %}active{% endif %}" href="{% url 'nurseries:nurseries_view' %}">حضاناتي</a>
+    <a class="nav-link {% if request.resolver_match.url_name == 'nurseries_view' or request.resolver_match.url_name == 'staff_dashboard' %}active{% endif %}" href="{% url 'nurseries:nurseries_view' %}">حضاناتي</a>
 
   </li>
 </nav>

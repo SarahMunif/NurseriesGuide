@@ -79,7 +79,9 @@
   </li>
 
   <li class="nav-item">
-    <a class="nav-link {% if request.resolver_match.url_name == 'verify_nurseries' %}active{% endif %}" href="{% url 'nurseries:verify_nurseries' %}">طلبات تسجيل الحضانات
+
+    <a class="nav-link {% if request.resolver_match.url_name == 'verify_nurseries' or request.resolver_match.url_name == 'admin_dashboard' %}active{% endif %}" href="{% url 'nurseries:verify_nurseries' %}">طلبات تسجيل الحضانات  
+
     </a>
 
   </li>
