@@ -47,6 +47,10 @@ def home(request):
 def about_us(request):
     return render(request, 'main/about_us.html')
 
+
+def terms_of_use(request):
+    return render(request, 'main/terms_of_use.html')
+
 def contact_us(request):
     return render(request, 'main/contact_us.html')
 
