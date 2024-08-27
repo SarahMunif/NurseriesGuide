@@ -58,14 +58,14 @@ def registration_create(request):
             return redirect('nurseries:nursery_detail', nursery_id=nurseryid)
         else:
             try:
-                
+
                 # Create a new registration if the previous one is rejected or none exists
                 registration = Registration.objects.create(
                     child=child,
                     subscription=subscription,
                     status='reviewing'
                 )
-                
+
                 send_to = subscription.nursery.owner.email
                 content_html = render_to_string("main/mail/send_request_to_owner.html",{"child":child,"subscription":subscription,"registration":registration})
                 email_message = EmailMessage("لديك طلب جديد", content_html, settings.EMAIL_HOST_USER, [send_to])
@@ -77,7 +77,7 @@ def registration_create(request):
                 print(e)
                 messages.error(request, 'حدث خطأ غير متوقع.', "alert-warning")
                 return redirect('parents:requests_status')
-                
+
 
     return render(request, 'nurseries/nursery_detail.html')
 
@@ -90,11 +90,11 @@ def delete_registration(request,registration_id:int):
                 return redirect('nurseries:children_requests')
              else:
                 return redirect('parents:requests_status')
-                 
+
     else:
          for field, errors in registration.errors.items():
              for error in errors:
-                 messages.error(request, f"{field}: {error}","alert-danger")    
+                 messages.error(request, f"{field}: {error}","alert-danger")
     return redirect('nurseries:children_requests')
 
 
@@ -120,19 +120,19 @@ def registration_update_status(request, pk):
             else:
                 form = RegistrationStatusForm(instance=registration)
 
-  
+
     return render(request, 'nurseries/children_requests.html', {'form': form, 'registration': registration})
 
 def add_subscription(request, nursery_id):
     nursery = get_object_or_404(Nursery, pk=nursery_id)
-    
+
     if request.user != nursery.owner:
         return redirect("main:home")
     if request.method == 'POST':
         subscriptionForm = SubscriptionForm(request.POST)
         if subscriptionForm.is_valid():
             subscription = subscriptionForm.save(commit=False)  # Get the unsaved Activity instance
-            subscription.nursery=nursery  # Set the nursery for this activity            
+            subscription.nursery=nursery  # Set the nursery for this activity
             subscription.save()  # Now save the Activity instance into the database
             messages.success(request, 'تم اضافه الباقه بنجاح!', 'alert-success')
             return redirect('nurseries:nursery_detail', nursery_id=nursery_id)
@@ -170,7 +170,7 @@ def add_review(request, nursery_id):
             if review_form.is_valid():
                 review = review_form.save(commit=False)
                 review.nursery = nursery
-                review.parent = request.user.parent  
+                review.parent = request.user.parent
                 review.save()
                 return redirect('nurseries:nursery_detail', nursery_id=nursery.id)
             else:
