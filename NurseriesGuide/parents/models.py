@@ -54,3 +54,14 @@ class Child(models.Model):
             return f"{months} أشهر"
         else:
             return f"{years} سنة"
+    def age_in_months(self):
+        today = date.today()
+        years = today.year - self.birth_date.year
+        months = today.month - self.birth_date.month
+        days = today.day - self.birth_date.day
+
+        total_months = years * 12 + months
+        if days < 0:
+            total_months -= 1
+
+        return total_months

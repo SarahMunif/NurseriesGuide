@@ -10,27 +10,6 @@ from django.conf import settings
 from django.template.loader import render_to_string
 
 
-# @login_required
-# def registration_create(request):
-#     # Ensure the parent has at least one child before allowing registration
-#     if not Child.objects.filter(parent__user=request.user).exists():
-#         messages.warning(request, 'You must add at least one child before making a registration.', 'alert-warning')
-#         return redirect('add_child')  # Assuming you have a view named 'add_child' for adding children
-
-#     if request.method == 'POST':
-#         form = RegistrationForm(request.POST)
-#         if form.is_valid():
-#             registration = form.save(commit=False)
-#             registration.save()
-#             messages.success(request, 'تم التسجيل بنجاح', 'alert-success')
-#             return redirect('registration_detail', pk=registration.pk)
-#         else:
-#             messages.error(request, 'حدث خطأ ما', 'alert-danger')
-#     else:
-#         form = RegistrationForm()
-
-#     return render(request, 'registrations/registration_form.html', {'form': form})
-
 @login_required
 def registration_create(request):
     if request.method == 'POST':
@@ -41,14 +20,28 @@ def registration_create(request):
         child = Child.objects.get(id=child_id)
         subscription = Subscription.objects.get(id=subscription_id)
         nurseryid = subscription.nursery.pk
-        # if child.age not in range(subscription.age_min,subscription.age_max):
-        #     age = child.age().split(' ')
-        #     print("child",int(age[0]))
-        #     print("allowed",subscription.age_min,subscription.age_max)
-        #     messages.error(request, f'لايمكنك التسجيل في الحضانة لانها تقبل العمر بين {subscription.age_min} - {subscription.age_max}', "alert-warning")
-        #     return redirect('nurseries:nursery_detail', nursery_id=nurseryid)
 
 
+        child_age_months = child.age_in_months()
+
+        if not (subscription.age_min <= child_age_months <= subscription.age_max):
+            age_min = subscription.age_min
+            if age_min >= 12:
+                age_min = int(age_min / 12)
+                min_unit = "سنوات"
+            else:
+                min_unit = "أشهر"
+            subscription.min_display = f"{age_min} {min_unit}"
+
+            age_max = subscription.age_max
+            if age_max >= 12:
+                age_max = int(age_max / 12)
+                max_unit = "سنوات"
+            else:
+                max_unit = "أشهر"
+            subscription.max_display = f"{age_max} {max_unit}"
+            messages.error(request, f'لايمكنك التسجيل في الحضانة لأنها تقبل العمر بين {subscription.min_display} - {subscription.max_display } ', "alert-warning")
+            return redirect('nurseries:nursery_detail', nursery_id=nurseryid)
         # Check if a registration exists for this child with a status other than 'rejected'
         existing_registration = Registration.objects.filter(child=child).exclude(status='rejected').exists()
 
