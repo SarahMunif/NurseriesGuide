@@ -11,6 +11,7 @@ from django.conf import settings
 from django.template.loader import render_to_string
 from django.contrib import messages
 from .forms import Web_ReviewForm
+from registrations.models import Registration
 def home(request):
      
     nurseries = Nursery.objects.filter(status='verified')[0:3]# only verfied nursires can be displayed
@@ -60,15 +61,24 @@ def staff_dashboard(request):
     if not request.user.is_staff:
         messages.success(request, "only staff can view this page", "alert-warning")
         return redirect("main:home")
+    user_nurseries = Nursery.objects.filter(owner=request.user)
+    # Fetch registrations linked to any of the nurseries owned by the user
+    registrations_reviewing = Registration.objects.filter(
+        subscription__nursery__in=user_nurseries,
+        status='reviewing'
+    )
     
-    return render(request, 'nurseries/nurseries_view.html')
+    registrations_count = registrations_reviewing.count()
+    return render(request, 'nurseries/nurseries_view.html',{"registrations_count":registrations_count})
 
 def admin_dashboard(request):
     if not request.user.is_superuser:
         messages.success(request, "only admin can view this page", "alert-warning")
         return redirect("main:home")
+    unverified_nurseries = Nursery.objects.filter(status='pending')
+    unverified_count=unverified_nurseries.count()
     
-    return render(request, 'nurseries/superuser_nurseries.html')
+    return render(request, 'nurseries/superuser_nurseries.html',{"unverified_count":unverified_count})
 
 
 def contact_view(request):
