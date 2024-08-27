@@ -29,6 +29,7 @@ def home(request):
             min_unit = "أشهر"
         nursery.min_display = f"{min_age} {min_unit}"
 
+        # Convert and set the maximum age
         max_age = nursery.max_age
         if max_age >= 12:
             max_age = int(max_age / 12)
@@ -56,14 +57,14 @@ def staff_dashboard(request):
         messages.success(request, "only staff can view this page", "alert-warning")
         return redirect("main:home")
     
-    return render(request, 'main/staff_dashboard.html')
+    return render(request, 'nurseries/nurseries_view.html')
 
 def admin_dashboard(request):
     if not request.user.is_superuser:
         messages.success(request, "only admin can view this page", "alert-warning")
         return redirect("main:home")
     
-    return render(request, 'main/admin_dashboard.html')
+    return render(request, 'nurseries/superuser_nurseries.html')
 
 
 def contact_view(request):
