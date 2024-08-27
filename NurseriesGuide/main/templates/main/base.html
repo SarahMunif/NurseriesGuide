@@ -227,12 +227,14 @@
 
 
 
-
+    {% if request.path != '/about/' %}
     <main class="container mt-4 ">
         {% block content %}
 
         {% endblock %}
     </main>
+    {% endif %}
+
 
 
 

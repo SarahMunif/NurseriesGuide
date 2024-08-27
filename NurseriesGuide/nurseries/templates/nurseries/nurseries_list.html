@@ -3,18 +3,29 @@
 {% block title %}حضاناتنا{% endblock %}
 
 {% block hero %}
+
+<style>
+
+hr {
+  border: none;
+  border-top: 2px dotted #ccc;
+}
+
+</style>
+
+
 <section class="ylo-section-wrapper">
     <div class="ylo-section py-5 px-5">
         <form method="get" action="{% url 'nurseries:nurseries_list' %}" class="row align-items-center justify-content-between mt-5 mb-5">
             <div class="col-md-8 d-flex flex-wrap gap-2 justify-content-center justify-content-md-start filter-buttons">
                 <button type="submit" class="btn btn-dark custom-filter-btn rounded-pill">
                     <i class="fas fa-filter me-1"></i>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-filter" viewBox="0 0 24 24">
-                        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
-                    </svg> 
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 465.88 465.88">
+                      <path d="M435.893 43.572C435.157 42.833 434.32 42.264 433.446 41.777C432.502 40.477 431.156 39.322 429.288 38.444C367.005 9.257 296.813 0.475 228.641 0.015C161.985-0.432 91.028 8.95 31.217 39.872C24.255 43.47 24.303 50.693 27.792 55.695C27.967 57.877 28.739 60.091 30.334 62.154C72.963 117.268 120.08 169.208 155.834 229.283C173.031 258.169 185.576 289.2 193.975 321.704C204.931 364.121 201.686 407.308 203.055 450.589C203.126 452.884 203.791 454.783 204.786 456.367C206.609 464.065 216.714 469.824 224.039 462.507C241.073 445.47 258.161 428.494 276.533 412.874C276.802 412.641 276.984 412.392 277.228 412.153C277.38 412.031 277.492 411.864 277.639 411.726C277.872 411.472 278.158 411.223 278.361 410.959C279.864 409.177 280.839 406.82 280.843 403.824C280.859 343.274 294.173 289.437 323.387 236.403C357.216 174.952 401.882 119.965 438.642 60.312C441.074 56.361 440.775 52.543 439.007 49.526C438.6 47.329 437.559 45.24 435.893 43.572ZM63.193 50.242C115.014 28.846 173.19 23.29 228.641 22.922C283.427 22.559 341.123 28.871 393.188 48.038C285.768 76.376 173.443 70.693 64.607 50.714C64.127 50.559 63.66 50.401 63.193 50.242ZM257.992 398.758C246.805 408.411 236.045 418.522 225.485 428.845C225.094 403.557 224.98 378.533 222.36 353.473C235.504 349.425 248.856 346.292 262.334 343.571C259.617 361.643 258.21 380.051 257.992 398.758ZM299.59 232.117C284.168 260.114 273.525 289.257 266.842 319.38C250.76 322.462 234.803 325.855 219.13 330.5C218.772 328.459 218.465 326.418 218.059 324.371C211.097 289.45 196.757 256.215 179.809 225.087C150.098 170.519 108.634 122.977 69.406 74.697C181.266 94.253 296.539 98.98 406.498 68.222C371.033 122.971 331.104 174.908 299.59 232.117Z"/>
+                    </svg>
                 </button>
-              
-        
+
+
                 <div class="dropdown">
                     <select name="age_range" class="form-select custom-select rounded-pill" onchange="this.form.submit()">
                         <option value="">اختر الفئة العمرية</option>
@@ -43,7 +54,7 @@
                         {% endfor %}
                     </select>
                 </div>
-        
+
                 <div class="dropdown">
                     <select name="neighborhood" class="form-select custom-select rounded-pill" onchange="this.form.submit()">
                         <option value="">الحي</option>
@@ -52,15 +63,15 @@
                         {% endfor %}
                     </select>
                 </div>
-        
+
                 <div class="form-check mx-end">
                     <input type="checkbox" class="form-check-input" name="special_needs" value="1" {% if special_needs %}checked{% endif %} onchange="this.form.submit()">
                     <label class="form-check-label">ذوي احتياجات خاصة</label>
                 </div>
-        
+
                 <div class="w-100"></div> <!-- Clear after the last element -->
             </div>
-        
+
             <!-- Search Bar and Submit Button -->
             <div class="col-md-4 d-flex justify-content-center justify-content-md-end mt-2 mt-md-0 gap-2">
                 <input type="text" name="searched" value="{{ search_term }}" class="form-control me-2 rounded-pill" placeholder="بحث...">
@@ -85,89 +96,234 @@
 {% block content %}
 <div class="container mt-4" id="nurseries-container">
     <!-- Nurseries List -->
-    <div class="row mt-4 gy-4">  <!-- Added gy-4 for gap between cards -->
-        {% if has_nurseries %}
-            {% for nursery in nurseries %}
-            <div class="col-lg-12">
-                <div class="d-flex flex-lg-row{% if forloop.counter|divisibleby:2 %} flex-lg-row-reverse{% endif %}">
-                    <div class="col-lg-6 p-3">
-                        <div class="nursery-card border rounded bg-light h-100 d-flex align-items-center justify-content-center" 
-                            style="border: 3px dotted {% if forloop.counter|divisibleby:2 %}#F4C93A{% else %}#F5888E{% endif %};">
-                            <img src="{{ nursery.main_image.url }}" alt="Image of {{ nursery.name }}" class="img-fluid">
-                        </div>
+    <div class="row py-3 mt-3">
+      {% if has_nurseries %}
+          {% for nursery in nurseries %}
+          <div class="col-lg-12">
+              <div class="d-flex flex-lg-row{% if forloop.counter|divisibleby:2 %} flex-lg-row-reverse{% endif %}">
+                  <div class="col-lg-6 p-3">
+                      <div class="nursery-card border rounded bg-light h-100 d-flex align-items-center justify-content-center"
+                          style="border: 3px dotted {% if forloop.counter|divisibleby:2 %}#F4C93A{% else %}#F5888E{% endif %};">
+                          <img src="{{ nursery.main_image.url }}" alt="Image of {{ nursery.name }}" class="img-fluid">
+                      </div>
+                  </div>
+                  <div class="col-lg-6 d-flex flex-column justify-content-between p-3">
+                      <div class="d-flex justify-content-between align-items-center mb-2">
+                          <h2 class="h5 mb-0">{{ nursery.name }}</h2>
+                          <div class="d-flex align-items-center gap-2">
+                            {% if nursery.accepts_special_needs %}
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="24"
+                              height="24"
+                              fill="#343779"
+                              viewBox="0 0 392.471 392.663"
+                              style="fill-rule:nonzero;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;">
+                              <defs/>
+                              <clipPath id="ArtboardFrame">
+                                <rect height="392.663" width="392.471" x="0.097" y="0"/>
+                              </clipPath>
+                              <g clip-path="url(#ArtboardFrame)" id="Layer" vectornator:layerName="Layer">
+                                <path
+                                  d="M240.711 0C222.933 0 206.836 8.21 196.428 21.333C186.02 8.21 169.923 0 152.145 0C120.985 0 95.709 25.341 95.709 56.436C95.709 119.596 186.602 179.588 190.416 182.173C194.036 184.436 199.014 184.306 202.311 182.173C206.19 179.652 297.018 119.595 297.018 56.436C297.082 25.341 271.87 0 240.711 0ZM117.559 56.372C117.559 37.301 133.074 21.786 152.21 21.786C168.307 21.786 182.206 32.711 185.891 48.291C189.964 61.026 204.768 58.053 207.16 48.291C210.845 32.711 224.679 21.786 240.841 21.786C259.912 21.786 275.427 37.301 275.427 56.372C275.427 95.677 223.128 140.93 196.558 159.742C169.858 140.929 117.559 95.806 117.559 56.372Z"
+                                  fill="#343779"
+                                  fill-rule="nonzero"
+                                  opacity="1"
+                                  stroke="none"
+                                  vectornator:layerName="path"/>
+                                <path
+                                  d="M352.808 87.79C330.764 87.79 312.921 105.697 312.921 127.677L312.921 168.986C310.852 168.598 308.59 168.469 306.327 168.469C284.929 168.469 267.539 185.859 267.539 207.257L267.539 246.368L231.596 285.932C220.929 297.698 214.982 312.954 214.982 328.922L214.982 360.469C214.982 378.182 229.334 392.534 247.047 392.534L296.049 392.534C313.762 392.534 328.114 378.182 328.114 360.469L328.114 347.54C328.114 344.89 329.148 342.368 330.958 340.429L383.71 285.092C389.399 279.08 392.567 271.258 392.567 262.918L392.567 127.678C392.695 105.632 374.788 87.79 352.808 87.79ZM306.456 360.469C306.456 366.093 301.801 370.748 296.177 370.748L247.175 370.748C241.551 370.748 236.896 366.093 236.896 360.469L236.896 328.857C236.896 318.32 240.775 308.299 247.821 300.607L286.544 258.005C288.419 256.001 289.388 253.35 289.388 250.635L289.388 207.257C289.388 197.883 297.016 190.255 306.39 190.255C315.764 190.255 323.392 197.883 323.392 207.257L323.392 251.928C323.392 257.94 328.24 262.853 334.317 262.853C340.329 262.853 345.242 258.005 345.242 251.928L345.242 207.257C345.242 196.978 341.234 187.734 334.705 180.752L334.705 127.742C334.705 117.786 342.85 109.641 352.806 109.641C362.762 109.641 370.907 117.786 370.907 127.742L370.907 263.112C370.907 265.763 369.873 268.284 368.063 270.223L315.182 325.56C309.493 331.572 306.325 339.394 306.325 347.734L306.325 360.469L306.456 360.469Z"
+                                  fill="#343779"
+                                  fill-rule="nonzero"
+                                  opacity="1"
+                                  stroke="none"
+                                  vectornator:layerName="path"/>
+                                <path
+                                  d="M161.196 285.931L125.317 246.432L125.317 207.321C125.317 185.923 107.927 168.533 86.529 168.533C84.266 168.533 82.133 168.662 79.935 169.05L79.935 127.741C79.935 105.697 62.028 87.854 40.048 87.854C18.004 87.79 0.097 105.632 0.097 127.677L0.097 263.047C0.097 271.322 3.265 279.209 8.954 285.221L61.706 340.558C63.581 342.497 64.55 344.954 64.55 347.669L64.55 360.598C64.55 378.311 78.902 392.663 96.615 392.663L145.617 392.663C163.33 392.663 177.682 378.311 177.682 360.598L177.682 328.986C177.81 312.954 171.862 297.697 161.196 285.931ZM155.959 360.469C155.959 366.093 151.304 370.748 145.68 370.748L96.743 370.748C91.119 370.748 86.464 366.093 86.464 360.469L86.464 347.54C86.464 339.265 83.296 331.378 77.607 325.366L24.855 270.029C22.98 268.09 22.011 265.633 22.011 262.918L22.011 127.678C22.011 117.722 30.156 109.577 40.112 109.577C50.068 109.577 58.213 117.722 58.213 127.678L58.213 180.817C51.748 187.799 47.676 197.108 47.676 207.322L47.676 251.993C47.676 258.005 52.524 262.918 58.601 262.918C64.678 262.918 69.526 258.07 69.526 251.993L69.526 207.322C69.526 197.948 77.154 190.32 86.528 190.32C95.902 190.32 103.53 197.948 103.53 207.322L103.53 250.7C103.53 253.415 104.564 256.001 106.374 258.07L145.097 300.672C152.143 308.43 156.022 318.45 156.022 328.922L156.022 360.469C156.022 360.469 155.959 360.469 155.959 360.469Z"
+                                  fill="#343779"
+                                  fill-rule="nonzero"
+                                  opacity="1"
+                                  stroke="none"
+                                  vectornator:layerName="path"/>
+                              </g>
+                            </svg>
+                          {% endif %}
+
+                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#F5888E" class="bi bi-patch-check" viewBox="0 0 16 16">
+                                  <path fill-rule="evenodd" d="M10.354 6.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708 0"/>
+                                  <path d="m10.273 2.513-.921-.944.715-.698.622.637.89-.011a2.89 2.89 0 0 1 2.924 2.924l-.01.89.636.622a2.89 2.89 0 0 1 0 4.134l-.637.622.011.89a2.89 2.89 0 0 1-2.924 2.924l-.89-.01-.622.636a2.89 2.89 0 0 1-4.134 0l-.622-.637-.89.011a2.89 2.89 0 0 1-2.924-2.924l.01-.89-.636-.622a2.89 2.89 0 0 1 0-4.134l.637-.622-.011-.89a2.89 2.89 0 0 1 2.924-2.924l.89.01.622-.636a2.89 2.89 0 0 1 4.134 0l-.715.698a1.89 1.89 0 0 0-2.704 0l-.92.944-1.32-.016a1.89 1.89 0 0 0-1.911 1.912l.016 1.318-.944.921a1.89 1.89 0 0 0 0 2.704l.944.92-.016 1.32a1.89 1.89 0 0 0 1.912 1.911l1.318-.016.921.944a1.89 1.89 0 0 0 2.704 0l.92-.944 1.32.016a1.89 1.89 0 0 0 1.911-1.912l-.016-1.318.944-.921a1.89 1.89 0 0 0 0-2.704l-.944-.92.016-1.32a1.89 1.89 0 0 0-1.912-1.911z"/>
+                              </svg>
+                          </div>
+                      </div>
+
+                      <div class="d-flex align-items-center mb-2">
+                          {% if nursery.avg_rating == 1 %}
+                          <span class="material-symbols-outlined">star</span>
+                          {% elif nursery.avg_rating == 2 %}
+                          <span class="material-symbols-outlined">star</span>
+                          <span class="material-symbols-outlined">star</span>
+                          {% elif nursery.avg_rating == 3 %}
+                          <span class="material-symbols-outlined">star</span>
+                          <span class="material-symbols-outlined">star</span>
+                          <span class="material-symbols-outlined">star</span>
+                          {% elif nursery.avg_rating == 4 %}
+                          <span class="material-symbols-outlined">star</span>
+                          <span class="material-symbols-outlined">star</span>
+                          <span class="material-symbols-outlined">star</span>
+                          <span class="material-symbols-outlined">star</span>
+                          {% elif nursery.avg_rating == 5 %}
+                          <span class="material-symbols-outlined">star</span>
+                          <span class="material-symbols-outlined">star</span>
+                          <span class="material-symbols-outlined">star</span>
+                          <span class="material-symbols-outlined">star</span>
+                          <span class="material-symbols-outlined">star</span>
+                          {% else %}
+                          <h6>غير مقيم حتى الان</h6>
+                          {% endif %}
+                      </div>
+                      <div>
+                          <p class="mb-2">{{ nursery.description|truncatewords:20 }}</p>
+                          <p class="text-muted small">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt" viewBox="0 0 16 16">
+                                  <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A32 32 0 0 1 8 14.58a32 32 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10"/>
+                                  <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4m0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                              </svg>
+                              {{ nursery.neighborhood.city.name }} - {{ nursery.neighborhood.name }}
+                          </p>
+                          <p class="text-muted small">
+                              <span class="material-symbols-outlined">child_care</span>
+
+                              {{ nursery.min_display }} - {{ nursery.max_display }}
+                          </p>
+                      </div>
+
+                      <div class="d-flex justify-content-end align-items-center">
+                          <a href="{% url 'nurseries:nursery_detail' nursery.id %}" class="btn btn-dark rounded-pill btn-size"
+                              style="background-color: {% if forloop.counter|divisibleby:2 %}#F5888E{% else %}#343779{% endif %}; border-color: {% if forloop.counter|divisibleby:2 %}#F5888E{% else %}#343779{% endif %};">
+                              المزيد
+                          </a>
+                      </div>
+                  </div>
+              </div>
+              <hr class="py-5"/>
+              {% empty %}
+              <div class="col-12 text-center">
+                <div class="d-flex flex-column align-items-center">
+                    <div style="width: 100px; height: 100px;">
+                        <svg
+                            height="100%"
+                            stroke-miterlimit="10"
+                            style="fill-rule:nonzero;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;"
+                            version="1.1"
+                            viewBox="4.21966 -0.000301042 458.837 467.277"
+                            width="100%"
+                            xml:space="preserve"
+                            xmlns="http://www.w3.org/2000/svg"
+                            xmlns:vectornator="http://vectornator.io"
+                            xmlns:xlink="http://www.w3.org/1999/xlink">
+                            <defs/>
+                            <clipPath id="ArtboardFrame">
+                                <rect height="467.277" width="458.837" x="4.21966" y="-0.000301042"/>
+                            </clipPath>
+                            <g clip-path="url(#ArtboardFrame)" id="Layer" vectornator:layerName="Layer">
+                                <g opacity="1" vectornator:layerName="g">
+                                    <path
+                                        d="M379.284 51.144C348.258 24.297 309.568 13.46 269.579 8.672C163.069-25.3 68.062 44.959 26.578 142.38C-18.134 247.382 3.143 364.597 100.094 430.078C199.074 496.924 335.116 469.447 411.036 381.451C494.021 285.274 473.541 132.719 379.284 51.144ZM196.853 432.703C140.696 424.71 86.217 390.16 57.762 340.898C32.324 296.851 32.537 241.695 43.942 193.586C61.469 119.626 114.508 52.876 183.828 36.9C183.932 36.905 184.021 36.935 184.125 36.935C209.068 37.674 235.416 37.717 261.17 40.502C263.608 41.266 266.045 42.025 268.503 42.922C272.561 44.402 276.114 44.212 279.085 42.993C306.872 47.67 333.404 56.572 356.042 74.385C406.121 113.79 432.521 184.846 431.074 247.081C428.353 364.389 307.974 448.516 196.853 432.703Z"
+                                        fill="#F5888E"
+                                        fill-rule="nonzero"
+                                        opacity="1"
+                                        stroke="none"
+                                        vectornator:layerName="path"/>
+                                    <path
+                                        d="M169.279 211.913C192.559 211.913 192.559 175.809 169.279 175.809C145.999 175.808 145.999 211.913 169.279 211.913Z"
+                                        fill="#F5888E"
+                                        fill-rule="nonzero"
+                                        opacity="1"
+                                        stroke="none"
+                                        vectornator:layerName="path"/>
+                                    <path
+                                        d="M293.832 213.715C317.119 213.715 317.119 177.613 293.832 177.613C270.555 177.613 270.555 213.715 293.832 213.715Z"
+                                        fill="#F5888E"
+                                        fill-rule="nonzero"
+                                        opacity="1"
+                                        stroke="none"
+                                        vectornator:layerName="path"/>
+                                    <path
+                                        d="M134.855 300.254C117.821 316.189 143.404 341.665 160.387 325.781C203.689 285.284 259.489 280.998 302.738 323.978C319.262 340.4 344.8 314.878 328.265 298.446C270.92 241.467 192.476 246.372 134.855 300.254Z"
+                                        fill="#F5888E"
+                                        fill-rule="nonzero"
+                                        opacity="1"
+                                        stroke="none"
+                                        vectornator:layerName="path"/>
+                                </g>
+                            </g>
+                        </svg>
                     </div>
-                    <div class="col-lg-6 d-flex flex-column justify-content-between p-3">
-                        <div class="d-flex align-items-start gap-2">
-                            <h2 class="h5 mb-2">{{ nursery.name }} </h2>
-
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#F5888E" class="bi bi-patch-check" viewBox="0 0 16 16">  <!-- Increased size and changed color -->
-                                    <path fill-rule="evenodd" d="M10.354 6.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708 0"/>
-                                    <path d="m10.273 2.513-.921-.944.715-.698.622.637.89-.011a2.89 2.89 0 0 1 2.924 2.924l-.01.89.636.622a2.89 2.89 0 0 1 0 4.134l-.637.622.011.89a2.89 2.89 0 0 1-2.924 2.924l-.89-.01-.622.636a2.89 2.89 0 0 1-4.134 0l-.622-.637-.89.011a2.89 2.89 0 0 1-2.924-2.924l.01-.89-.636-.622a2.89 2.89 0 0 1 0-4.134l.637-.622-.011-.89a2.89 2.89 0 0 1 2.924-2.924l.89.01.622-.636a2.89 2.89 0 0 1 4.134 0l-.715.698a1.89 1.89 0 0 0-2.704 0l-.92.944-1.32-.016a1.89 1.89 0 0 0-1.911 1.912l.016 1.318-.944.921a1.89 1.89 0 0 0 0 2.704l.944.92-.016 1.32a1.89 1.89 0 0 0 1.912 1.911l1.318-.016.921.944a1.89 1.89 0 0 0 2.704 0l.92-.944 1.32.016a1.89 1.89 0 0 0 1.911-1.912l-.016-1.318.944-.921a1.89 1.89 0 0 0 0-2.704l-.944-.92.016-1.32a1.89 1.89 0 0 0-1.912-1.911z"/>
-                                </svg>
-
-                        </div>
-
-                        <div class="d-flex align-items-center">
-                            {% if nursery.avg_rating == 1 %}
-                            <span class="material-symbols-outlined">star</span>
-                            {% elif nursery.avg_rating == 2 %}
-                            <span class="material-symbols-outlined">star</span>
-                            <span class="material-symbols-outlined">star</span>
-                            {% elif nursery.avg_rating == 3 %}
-                            <span class="material-symbols-outlined">star</span>
-                            <span class="material-symbols-outlined">star</span>
-                            <span class="material-symbols-outlined">star</span>
-                            {% elif nursery.avg_rating == 4 %}
-                            <span class="material-symbols-outlined">star</span>
-                            <span class="material-symbols-outlined">star</span>
-                            <span class="material-symbols-outlined">star</span>
-                            <span class="material-symbols-outlined">star</span>
-                            {% elif nursery.avg_rating == 5 %}
-                            <span class="material-symbols-outlined">star</span>
-                            <span class="material-symbols-outlined">star</span>
-                            <span class="material-symbols-outlined">star</span>
-                            <span class="material-symbols-outlined">star</span>
-                            <span class="material-symbols-outlined">star</span>
-                            {% else %}
-                            <h6>غير مقيم حتى الان</h6>
-                            {% endif %}
-                        </div>
-                        <div>
-                            <p class="mb-2">{{ nursery.description|truncatewords:20 }}</p>
-                            <p class="text-muted small">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt" viewBox="0 0 16 16">
-                                    <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A32 32 0 0 1 8 14.58a32 32 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10"/>
-                                    <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4m0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
-                                </svg>
-                                {{ nursery.neighborhood.city.name }} - {{ nursery.neighborhood.name }}
-                            </p>
-                            <p class="text-muted small">
-                                <span class="material-symbols-outlined">child_care</span>
-
-                                {{ nursery.min_display }} - {{ nursery.max_display }}
-                            </p>
-                        </div>
-
-                        <div class="d-flex justify-content-end align-items-center">
-                            <a href="{% url 'nurseries:nursery_detail' nursery.id %}" class="btn btn-dark rounded-pill btn-size" 
-                                style="background-color: {% if forloop.counter|divisibleby:2 %}#F5888E{% else %}#343779{% endif %}; border-color: {% if forloop.counter|divisibleby:2 %}#F5888E{% else %}#343779{% endif %};">
-                                المزيد
-                            </a>
-                        </div>
-                    </div>
+                    <p class="text-center fs-4 text-muted mt-5">لا توجد حضانات في قاعدة البيانات</p>
                 </div>
             </div>
-            {% empty %}
-            <div class="col-12">
-                <p class="text-center fs-4 text-muted">لا توجد حضانات مطابقة للبحث أو الفلاتر.</p>
+
+              {% endfor %}
+          {% else %}
+          <div class="col-12 text-center">
+            <div class="d-flex flex-column align-items-center">
+                <div style="width: 100px; height: 100px;">
+                    <svg
+                        height="100%"
+                        stroke-miterlimit="10"
+                        style="fill-rule:nonzero;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;"
+                        version="1.1"
+                        viewBox="4.21966 -0.000301042 458.837 467.277"
+                        width="100%"
+                        xml:space="preserve"
+                        xmlns="http://www.w3.org/2000/svg"
+                        xmlns:vectornator="http://vectornator.io"
+                        xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <defs/>
+                        <clipPath id="ArtboardFrame">
+                            <rect height="467.277" width="458.837" x="4.21966" y="-0.000301042"/>
+                        </clipPath>
+                        <g clip-path="url(#ArtboardFrame)" id="Layer" vectornator:layerName="Layer">
+                            <g opacity="1" vectornator:layerName="g">
+                                <path
+                                    d="M379.284 51.144C348.258 24.297 309.568 13.46 269.579 8.672C163.069-25.3 68.062 44.959 26.578 142.38C-18.134 247.382 3.143 364.597 100.094 430.078C199.074 496.924 335.116 469.447 411.036 381.451C494.021 285.274 473.541 132.719 379.284 51.144ZM196.853 432.703C140.696 424.71 86.217 390.16 57.762 340.898C32.324 296.851 32.537 241.695 43.942 193.586C61.469 119.626 114.508 52.876 183.828 36.9C183.932 36.905 184.021 36.935 184.125 36.935C209.068 37.674 235.416 37.717 261.17 40.502C263.608 41.266 266.045 42.025 268.503 42.922C272.561 44.402 276.114 44.212 279.085 42.993C306.872 47.67 333.404 56.572 356.042 74.385C406.121 113.79 432.521 184.846 431.074 247.081C428.353 364.389 307.974 448.516 196.853 432.703Z"
+                                    fill="#F5888E"
+                                    fill-rule="nonzero"
+                                    opacity="1"
+                                    stroke="none"
+                                    vectornator:layerName="path"/>
+                                <path
+                                    d="M169.279 211.913C192.559 211.913 192.559 175.809 169.279 175.809C145.999 175.808 145.999 211.913 169.279 211.913Z"
+                                    fill="#F5888E"
+                                    fill-rule="nonzero"
+                                    opacity="1"
+                                    stroke="none"
+                                    vectornator:layerName="path"/>
+                                <path
+                                    d="M293.832 213.715C317.119 213.715 317.119 177.613 293.832 177.613C270.555 177.613 270.555 213.715 293.832 213.715Z"
+                                    fill="#F5888E"
+                                    fill-rule="nonzero"
+                                    opacity="1"
+                                    stroke="none"
+                                    vectornator:layerName="path"/>
+                                <path
+                                    d="M134.855 300.254C117.821 316.189 143.404 341.665 160.387 325.781C203.689 285.284 259.489 280.998 302.738 323.978C319.262 340.4 344.8 314.878 328.265 298.446C270.92 241.467 192.476 246.372 134.855 300.254Z"
+                                    fill="#F5888E"
+                                    fill-rule="nonzero"
+                                    opacity="1"
+                                    stroke="none"
+                                    vectornator:layerName="path"/>
+                            </g>
+                        </g>
+                    </svg>
+                </div>
+                <p class="text-center fs-4 text-muted mt-5">لا توجد حضانات مطابقة للبحث أو التصفية</p>
             </div>
-            {% endfor %}
-        {% else %}
-            <div class="col-12">
-                <p class="text-center fs-4 text-muted">لا توجد حضانات في قاعدة البيانات.</p>
-            </div>
-        {% endif %}
-    </div>
+        </div>
+
+          {% endif %}
+      </div>
+
 
     <!-- Pagination -->
     {% if nurseries.has_other_pages %}

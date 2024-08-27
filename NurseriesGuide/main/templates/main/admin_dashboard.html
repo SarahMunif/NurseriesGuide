@@ -3,18 +3,64 @@
 
 {% block title %}Dashboard{% endblock %}
 
+{% block hero %}
+
+<section class="ylo-section-wrapper">
+  <div class="container hero-padding">
+    <div class="d-flex justify-content-md-start align-items-center py-5 mt-5 mb-3 gap-4" >
+    <h1>{{nursery.name}}</h1>
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-patch-check" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M10.354 6.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708 0"/>
+        <path d="m10.273 2.513-.921-.944.715-.698.622.637.89-.011a2.89 2.89 0 0 1 2.924 2.924l-.01.89.636.622a2.89 2.89 0 0 1 0 4.134l-.637.622.011.89a2.89 2.89 0 0 1-2.924 2.924l-.89-.01-.622.636a2.89 2.89 0 0 1-4.134 0l-.622-.637-.89.011a2.89 2.89 0 0 1-2.924-2.924l.01-.89-.636-.622a2.89 2.89 0 0 1 0-4.134l.637-.622-.011-.89a2.89 2.89 0 0 1 2.924-2.924l.89.01.622-.636a2.89 2.89 0 0 1 4.134 0l-.715.698a1.89 1.89 0 0 0-2.704 0l-.92.944-1.32-.016a1.89 1.89 0 0 0-1.911 1.912l.016 1.318-.944.921a1.89 1.89 0 0 0 0 2.704l.944.92-.016 1.32a1.89 1.89 0 0 0 1.912 1.911l1.318-.016.921.944a1.89 1.89 0 0 0 2.704 0l.92-.944 1.32.016a1.89 1.89 0 0 0 1.911-1.912l-.016-1.318.944-.921a1.89 1.89 0 0 0 0-2.704l-.944-.92.016-1.32a1.89 1.89 0 0 0-1.912-1.911z"/>
+        </svg>
+    </div>
+    <div class="d-flex align-items-center">
+        {% if average_rating == 1 %}
+        <span class="material-symbols-outlined">star</span>
+        {% elif average_rating == 2 %}
+        <span class="material-symbols-outlined">star</span>
+        <span class="material-symbols-outlined">star</span>
+        {% elif average_rating == 3 %}
+        <span class="material-symbols-outlined">star</span>
+        <span class="material-symbols-outlined">star</span>
+        <span class="material-symbols-outlined">star</span>
+        {% elif average_rating == 4 %}
+        <span class="material-symbols-outlined">star</span>
+        <span class="material-symbols-outlined">star</span>
+        <span class="material-symbols-outlined">star</span>
+        <span class="material-symbols-outlined">star</span>
+        {% elif average_rating == 5 %}
+        <span class="material-symbols-outlined">star</span>
+        <span class="material-symbols-outlined">star</span>
+        <span class="material-symbols-outlined">star</span>
+        <span class="material-symbols-outlined">star</span>
+        <span class="material-symbols-outlined">star</span>
+        {% endif %}
+    </div>
+  </div>
+
+
+    <div class="d-flex justify-content-md-start align-items-center mb-3 gap-5 flex-wrap hero-padding">
+
+  </div>
+
+
+</section>
+
+{% endblock %}
+
 {% block content %}
 <style>
     .nav-underline {
-        display: flex;                
-        justify-content: center; 
-        padding: 10px 0;             
+        display: flex;
+        justify-content: center;
+        padding: 10px 0;
     }
 
     .nav-underline .nav-link {
         color: #555;
-        border-bottom: 2px solid transparent; 
-        padding: 10px 15px;  
+        border-bottom: 2px solid transparent;
+        padding: 10px 15px;
     }
 
     .nav-underline .nav-link:hover {
@@ -28,12 +74,14 @@
 
 <nav class="nav nav-underline">
   <li class="nav-item">
-    
+
     <a class="nav-link {% if request.resolver_match.url_name == 'admin_nursery_statistics' %}active{% endif %}" href="{% url 'nurseries:admin_nursery_statistics' %}">احصائيات الموقع </a>
   </li>
 
   <li class="nav-item">
+
     <a class="nav-link {% if request.resolver_match.url_name == 'verify_nurseries' or request.resolver_match.url_name == 'admin_dashboard' %}active{% endif %}" href="{% url 'nurseries:verify_nurseries' %}">طلبات تسجيل الحضانات  
+
     </a>
 
   </li>

@@ -352,3 +352,9 @@ main {
     transform: rotate(-45deg);
     margin-left: 4px;
 }
+
+
+hr {
+  border: none;
+  border-top: 2px dotted #ccc;
+}
