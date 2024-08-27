@@ -27,7 +27,12 @@ def nurseries_view(request:HttpRequest):
     
     neighborhoods = Neighborhood.objects.all()
 
-    
+    registrations_reviewing = Registration.objects.filter(
+        subscription__nursery__in=user_nurseries,
+        status='reviewing'
+    )
+    registrations_count = registrations_reviewing.count()
+
     # Check if a search was made
     searched = request.GET.get('searched', '')
     if searched:
@@ -38,9 +43,9 @@ def nurseries_view(request:HttpRequest):
     paginator = Paginator(nurseries, 6)
     nurseries = paginator.get_page(page_number)   
     if request.user.is_staff:
-     return render(request, "nurseries/nurseries_view.html", {"nurseries" : nurseries,"search_term": searched,"neighborhoods":neighborhoods})
+     return render(request, "nurseries/nurseries_view.html", {"nurseries" : nurseries,"search_term": searched,"neighborhoods":neighborhoods , "registrations_count":registrations_count})
     if not request.user.is_staff:
-      return render(request, "main/home.html", {"nurseries" : nurseries ,"search_term": searched })
+      return render(request, "main/home.html", {"nurseries" : nurseries ,"search_term": searched  })
 
 def verify_nurseries(request):
     if not request.user.is_superuser:
@@ -78,9 +83,16 @@ def owner_requests_view(request):
     nurseries = Nursery.objects.filter(owner=request.user)
     neighborhoods = Neighborhood.objects.all()
 
+    registrations_reviewing = Registration.objects.filter(
+        subscription__nursery__in=nurseries,
+        status='reviewing'
+    )
+    
+    registrations_count = registrations_reviewing.count()
     unverified_nurseries = nurseries.filter(Q(status='pending') | Q(status='rejected'))    
     return render(request, "nurseries/owner_requests.html", {
-            "unverified_nurseries": unverified_nurseries,"neighborhoods":neighborhoods
+            "unverified_nurseries": unverified_nurseries,"neighborhoods":neighborhoods,
+            "registrations_count":registrations_count
         })
 
 
@@ -331,11 +343,19 @@ def children_requests(request):
     user_nurseries = Nursery.objects.filter(owner=request.user)
     # Fetch registrations linked to any of the nurseries owned by the user
     registrations = Registration.objects.filter(subscription__nursery__in=user_nurseries).order_by('-created_at')
+
+
+    registrations_reviewing = Registration.objects.filter(
+        subscription__nursery__in=user_nurseries,
+        status='reviewing'
+    )
     
+    registrations_count = registrations_reviewing.count()
     
     return render(request, "nurseries/children_requests.html", {    
         'registrations': registrations,
-        'status_choices': Registration.STATUS_CHOICES })
+        'status_choices': Registration.STATUS_CHOICES ,
+         "registrations_count":registrations_count })
 
 
 
@@ -484,7 +504,12 @@ def owner_nursery_statistics(request):
         accepted_registrations=Count('subscriptions__registrations', filter=Q(subscriptions__registrations__status='accepted')),
         rejected_registrations=Count('subscriptions__registrations', filter=Q(subscriptions__registrations__status='rejected')),
     )
-    
+    registrations_reviewing = Registration.objects.filter(
+        subscription__nursery__in=verify_nurseries,
+        status='reviewing'
+    )
+    registrations_count = registrations_reviewing.count()
+
     chart_data = {
         'labels': [nursery.name for nursery in nurseries],
         'children_count': [nursery.total_children for nursery in nurseries],
@@ -516,7 +541,8 @@ def owner_nursery_statistics(request):
     return render(request, 'nurseries/statistics.html', {
         'chart_data': chart_data,
         'pie_chart_data': pie_chart_data,
-        'registrations_pie_chart_data': registrations_pie_chart_data
+        'registrations_pie_chart_data': registrations_pie_chart_data,
+        "registrations_count":registrations_count
     })
 
 
