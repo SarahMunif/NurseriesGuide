@@ -82,8 +82,14 @@
     filter: blur(5px); /* Amount of blur */
 }
 
-
-
+.star{
+    transform: translateY(-5rem);
+    font-size: 2rem;
+    color: #F5888E;
+}
+.card {
+      text-align: right;
+     }
 </style>
 
 
@@ -130,7 +136,7 @@
 
 <section class="ylo-section-wrapper">
   <div class="container hero-padding">
-    <div class="d-flex justify-content-md-start align-items-center py-5 mt-5 mb-3 gap-4" >
+    <div class="d-flex justify-content-md-start align-items-center py-5 mt-5  gap-4" >
     <h1>{{nursery.name}}</h1>
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-patch-check" viewBox="0 0 16 16">
         <path fill-rule="evenodd" d="M10.354 6.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708 0"/>
@@ -139,25 +145,27 @@
     </div>
     <div class="d-flex align-items-center">
         {% if average_rating == 1 %}
-        <span class="material-symbols-outlined">star</span>
+        <span class="material-symbols-outlined star">star</span>
         {% elif average_rating == 2 %}
-        <span class="material-symbols-outlined">star</span>
-        <span class="material-symbols-outlined">star</span>
+        <span class="material-symbols-outlined star">star</span>
+        <span class="material-symbols-outlined star">star</span>
         {% elif average_rating == 3 %}
-        <span class="material-symbols-outlined">star</span>
-        <span class="material-symbols-outlined">star</span>
-        <span class="material-symbols-outlined">star</span>
+        <span class="material-symbols-outlined star">star</span>
+        <span class="material-symbols-outlined star">star</span>
+        <span class="material-symbols-outlined star">star</span>
         {% elif average_rating == 4 %}
-        <span class="material-symbols-outlined">star</span>
-        <span class="material-symbols-outlined">star</span>
-        <span class="material-symbols-outlined">star</span>
-        <span class="material-symbols-outlined">star</span>
+        <span class="material-symbols-outlined star">star</span>
+        <span class="material-symbols-outlined star">star</span>
+        <span class="material-symbols-outlined star">star</span>
+        <span class="material-symbols-outlined star">star</span>
+
         {% elif average_rating == 5 %}
-        <span class="material-symbols-outlined">star</span>
-        <span class="material-symbols-outlined">star</span>
-        <span class="material-symbols-outlined">star</span>
-        <span class="material-symbols-outlined">star</span>
-        <span class="material-symbols-outlined">star</span>
+        <span class="material-symbols-outlined star">star</span>
+        <span class="material-symbols-outlined star">star</span>
+        <span class="material-symbols-outlined star">star</span>
+        <span class="material-symbols-outlined star">star</span>
+        <span class="material-symbols-outlined star">star</span>
+
         {% endif %}
     </div>
   </div>
@@ -182,12 +190,12 @@
 
       <div class="rounded d-flex align-items-center gap-2 px-3">
           <span class="material-symbols-outlined symbols">support_agent</span>
-          <span>{{ nursery.contact_number }}</span>
+          <a href="tel:+{{ nursery.contact_number }}">{{ nursery.contact_number }}</a>
       </div>
 
       <div class="rounded d-flex align-items-center gap-2 px-3">
           <span class="material-symbols-outlined symbols">mail</span>
-          <span>{{ nursery.email }}</span>
+          <a href="mailto:{{ nursery.email }}">{{ nursery.email }}</a>
       </div>
   </div>
 </hr style="shadow-lg">
@@ -461,32 +469,32 @@ hr {
 
 
     <!-- Your existing activities content here -->
-
+    <div class="col position-relative text-center">
+        <h3 class="mt-3" style="z-index: 1; position: inherit; padding-right: 0%;">أنشطتنا</h3>
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.2; z-index: 0; width: 250px; height: 250px;">
+            <!-- Sun SVG -->
+            <svg stroke-miterlimit="10" style="fill-rule:nonzero;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;" version="1.1" viewBox="15.8673 0 446.849 478.583" width="100%" height="100%" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:vectornator="http://vectornator.io" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <defs/>
+                <clipPath id="ArtboardFrame">
+                    <rect height="478.583" width="446.849" x="15.8673" y="0"/>
+                </clipPath>
+                <g clip-path="url(#ArtboardFrame)" id="Layer" vectornator:layerName="Layer">
+                    <path d="M361.292 186.499C338.08 147.416 298.909 132.357 255.599 142.023C239.637 145.585 246.398 170.056 262.348 166.494C303.84 157.232 336.273 181.304 349.328 220.666C359.256 250.588 344.301 281.157 323.953 302.525C284.127 344.358 217.067 347.927 174.714 308.746C145.132 281.371 135.197 236.515 145.087 198.303C156.489 154.229 196.342 137.304 238.674 142.836C254.862 144.951 254.659 119.546 238.674 117.454C104.189 99.879 79.668 278.39 177.19 342.651C240.362 384.281 324.964 354.707 362.724 293.589C383.438 260.054 380.934 219.6 361.292 186.499Z" fill="#f4bc74" fill-rule="nonzero" opacity="1" stroke="none" vectornator:layerName="path"/>
+                    <path d="M99.479 281.727C98.532 275.044 93.307 268.28 85.154 268.28C83.686 268.28 82.168 268.504 80.645 268.951C60.366 274.81 42.431 281.067 25.828 288.074C17.279 291.679 14.852 300.17 16.228 306.985C17.626 313.911 22.687 318.573 28.824 318.573C28.824 318.573 28.824 318.573 28.829 318.573C30.69 318.573 32.63 318.146 34.59 317.324C50.969 310.407 68.712 304.222 88.836 298.403C97.466 295.904 100.404 288.226 99.479 281.727Z" fill="#f4bc74" fill-rule="nonzero" opacity="1" stroke="none" vectornator:layerName="path"/>
+                    <path d="M38.859 78.668C62.784 94.519 88.628 110.575 122.671 130.73C125.167 132.208 127.762 132.954 130.377 132.959C137.017 132.959 143.003 128.046 144.925 121.016C146.761 114.313 144.156 107.928 138.113 104.355C104.124 84.229 78.342 68.213 54.532 52.43C51.948 50.719 49.243 49.846 46.504 49.846C40.337 49.846 34.627 54.515 32.611 61.208C30.551 68.055 32.943 74.748 38.859 78.668Z" fill="#f4bc74" fill-rule="nonzero" opacity="1" stroke="none" vectornator:layerName="path"/>
+                    <path d="M255.091 381.727C250.76 381.727 246.758 383.347 244.118 386.17C241.587 388.882 240.386 392.527 240.665 396.707C241.904 415.312 243.151 433.918 244.471 452.509C245.159 462.116 253.121 467.134 260.642 467.134C264.978 467.134 268.975 465.509 271.605 462.685C274.129 459.974 275.312 456.328 275.012 452.149C273.692 433.553 272.453 414.962 271.214 396.357C270.575 386.749 262.618 381.727 255.091 381.727Z" fill="#f4bc74" fill-rule="nonzero" opacity="1" stroke="none" vectornator:layerName="path"/>
+                    <path d="M143.788 348.623C138.578 348.623 134.112 351.162 131.2 355.773C110.073 389.257 88.56 422.253 66.55 455.92C63.503 460.582 63.171 465.629 65.608 470.144C68.337 475.197 74.177 478.583 80.146 478.583C80.151 478.583 80.151 478.583 80.151 478.583C85.346 478.583 89.835 476.09 92.797 471.561C114.762 437.975 136.237 405.04 157.488 371.347C160.464 366.639 160.728 361.532 158.232 357.001C155.472 351.995 149.658 348.623 143.788 348.623Z" fill="#f4bc74" fill-rule="nonzero" opacity="1" stroke="none" vectornator:layerName="path"/>
+                    <path d="M348.958 127.262C354.148 127.262 358.643 124.797 361.628 120.321C369.443 108.596 376.983 97.036 383.342 84.551C385.896 79.536 385.734 74.223 382.895 69.592C379.899 64.707 374.425 61.551 368.946 61.551C363.771 61.551 359.348 64.407 356.815 69.389C350.594 81.592 343.14 93.027 335.406 104.633C332.324 109.261 331.953 114.283 334.365 118.788C337.071 123.85 342.936 127.257 348.958 127.262Z" fill="#f4bc74" fill-rule="nonzero" opacity="1" stroke="none" vectornator:layerName="path"/>
+                    <path d="M449.136 389.334C426.717 371.484 407.293 357.51 388.002 345.343C385.453 343.729 382.797 342.916 380.101 342.916C373.728 342.916 367.894 347.694 365.918 354.534C363.958 361.318 366.451 367.864 372.423 371.637C390.785 383.225 408.954 396.204 427.961 411.337C430.886 413.662 434.309 414.892 437.857 414.892C437.863 414.892 437.857 414.892 437.863 414.892C444.83 414.892 451.517 410.23 453.757 403.822C455.641 398.448 453.951 393.178 449.136 389.334Z" fill="#f4bc74" fill-rule="nonzero" opacity="1" stroke="none" vectornator:layerName="path"/>
+                    <path d="M239.474 99.317C243.826 99.317 247.794 97.69 250.354 94.856C252.812 92.137 253.883 88.491 253.457 84.317C251.05 60.725 249.634 36.98 248.39 14.685C247.85 5.045 239.941 0 232.408 0C228.082 0 224.068 1.617 221.399 4.44C218.842 7.149 217.608 10.791 217.837 14.969C219.087 37.37 220.511 61.217 222.922 84.84C223.89 94.341 231.982 99.317 239.474 99.317Z" fill="#f4bc74" fill-rule="nonzero" opacity="1" stroke="none" vectornator:layerName="path"/>
+                    <path d="M447.095 205.006C438.224 206.184 412.016 206.247 406.852 206.252C397.092 206.252 391.984 213.943 391.984 221.54C391.989 229.126 397.092 236.817 406.847 236.817L406.852 236.817C412.078 236.817 438.599 236.744 447.781 235.527C456.85 234.321 462.716 228.331 462.716 220.265C462.715 212.717 455.606 203.83 447.095 205.006Z" fill="#f4bc74" fill-rule="nonzero" opacity="1" stroke="none" vectornator:layerName="path"/>
+                </g>
+            </svg>
+        </div>
+    </div>
     <section class="d-flex">
       <div class="row justify-content-between align-items-center mb-5 mt-5">
-        <div class="col position-relative text-center">
-          <h3 class="mt-3" style="z-index: 1; position: inherit; padding-right: 0%;">أنشطتنا</h3>
-          <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.2; z-index: 0; width: 250px; height: 250px;">
-              <!-- Sun SVG -->
-              <svg stroke-miterlimit="10" style="fill-rule:nonzero;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;" version="1.1" viewBox="15.8673 0 446.849 478.583" width="100%" height="100%" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:vectornator="http://vectornator.io" xmlns:xlink="http://www.w3.org/1999/xlink">
-                  <defs/>
-                  <clipPath id="ArtboardFrame">
-                      <rect height="478.583" width="446.849" x="15.8673" y="0"/>
-                  </clipPath>
-                  <g clip-path="url(#ArtboardFrame)" id="Layer" vectornator:layerName="Layer">
-                      <path d="M361.292 186.499C338.08 147.416 298.909 132.357 255.599 142.023C239.637 145.585 246.398 170.056 262.348 166.494C303.84 157.232 336.273 181.304 349.328 220.666C359.256 250.588 344.301 281.157 323.953 302.525C284.127 344.358 217.067 347.927 174.714 308.746C145.132 281.371 135.197 236.515 145.087 198.303C156.489 154.229 196.342 137.304 238.674 142.836C254.862 144.951 254.659 119.546 238.674 117.454C104.189 99.879 79.668 278.39 177.19 342.651C240.362 384.281 324.964 354.707 362.724 293.589C383.438 260.054 380.934 219.6 361.292 186.499Z" fill="#f4bc74" fill-rule="nonzero" opacity="1" stroke="none" vectornator:layerName="path"/>
-                      <path d="M99.479 281.727C98.532 275.044 93.307 268.28 85.154 268.28C83.686 268.28 82.168 268.504 80.645 268.951C60.366 274.81 42.431 281.067 25.828 288.074C17.279 291.679 14.852 300.17 16.228 306.985C17.626 313.911 22.687 318.573 28.824 318.573C28.824 318.573 28.824 318.573 28.829 318.573C30.69 318.573 32.63 318.146 34.59 317.324C50.969 310.407 68.712 304.222 88.836 298.403C97.466 295.904 100.404 288.226 99.479 281.727Z" fill="#f4bc74" fill-rule="nonzero" opacity="1" stroke="none" vectornator:layerName="path"/>
-                      <path d="M38.859 78.668C62.784 94.519 88.628 110.575 122.671 130.73C125.167 132.208 127.762 132.954 130.377 132.959C137.017 132.959 143.003 128.046 144.925 121.016C146.761 114.313 144.156 107.928 138.113 104.355C104.124 84.229 78.342 68.213 54.532 52.43C51.948 50.719 49.243 49.846 46.504 49.846C40.337 49.846 34.627 54.515 32.611 61.208C30.551 68.055 32.943 74.748 38.859 78.668Z" fill="#f4bc74" fill-rule="nonzero" opacity="1" stroke="none" vectornator:layerName="path"/>
-                      <path d="M255.091 381.727C250.76 381.727 246.758 383.347 244.118 386.17C241.587 388.882 240.386 392.527 240.665 396.707C241.904 415.312 243.151 433.918 244.471 452.509C245.159 462.116 253.121 467.134 260.642 467.134C264.978 467.134 268.975 465.509 271.605 462.685C274.129 459.974 275.312 456.328 275.012 452.149C273.692 433.553 272.453 414.962 271.214 396.357C270.575 386.749 262.618 381.727 255.091 381.727Z" fill="#f4bc74" fill-rule="nonzero" opacity="1" stroke="none" vectornator:layerName="path"/>
-                      <path d="M143.788 348.623C138.578 348.623 134.112 351.162 131.2 355.773C110.073 389.257 88.56 422.253 66.55 455.92C63.503 460.582 63.171 465.629 65.608 470.144C68.337 475.197 74.177 478.583 80.146 478.583C80.151 478.583 80.151 478.583 80.151 478.583C85.346 478.583 89.835 476.09 92.797 471.561C114.762 437.975 136.237 405.04 157.488 371.347C160.464 366.639 160.728 361.532 158.232 357.001C155.472 351.995 149.658 348.623 143.788 348.623Z" fill="#f4bc74" fill-rule="nonzero" opacity="1" stroke="none" vectornator:layerName="path"/>
-                      <path d="M348.958 127.262C354.148 127.262 358.643 124.797 361.628 120.321C369.443 108.596 376.983 97.036 383.342 84.551C385.896 79.536 385.734 74.223 382.895 69.592C379.899 64.707 374.425 61.551 368.946 61.551C363.771 61.551 359.348 64.407 356.815 69.389C350.594 81.592 343.14 93.027 335.406 104.633C332.324 109.261 331.953 114.283 334.365 118.788C337.071 123.85 342.936 127.257 348.958 127.262Z" fill="#f4bc74" fill-rule="nonzero" opacity="1" stroke="none" vectornator:layerName="path"/>
-                      <path d="M449.136 389.334C426.717 371.484 407.293 357.51 388.002 345.343C385.453 343.729 382.797 342.916 380.101 342.916C373.728 342.916 367.894 347.694 365.918 354.534C363.958 361.318 366.451 367.864 372.423 371.637C390.785 383.225 408.954 396.204 427.961 411.337C430.886 413.662 434.309 414.892 437.857 414.892C437.863 414.892 437.857 414.892 437.863 414.892C444.83 414.892 451.517 410.23 453.757 403.822C455.641 398.448 453.951 393.178 449.136 389.334Z" fill="#f4bc74" fill-rule="nonzero" opacity="1" stroke="none" vectornator:layerName="path"/>
-                      <path d="M239.474 99.317C243.826 99.317 247.794 97.69 250.354 94.856C252.812 92.137 253.883 88.491 253.457 84.317C251.05 60.725 249.634 36.98 248.39 14.685C247.85 5.045 239.941 0 232.408 0C228.082 0 224.068 1.617 221.399 4.44C218.842 7.149 217.608 10.791 217.837 14.969C219.087 37.37 220.511 61.217 222.922 84.84C223.89 94.341 231.982 99.317 239.474 99.317Z" fill="#f4bc74" fill-rule="nonzero" opacity="1" stroke="none" vectornator:layerName="path"/>
-                      <path d="M447.095 205.006C438.224 206.184 412.016 206.247 406.852 206.252C397.092 206.252 391.984 213.943 391.984 221.54C391.989 229.126 397.092 236.817 406.847 236.817L406.852 236.817C412.078 236.817 438.599 236.744 447.781 235.527C456.85 234.321 462.716 228.331 462.716 220.265C462.715 212.717 455.606 203.83 447.095 205.006Z" fill="#f4bc74" fill-rule="nonzero" opacity="1" stroke="none" vectornator:layerName="path"/>
-                  </g>
-              </svg>
-          </div>
-      </div>
+
 
 
       </div>
@@ -504,40 +512,37 @@ hr {
                   <div id="activityCarousel" class="carousel slide">
                       <div class="carousel-inner">
                           {% for activity in activities %}
-                          {% if forloop.counter0|divisibleby:3 %}
+                          {% if forloop.counter0|divisibleby:1 %}
                           <div class="carousel-item {% if forloop.counter0 == 0 %}active{% endif %}">
                               <div class="container">
                                   <div class="row">
                                       {% endif %}
-                                      <div class="col-md-4 col-sm-6 mb-4">
-                                          <div class="card card-custom">
+ 
+                                                                
+                                      <div class="col-md col-sm mb">
+                                          <div class="card card-rou">
                                               <div class="card-title-icons">
                                                   <span class="card-title">{{ forloop.counter }}. {{ activity.name }}</span>
                                                   {% if is_owner %}
                                                   <div class="icon-links">
                                                       <a data-bs-toggle="modal" data-bs-target="#updateModal-{{ activity.id }}" href="#" class="icon-link">
-                                                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil me-2" viewBox="0 0 16 16">
-                                                              <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
-                                                          </svg>
+                                                         <!-- edit svg -->
                                                       </a>
                                                       <a data-bs-toggle="modal" data-bs-target="#deleteModal-{{ activity.id }}" href="#" class="icon-link">
-                                                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
-                                                              <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
-                                                          </svg>
+                                                        <!-- delete svg -->
+
                                                       </a>
                                                   </div>
                                                   {% endif %}
                                               </div>
-                                              <div class="card-body color-activty">
+                                              <div class="card-body color-activty ">
                                                   {% if activity.image %}
-                                                  <img src="{{ activity.image.url }}" class="img-fluid mb-3" alt="{{ activity.name }}">
+                                                  <img src="{{ activity.image.url }}" class="img-fluid " alt="{{ activity.name }}" style=" transform: translateY(-2rem);">
                                                   {% endif %}
                                                   <p class="mb-1">
-                                                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-arms-up mx-2" viewBox="0 0 16 16">
-                                                          <path d="M8 3a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"/>
-                                                          <path d="m5.93 6.704-.846 8.451a.768.768 0 0 0 1.523.203l.81-4.865a.59.59 0 0 1 1.165 0l.810 4.865a.768.768 0 0 0 1.523-.203l-.845-8.451A1.5 1.5 0 0 1 10.5 5.5L13 2.284a.796.796 0 0 0-1.239-.998L9.634 3.84a.7.7 0 0 1-.33.235c-.23.074-.665.176-1.304.176-.64 0-1.074-.102-1.305-.176a.7.7 0 0 1-.329-.235L4.239 1.286a.796.796 0 0 0-1.24.998l2.5 3.216c.317.316.475.758.43 1.204Z"/>
-                                                      </svg>
-                                                      <span>{{ activity.age_min }} - {{ activity.age_max }}</span>
+                                                    <span class="material-symbols-outlined symbols">child_care </span>
+
+                                                      <span>{{ activity.age_min }} - {{ activity.age_max }} سنوات</span>
                                                   </p>
                                                   <p class="card-text text-truncate">
                                                       {{ activity.description }}
@@ -545,7 +550,7 @@ hr {
                                               </div>
                                           </div>
                                       </div>
-                                      {% if forloop.counter|divisibleby:3 or forloop.last %}
+                                      {% if forloop.counter|divisibleby:1 or forloop.last %}
                                   </div>
                               </div>
                           </div>
@@ -962,7 +967,7 @@ hr {
                                       <path d="M8 3a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"/>
                                       <path d="m5.93 6.704-.846 8.451a.768.768 0 0 0 1.523.203l.81-4.865a.59.59 0 0 1 1.165 0l.810 4.865a.768.768 0 0 0 1.523-.203l-.845-8.451A1.5 1.5 0 0 1 10.5 5.5L13 2.284a.796.796 0 0 0-1.239-.998L9.634 3.84a.7.7 0 0 1-.33.235c-.23.074-.665.176-1.304.176-.64 0-1.074-.102-1.305-.176a.7.7 0 0 1-.329-.235L4.239 1.286a.796.796 0 0 0-1.24.998l2.5 3.216c.317.316.475.758.43 1.204Z"/>
                                   </svg>
-                                  <strong>العمر:</strong> {{ subscription.age_min }} - {{ subscription.age_max }}
+                                  <strong>العمر:</strong>{{ subscription.min_display }} - {{ subscription.max_display }}
                               </p>
                               <p>{{ subscription.description }}</p>
                               <label class="mt-4 text-white" for="child-selection-{{ subscription.id }}" class="form-label">اختر الطفل:</label>
@@ -1158,12 +1163,11 @@ hr {
                             {% endif %}
                                             <div class="col-md-4 col-sm-6 mb-4">
                                                 <div class="card rounded-card">
-                                                    <div class="card-body">
+                                                    <div class="card-body text-end">
                                                         <h3 class="mb-1">
-                                                        {{ review.parent.user.first_name }} {{ review.parent.user.last_name }}
+                                                            {{ review.parent.user.first_name }} {{ review.parent.user.last_name }}
                                                         </h3>
-                                                        <br>
-                                                        <div class="d-flex align-items-center">
+                                                        <div class="d-flex justify-content-start flex-wrap" style="transform: translateY(-1rem); color:#F4BC74 ;">
                                                             {% if review.rating == 1 %}
                                                             <span class="material-symbols-outlined">star</span>
                                                             {% elif review.rating == 2 %}
@@ -1186,11 +1190,9 @@ hr {
                                                             <span class="material-symbols-outlined">star</span>
                                                             {% endif %}
                                                         </div>
-                                                        <h5 class="card-title mb-1">
-                                                            <br>
-                                                            <span class="text-muted"> {{ review.comment }} </span>
-                                                        </h5>
-
+                                                        <div class="text-muted text-wrap" style="overflow-wrap: break-word;">
+                                                            {{ review.comment }}
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
