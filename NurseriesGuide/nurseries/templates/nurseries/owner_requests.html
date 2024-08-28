@@ -11,9 +11,10 @@
     .rounded-card {
         border-radius: 1.5rem;
         overflow: hidden;
+        border: dotted 2px #ccc;
     }
     .card-body {
-        background-color: #FFF3F4;
+        background-color: #fdfdfd;
     }
 </style>
 
@@ -21,134 +22,149 @@
 
 
 
-<div class="container-fluid">
+<div class="container-fluid" style="padding-bottom: 10%; padding-top: 5%;">
     <div class="row mt-4">
  {% for nursery in unverified_nurseries %}
         <div class="col-md-4 col-sm-6 mb-4">
-            <div class="card shadow-lg rounded-card">
-                <div class="card-body">
-                    <h5 class="card-title mb-3">
-                        <a href="{%url 'nurseries:nursery_detail' nursery.id %}">{{ nursery.name }}</a>
+          <div class="card  rounded-card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
 
-                        <!-- update icon -->
-                        {% if nursery.status == 'pending' %}
-                        <a data-bs-toggle="modal" data-bs-target="#updateModal-{{ nursery.id }}" href="#">
 
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil me-3" viewBox="0 0 16 16">
-                                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                    <div>
+                        <h5 class="card-title mb-3">
+                            <a href="{%url 'nurseries:nursery_detail' nursery.id %}">{{ nursery.name }}</a>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-patch-check" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M10.354 6.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708 0"/>
+                                <path d="m10.273 2.513-.921-.944.715-.698.622.637.89-.011a2.89 2.89 0 0 1 2.924 2.924l-.01.89.636.622a2.89 2.89 0 0 1 0 4.134l-.637.622.011.89a2.89 2.89 0 0 1-2.924 2.924l-.89-.01-.622.636a2.89 2.89 0 0 1-4.134 0l-.622-.637-.89.011a2.89 2.89 0 0 1-2.924-2.924l.01-.89-.636-.622a2.89 2.89 0 0 1 0-4.134l.637-.622-.011-.89a2.89 2.89 0 0 1 2.924-2.924l.89.01.622-.636a2.89 2.89 0 0 1 4.134 0l-.715.698a1.89 1.89 0 0 0-2.704 0l-.92.944-1.32-.016a1.89 1.89 0 0 0-1.911 1.912l.016 1.318-.944.921a1.89 1.89 0 0 0 0 2.704l.944.92-.016 1.32a1.89 1.89 0 0 0 1.912 1.911l1.318-.016.921.944a1.89 1.89 0 0 0 2.704 0l.92-.944 1.32.016a1.89 1.89 0 0 0 1.911-1.912l-.016-1.318.944-.921a1.89 1.89 0 0 0 0-2.704l-.944-.92.016-1.32a1.89 1.89 0 0 0-1.912-1.911z"/>
                             </svg>
-                        </a>
-                        {% endif %}
+                        </h5>
+                    </div>
 
-                        <!-- delete icon -->
+                    <div class="d-flex align-items-center">
+                      <!-- update icon -->
+                      {% if nursery.status == 'pending' %}
+                      <a data-bs-toggle="modal" data-bs-target="#updateModal-{{ nursery.id }}" href="#">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#F28B82" class="bi bi-pencil me-3" viewBox="0 0 16 16">
+                              <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                          </svg>
+                      </a>
+                      {% endif %}
+                      <!-- delete icon -->
+                      <a data-bs-toggle="modal" data-bs-target="#deleteModal-{{ nursery.id }}" href="#">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#F28B82" class="bi bi-trash3 me-3" viewBox="0 0 16 16">
+                              <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1-.5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
+                          </svg>
+                      </a>
+                  </div>
 
-                        <a data-bs-toggle="modal" data-bs-target="#deleteModal-{{ nursery.id }}" href="#">
+                </div>
 
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3 me-3" viewBox="0 0 16 16">
-                                <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
-                            </svg>
-                        </a>
+                <div class="d-flex align-items-center mt-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#F28B82" class="bi bi-geo-alt me-2" viewBox="0 0 16 16">
+                        <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A32 32 0 0 1 8 14.58a32 32 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10"/>
+                        <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4m0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                    </svg>
+                    <p class="mb-0 px-2">{{ nursery.neighborhood }}</p>
+                </div>
 
-                    </h5>
-                    <div class="row align-items-center">
-                        <div class="col-auto">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt" viewBox="0 0 16 16">
-                                <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A32 32 0 0 1 8 14.58a32 32 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10"/>
-                                <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4m0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
-                              </svg>
-                        </div>
-                        <div class="col">
-                            <h6 class="mb-0">{{ nursery.neighborhood }}</h6>
-                        </div>
-                        <h6 class="mt-3">حالة الطلب:
-                            {% if nursery.status == 'rejected' %}
-                            مرفوض
-                            <br>
-                            <p>سبب الرفض: {{ nursery.rejection_reason }}</p>
-
-                            {% else %}
-                                تحت الاجراء
-                                <h1></h1>
-                                <h1></h1>
-                                <h1></h1>
-                                <h1></h1>
-                            {% endif %}
-                           </h6>
-
-                        </div>
-
+                <div class=" d-flex align-items-center">
+                  <!-- SVG Icon -->
+                  <svg height="16" width="16" stroke-miterlimit="10" style="fill-rule:nonzero;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;" version="1.1" viewBox="1.30078 1.25 21.4 21.3" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:vectornator="http://vectornator.io" xmlns:xlink="http://www.w3.org/1999/xlink">
+                      <path d="M2.44922 14.9702C3.51922 18.4102 6.39923 21.0602 9.97923 21.7902" fill="none" opacity="0.4" stroke="#f5888e" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+                      <path d="M2.05078 10.98C2.56078 5.93 6.82078 2 12.0008 2C17.1808 2 21.4408 5.94 21.9508 10.98" fill="none" opacity="1" stroke="#f5888e" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+                      <path d="M14.0098 21.8C17.5798 21.07 20.4498 18.45 21.5398 15.02" fill="none" opacity="1" stroke="#f5888e" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+                  </svg>
+                  <!-- Status Text -->
+                  <span class="ms-2 px-2">حالة الطلب:
+                    {% if nursery.status == 'rejected' %}
+                        <span class="text-danger">مرفوض</span>
+                        <br>
+                        <small class="text-muted">سبب الرفض: {{ nursery.rejection_reason }}</small>
+                    {% else %}
+                        <span class="text-success">تحت الاجراء</span>
+                    {% endif %}
+                  </div>
             </div>
+
+
 <!-- Modal for Update Form -->
 <div class="modal fade" id="updateModal-{{ nursery.id }}" tabindex="-1" aria-labelledby="updateModalLabel-{{ nursery.id }}" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="updateModalLabel-{{ nursery.id }}">تعديل بيانات الحضانه</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+          <div class="modal-header justify-content-center">
+              <h5 class="modal-title text-pink text-center" id="updateModalLabel-{{ nursery.id }}">تعديل بيانات الحضانه</h5>
+              <button type="button" class="btn-close position-absolute end-0 me-3" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <form method="post" action="{% url 'nurseries:update_nursery' nursery.id %}" enctype="multipart/form-data">
 
-                Copy
-                <form method="post" action="{% url 'nurseries:update_nursery' nursery.id %}" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <label for="nursery-name-{{ nursery.id }}" class="form-label">الاسم</label>
-                    <input type="text" class="form-control mb-3" id="nursery-name-{{ nursery.id }}" name="name" value="{{ nursery.name }}" required>
-                    <div class="mb-3">
-                        <label for="nursery-main-image-{{ nursery.id }}" class="form-label">صورة</label>
-                        <input type="file" class="form-control" id="nursery-main-image-{{ nursery.id }}" name="main_image" accept="image/*" >
-                        <img id="image-preview-{{ nursery.id }}" src="{{ nursery.main_image.url }}" alt="Current Image" class="img-thumbnail mt-2" style="max-width: 100%; display: block;">
-                    </div>
-                    <label for="nursery-address-{{ nursery.id }}" class="form-label">الموقع</label>
-                    <input type="url" class="form-control mb-3" id="nursery-address-{{ nursery.id }}" name="address" value="{{ nursery.address }}" required>
-
-                    <label for="nursery-contact_number-{{ nursery.id }}" class="form-label">رقم التواصل</label>
-                    <input type="text" class="form-control mb-3" id="nursery-contact_number-{{ nursery.id }}" name="contact_number" value="{{ nursery.contact_number }}" required>
-
-                    <label for="nursery-email-{{ nursery.id }}" class="form-label">الايميل</label>
-                    <input type="email" class="form-control mb-3" id="nursery-email-{{ nursery.id }}" name="email" value="{{ nursery.email }}" required>
-
-                    <label for="nursery-description-{{ nursery.id }}" class="form-label">نبذه عن الحضانة</label>
-                    <textarea class="form-control mb-3" id="nursery-description-{{ nursery.id }}" name="description">{{ nursery.description }}</textarea>
-
-                    <label for="min-age-{{ nursery.id }}" class="form-label">العمر الأدنى</label>
-                    <input type="number" class="form-control" id="min-age-{{ nursery.id }}" name="min_age" required>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="min-age-years-{{ nursery.id }}" name="min_age_years">
-                        <label class="form-check-label" for="min-age-years-{{ nursery.id }}">
+                  {% csrf_token %}
+                  <div class="text-end">
+                      <label for="nursery-name-{{ nursery.id }}" class="form-label text-white">الاسم</label>
+                      <input type="text" class="form-control mb-3" id="nursery-name-{{ nursery.id }}" name="name" value="{{ nursery.name }}" required>
+                  </div>
+                  <div class="mb-3 text-end">
+                      <label for="nursery-main-image-{{ nursery.id }}" class="form-label text-white">صورة</label>
+                      <input type="file" class="form-control" id="nursery-main-image-{{ nursery.id }}" name="main_image" accept="image/*" >
+                      <img id="image-preview-{{ nursery.id }}" src="{{ nursery.main_image.url }}" alt="Current Image" class="img-thumbnail mt-2" style="max-width: 100%; display: block;">
+                  </div>
+                  <div class="text-end">
+                      <label for="nursery-address-{{ nursery.id }}" class="form-label text-white">الموقع</label>
+                      <input type="url" class="form-control mb-3" id="nursery-address-{{ nursery.id }}" name="address" value="{{ nursery.address }}" required>
+                  </div>
+                  <div class="text-end">
+                      <label for="nursery-contact_number-{{ nursery.id }}" class="form-label text-white">رقم التواصل</label>
+                      <input type="text" class="form-control mb-3" id="nursery-contact_number-{{ nursery.id }}" name="contact_number" value="{{ nursery.contact_number }}" required>
+                  </div>
+                  <div class="text-end">
+                      <label for="nursery-email-{{ nursery.id }}" class="form-label text-white">الايميل</label>
+                      <input type="email" class="form-control mb-3" id="nursery-email-{{ nursery.id }}" name="email" value="{{ nursery.email }}" required>
+                  </div>
+                  <div class="text-end">
+                      <label for="nursery-description-{{ nursery.id }}" class="form-label text-white">نبذه عن الحضانة</label>
+                      <textarea class="form-control mb-3" id="nursery-description-{{ nursery.id }}" name="description">{{ nursery.description }}</textarea>
+                  </div>
+                  <div class="text-end">
+                    <label for="min-age-{{ nursery.id }}" class="form-label text-white">العمر الأدنى</label>
+                    <input type="number" class="form-control mb-3" id="min-age-{{ nursery.id }}" name="min_age" required>
+                    <div class="form-check d-flex align-items-center">
+                        <input class="form-check-input me-2" type="checkbox" id="min-age-years">
+                        <label class="form-check-label text-white" for="min-age-years">
                             بالسنوات
                         </label>
                     </div>
                 </div>
-                <div class="mb-3">
-                    <label for="max-age-{{ nursery.id }}" class="form-label">العمر الأقصى</label>
-                    <input type="number" class="form-control" id="max-age-{{ nursery.id }}" name="max_age" required>
-
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="max-age-years-{{ nursery.id }}" name="max_age_years">
-                        <label class="form-check-label" for="max-age-years-{{ nursery.id }}">
+                <div class="mb-3 text-end">
+                    <label for="max-age" class="form-label text-white">العمر الأقصى</label>
+                    <input type="number" class="form-control mb-3" id="max-age" name="max_age" required>
+                    <div class="form-check d-flex align-items-center">
+                        <input class="form-check-input me-2" type="checkbox" id="max-age-years" name="max_age_years">
+                        <label class="form-check-label text-white" for="max-age-years">
                             بالسنوات
                         </label>
                     </div>
+                </div>
 
-                    <div class="mb-3">
-                        <label for="nursery-neighborhood-{{ nursery.id }}" class="form-label">الحي</label>
-                        <select class="form-control" id="nursery-neighborhood-{{ nursery.id }}" name="neighborhood" required>
-                            {% for neighborhood in neighborhoods %}
-                                <option value="{{ neighborhood.id }}" {% if neighborhood.id == nursery.neighborhood_id %}selected{% endif %}>{{ neighborhood.name }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-
-                    <div class="form-check mb-3">
-                        <input class="form-check-input" type="checkbox" id="nursery-special_needs-{{ nursery.id }}" name="accepts_special_needs" value="True" {% if nursery.accepts_special_needs %}checked{% endif %}>
-                        <label class="form-check-label" for="nursery-special_needs-{{ nursery.id }}">تقبل بذوي الاحتياجات الخاصة</label>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary">أحفظ التعديلات</button>
-                </form>
-            </div>
-        </div>
-    </div>
+                  <div class="mb-3 text-end">
+                      <label for="nursery-neighborhood-{{ nursery.id }}" class="form-label text-white">الحي</label>
+                      <select class="form-control" id="nursery-neighborhood-{{ nursery.id }}" name="neighborhood" required>
+                          {% for neighborhood in neighborhoods %}
+                              <option value="{{ neighborhood.id }}" {% if neighborhood.id == nursery.neighborhood_id %}selected{% endif %}>{{ neighborhood.name }}</option>
+                          {% endfor %}
+                      </select>
+                  </div>
+                  <div class="form-check mb-3 text-end">
+                      <input class="form-check-input" type="checkbox" id="nursery-special_needs-{{ nursery.id }}" name="accepts_special_needs" value="True" {% if nursery.accepts_special_needs %}checked{% endif %}>
+                      <label class="form-check-label text-white" for="nursery-special_needs-{{ nursery.id }}">تقبل بذوي الاحتياجات الخاصة</label>
+                  </div>
+                  <div class="d-flex justify-content-center">
+                      <button type="submit" class="btn btn-dark rounded-pill">أحفظ التعديلات</button>
+                  </div>
+              </form>
+          </div>
+      </div>
+  </div>
 </div>
 
 
@@ -159,26 +175,49 @@
 
         <!-- Modal for Deletion Confirmation -->
         <div class="modal fade" id="deleteModal-{{ nursery.id }}" tabindex="-1" aria-labelledby="deleteModalLabel-{{ doctor.id }}" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="deleteModalLabel-{{ nursery.id }}">تأكيد الحذف  </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <h5 class="modal-title text-pink ms-auto" id="deleteModalLabel-{{ nursery.id }}">تأكيد الحذف  </h5>
+
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body text-white text-center">
                         هل انت متاكد من حذف
                         "{{ nursery.name }}"
 ؟
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <a href="{% url 'nurseries:delete_nursery' nursery.id  %}" class="btn btn-danger">Delete</a>            </div>
+                    <div class="modal-footer justify-content-center">
+                      <button type="button" class="btn btn-warning rounded-pill" data-bs-dismiss="modal">تراجع</button>
+                      <a href="{% url 'nurseries:delete_nursery' nursery.id  %}" class="btn btn-danger rounded-pill">حذف</a>
+                      </div>
                     </div>
             </div>
         </div>
         </div>
 
 </div>
+
+{% empty %}
+<div class="text-center my-4 px-lg-5">
+  <svg height="100px" width="100px" stroke-miterlimit="10" style="fill-rule:nonzero;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;" version="1.1" viewBox="-0.000348082 23.0219 484.947 438.901" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:vectornator="http://vectornator.io" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <defs/>
+      <clipPath id="ArtboardFrame">
+          <rect height="438.901" width="484.947" x="-0.000348082" y="23.0219"/>
+      </clipPath>
+      <g clip-path="url(#ArtboardFrame)" id="Layer">
+          <g opacity="1" vectornator:layerName="g">
+              <path d="M232.983 345.007C226.841 346.81 221.89 351.405 218.256 358.677C214.531 366.152 213.32 372.753 214.554 378.872C215.369 382.914 217.111 387.251 219.213 390.47C224.771 399.006 234 403.897 244.524 403.897C250.212 403.897 256.005 402.47 261.282 399.763C269.716 395.432 275.769 387.825 277.47 379.396C278.952 372.079 277.018 364.771 272.032 358.815C262.872 347.871 245.251 341.417 232.983 345.007ZM255.534 374.743C255.432 376.008 253.747 378.242 250.218 380.349C245.83 382.98 240.227 381.787 237.523 377.648C236.01 375.333 236.175 371.143 237.876 368.502C238.386 367.71 239.155 366.983 241.359 366.983C242.54 366.983 243.979 367.202 245.642 367.638C248.521 368.39 251.233 369.781 253.477 371.645C254.285 372.326 255.621 373.621 255.534 374.743Z" fill="#f28b82" fill-rule="nonzero" opacity="1" stroke="none" vectornator:layerName="path"/>
+              <path d="M214.715 156.729C212.605 156.729 210.596 157.224 208.85 158.159C203.173 159.553 199.364 164.275 199.255 170.224C198.719 200.829 203.838 231.129 208.786 260.43C212.364 281.625 216.068 303.536 217.543 325.209C217.83 329.403 219.94 333.009 223.373 335.207C225.645 337.32 228.563 338.432 231.869 338.432L253.946 338.432C259.602 338.432 264.188 335.066 265.848 329.775C266.742 328.19 267.3 326.474 267.494 324.651C269.616 304.873 271.952 285.119 274.288 265.371C277.803 235.665 281.438 204.938 284.251 174.607C284.576 171.113 283.571 167.878 281.413 165.512C279.184 163.065 275.822 161.66 272.201 161.656C271.679 161.524 271.139 161.425 270.571 161.353C252.259 159.122 233.685 157.573 215.361 156.75L214.715 156.729ZM257.494 185.589C254.885 211.972 251.736 238.664 248.689 264.522C246.79 280.609 244.901 296.696 243.116 312.803L242.123 312.803C240.303 294.598 237.241 276.399 234.272 258.742C230.101 233.941 225.799 208.358 225.005 182.915C235.801 183.561 246.683 184.454 257.494 185.589Z" fill="#f28b82" fill-rule="nonzero" opacity="1" stroke="none" vectornator:layerName="path"/>
+              <path d="M259.871 34.656C259.084 32.056 257.57 29.759 255.605 27.887C252.523 24.294 248.491 22.875 244.479 23.034C240.46 22.874 236.436 24.294 233.351 27.887C231.38 29.758 229.867 32.056 229.082 34.656C227.074 41.323 221.115 48.504 217.591 54.531C213.623 61.315 209.578 68.056 205.554 74.81C197.513 88.299 189.34 101.708 181.124 115.088C164.697 141.852 147.891 168.381 131.451 195.135C98.581 248.612 66.311 302.346 37.645 358.225C29.599 373.906 21.477 389.707 14.406 405.846C8.879 418.459-14.843 452.634 14.058 455.651C165.871 471.473 317.881 452.517 469.89 451.314C479.619 451.238 484.454 443.89 484.621 436.349C485.251 433.292 485.007 429.93 483.529 426.488C423.956 287.661 334.562 165.267 259.871 34.656ZM39.205 426.809C95.494 301.326 175.119 188.697 244.479 70.329C312.671 186.711 390.822 297.517 446.928 420.475C310.965 422.995 175.015 437.594 39.205 426.809Z" fill="#f28b82" fill-rule="nonzero" opacity="1" stroke="none" vectornator:layerName="path"/>
+          </g>
+      </g>
+  </svg>
+  <h5 class="mt-3 text-muted">لا يوجد طلبات</h5>
+</div>
+
+
+
 {% endfor %}
 
 </div>
