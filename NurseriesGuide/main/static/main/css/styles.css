@@ -301,7 +301,6 @@ main {
   row-gap: 5rem;
 }
 
-/* Dotted border styling */
 .nursery-card {
   border: 3px dotted;
 }
@@ -357,4 +356,89 @@ main {
 hr {
   border: none;
   border-top: 2px dotted #ccc;
+}
+
+
+
+
+/* Light Mode (Default) */
+body {
+  font-family: 'Markazi Text', sans-serif;
+  line-height: 1.8;
+  background-color: #ffffff;
+  color: #000000;
+}
+
+/* Dark Mode */
+body.dark-mode {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+body.dark-mode .navbar-brand img {
+  filter: brightness(0.8);
+}
+
+body.dark-mode .nav-underline .nav-link {
+  color: #bbb;
+}
+
+body.dark-mode .nav-underline .nav-link.active,
+body.dark-mode .nav-underline .nav-link:hover {
+  border-color: #bbb;
+}
+
+body.dark-mode .hero-content h1 {
+  color: #f1f1f1;
+}
+
+body.dark-mode .hero-content .btn {
+  color: #f1f1f1;
+  border-color: #f1f1f1;
+}
+
+body.dark-mode .stats-section h5,
+body.dark-mode .nursery-section h2,
+body.dark-mode .reviews-section h2 {
+  color: #e0e0e0;
+}
+
+body.dark-mode .footer {
+  background-color: #1c1c1c;
+}
+
+body.dark-mode .footer .quick-links a,
+body.dark-mode .footer .contact-info {
+  color: #dddddd;
+}
+
+body.dark-mode .btn-outline-pink {
+  border-color: #f28b82 !important;
+  color: #f28b82 !important;
+}
+
+body.dark-mode .btn-outline-pink:hover {
+  background-color: #f28b82 !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode .nursery-card {
+  border-color: #f28b82;
+}
+
+body.dark-mode hr {
+  border-top: 2px dotted #666;
+}
+
+/* Dark Mode for Pagination */
+body.dark-mode .pagination .page-link {
+  border-color: #bbb;
+  color: #bbb;
+}
+
+body.dark-mode .pagination .page-link:hover,
+body.dark-mode .pagination .page-item.active .page-link {
+  background-color: #333;
+  border-color: #bbb;
+  color: #fff;
 }
