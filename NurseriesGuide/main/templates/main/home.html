@@ -95,7 +95,7 @@
       <div class="carousel-item active">
 
         <img src="/static/main/images/poster-1.png" class="d-block w-100" alt="Poster 1">
-        
+
         <div class="overlay d-flex flex-column align-items-center justify-content-center text-center">
           <div class="container">
             {% if not request.user.is_authenticated  %}
@@ -104,28 +104,28 @@
               <a href="{% url 'parents:signup_parent' %}" class="btn btn-dark rounded-pill btn-lg mx-2 mb-2">سجل كولي امر</a>
               <a href="{% url 'parents:signup_manager' %}" class="btn btn-dark rounded-pill btn-lg mx-2 mb-2">سجل كمالك حضانة</a>
             </div>
-           
+
             {% elif request.user.is_authenticated and  not request.user.is_superuser and not request.user.is_staff %}
             <h1 class="display-4 text-white mb-4">مرحبًا بك مجددًا في براعم!</h1>
-            <div class="mt-5">              
-              <a href="{% url 'parents:parent_profile' %}" class="btn btn-light rounded-pill btn-lg mx-2 mb-2">عرض الملف الشخصي</a>
+            <div class="mt-5">
+              <a href="{% url 'parents:parent_profile' %}" class="btn btn-dark rounded-pill btn-lg mx-2 mb-2">عرض الملف الشخصي</a>
             </div>
             {% elif request.user.is_superuser %}
             <h1 class="display-4 text-white mb-4">مرحبًا بك مجددًا في براعم!</h1>
-            <div class="mt-5">              
+            <div class="mt-5">
               <a href="{% url 'nurseries:verify_nurseries' %}" class="btn btn-light rounded-pill btn-lg mx-2 mb-2">لوحة التحكم</a>
             </div>
             {% elif request.user.is_staff %}
             <h1 class="display-4 text-white mb-4">مرحبًا بك مجددًا في براعم!</h1>
-            <div class="mt-5">              
+            <div class="mt-5">
               <a href="{% url 'nurseries:nurseries_view' %}" class="btn btn-light rounded-pill btn-lg mx-2 mb-2">لوحة التحكم</a>
             </div>
-            {% endif %} 
+            {% endif %}
           </div>
         </div>
-        
+
       </div>
-      
+
       <div class="carousel-item">
         <img src="/static/main/images/poster-2.png" class="d-block w-100" alt="Poster 2">
         <div class="overlay d-flex flex-column align-items-center justify-content-center text-center">
@@ -393,11 +393,11 @@
 
 <!-- map here -->
 
-<section class="map-section">
+<!-- <section class="map-section">
   <div id="map-container" style="width: 100%; height: 400px;">
       {% if nurseries %}
           <iframe
-              src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDE17S6j57r47Me9K5sBnNqiWojGfOnNn8&q={{ nurseries.0.location }}"
+              src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDE17S6j57r47Me9K5sBnNqiWojGfOnNn8&address={{ nurseries.0.location }}"
               width="100%"
               height="100%"
               style="border:0;"
@@ -408,7 +408,7 @@
           <p>No nurseries available to display on the map.</p>
       {% endif %}
   </div>
-</section>
+</section> -->
 
 
 
@@ -492,7 +492,7 @@
     {% if request.user.is_authenticated %}
     {% if not request.user.is_superuser and not request.user.is_staff %}
     <!-- Display the form for regular authenticated users -->
-    <h4 class="py-3 mt-5 mb-5" style="text-align: center;">عبر عن رأيك</h4>
+    <h4 class="py-3 mt-5 mb-3" style="text-align: center;">عبر عن رأيك</h4>
     <form method="post" action="{% url 'main:add_review' %}" style="display: flex; flex-direction: column; align-items: center; max-width: 500px; margin: auto;">
         {% csrf_token %}
         <textarea class="form-control" name="comment" required minlength="3" placeholder="..." style="margin-bottom: 10px;"></textarea>
@@ -504,7 +504,7 @@
             <option value="4">4</option>
             <option value="5">5</option>
         </select>
-        <input type="submit" class="btn" value="أضف تعليقك" style="margin-top: 10px;background-color: #FFFFFF; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);"/>
+        <input type="submit" class="btn rounded-pill mt-5" value="أضف تعليقك" style="background-color: #FFFFFF; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);"/>
     </form>
     {% else %}
     <!-- Message for admins and staff -->
