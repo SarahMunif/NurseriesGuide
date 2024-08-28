@@ -10,24 +10,16 @@
 <style>
     .rounded-card {
         border-radius: 1.5rem;
-        overflow: hidden; 
+        overflow: hidden;
     }
     .card-body {
         background-color: #FFF3F4;
     }
 </style>
-<br>
-<h1>طلباتي</h1>
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <div class="d-flex justify-content-end">
-                <a href="{% url 'nurseries:add_nursery' %}" class="btn btn-light btn-lg rounded-pill shadow-sm" style="font-weight: bold; background-color:#FFFFFF;" data-bs-toggle="modal" data-bs-target="#addNurseryModal"><h6>أضافة حضانة</h6></a>
-            </div>
-        </div>
-    </div>
-</div>
+
+
+
 
 <div class="container-fluid">
     <div class="row mt-4">
@@ -68,21 +60,21 @@
                         <div class="col">
                             <h6 class="mb-0">{{ nursery.neighborhood }}</h6>
                         </div>
-                        <h6 class="mt-3">حالة الطلب:                      
+                        <h6 class="mt-3">حالة الطلب:
                             {% if nursery.status == 'rejected' %}
                             مرفوض
                             <br>
                             <p>سبب الرفض: {{ nursery.rejection_reason }}</p>
-                        
+
                             {% else %}
                                 تحت الاجراء
                                 <h1></h1>
                                 <h1></h1>
                                 <h1></h1>
                                 <h1></h1>
-                            {% endif %} 
+                            {% endif %}
                            </h6>
-    
+
                         </div>
 
             </div>
@@ -97,7 +89,7 @@
             <div class="modal-body">
 
                 Copy
-                <form method="post" action="{% url 'nurseries:update_nursery' nursery.id %}" enctype="multipart/form-data">       
+                <form method="post" action="{% url 'nurseries:update_nursery' nursery.id %}" enctype="multipart/form-data">
                     {% csrf_token %}
                     <label for="nursery-name-{{ nursery.id }}" class="form-label">الاسم</label>
                     <input type="text" class="form-control mb-3" id="nursery-name-{{ nursery.id }}" name="name" value="{{ nursery.name }}" required>
@@ -130,7 +122,7 @@
                 <div class="mb-3">
                     <label for="max-age-{{ nursery.id }}" class="form-label">العمر الأقصى</label>
                     <input type="number" class="form-control" id="max-age-{{ nursery.id }}" name="max_age" required>
-                  
+
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="max-age-years-{{ nursery.id }}" name="max_age_years">
                         <label class="form-check-label" for="max-age-years-{{ nursery.id }}">
@@ -159,7 +151,7 @@
     </div>
 </div>
 
-        
+
 
 
 
@@ -174,7 +166,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        هل انت متاكد من حذف 
+                        هل انت متاكد من حذف
                         "{{ nursery.name }}"
 ؟
                     </div>
@@ -184,7 +176,7 @@
                     </div>
             </div>
         </div>
-        </div>    
+        </div>
 
 </div>
 {% endfor %}
@@ -260,7 +252,7 @@
                         <div class="mb-3">
                             <label for="max-age" class="form-label">العمر الأقصى</label>
                             <input type="number" class="form-control" id="max-age" name="max_age" required>
-                          
+
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" id="max-age-years" name="max_age_years">
                                 <label class="form-check-label" for="max-age-years">
@@ -278,6 +270,3 @@
         </div>
     </div>
 {% endblock %}
-
-
-

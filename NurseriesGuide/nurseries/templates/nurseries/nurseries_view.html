@@ -15,20 +15,25 @@
         background-color: #FFF3F4;
     }
 </style>
-<br>
-<h1>حضاناتي</h1>
+
+
 
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <div class="d-flex justify-content-end">
-                <a href="{% url 'nurseries:add_nursery' %}" class="btn btn-light btn-lg rounded-pill shadow-sm" style="font-weight: bold; background-color:#FFFFFF;" data-bs-toggle="modal" data-bs-target="#addNurseryModal"><h6>إضافة حضانة</h6></a>
-            </div>
-        </div>
-    </div>
+  <div class="row">
+      <div class="col-12">
+          <div class="d-flex justify-content-between align-items-center">
+
+
+              <a href="{% url 'nurseries:add_nursery' %}" class="btn btn-outline-pink rounded-pill" data-bs-toggle="modal" data-bs-target="#addNurseryModal">
+                <h6>إضافة حضانة</h6>
+            </a>
+          </div>
+      </div>
+  </div>
 </div>
 
-<div class="container-fluid">
+
+<div class="container-fluid" style="padding-bottom: 10%; padding-top: 5%;">
     <div class="row mt-4">
  {% for nursery in nurseries %}
         <div class="col-md-4 col-sm-6 mb-4">
@@ -161,113 +166,128 @@
 
         <!-- Modal for Deletion Confirmation -->
         <div class="modal fade" id="deleteModal-{{ nursery.id }}" tabindex="-1" aria-labelledby="deleteModalLabel-{{ doctor.id }}" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title text-pink" id="deleteModalLabel-{{ nursery.id }}">تأكيد الحذف  </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <h5 class="modal-title text-pink ms-auto" id="deleteModalLabel-{{ nursery.id }}">تأكيد الحذف  </h5>
+
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body text-white text-center">
                         هل انت متاكد من حذف
                         "{{ nursery.name }}"
 ؟
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <a href="{% url 'nurseries:delete_nursery' nursery.id  %}" class="btn btn-danger">Delete</a>            </div>
+                    <div class="modal-footer justify-content-center">
+                      <button type="button" class="btn btn-warning rounded-pill" data-bs-dismiss="modal">تراجع</button>
+                      <a href="{% url 'nurseries:delete_nursery' nursery.id  %}" class="btn btn-danger rounded-pill">حذف</a>
+                      </div>
                     </div>
             </div>
         </div>
         </div>
 
 </div>
+
+{% empty %}
+        <div class="col-12 text-center">
+            <h3>لا توجد حضانات حاليا.</h3>
+        </div>
+
+
 {% endfor %}
 
 </div>
 </div>
-    <!-- Modal for Adding Nursery -->
-    <div class="modal fade" id="addNurseryModal" tabindex="-1" aria-labelledby="addNurseryModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    <h5 class="modal-title text-pink align-items-center" id="addNurseryModalLabel">أضف حضانة</h5>
 
-                </div>
-                <div class="modal-body">
-                    <form method="post" action="{% url 'nurseries:add_nursery' %}" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <div class="form-container">
-                            <div class="mb-3">
-                                <label for="nursery-name" class="form-label text-white">الأسم</label>
-                                <input type="text" class="form-control" id="nursery-name" name="name" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="nursery-main-image" class="form-label text-white">صورة</label>
-                                <input type="file" class="form-control" id="nursery-main-image" name="main_image" accept="image/*" >
-                            </div>
-                            <div class="mb-3">
-                                <label for="nursery-address" class="form-label text-white">الموقع</label>
-                                <input type="text" class="form-control" id="nursery-address" name="address" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="nursery-contact" class="form-label text-white">رقم التواصل</label>
-                                <input type="text" class="form-control" id="nursery-contact" name="contact_number" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="nursery-email" class="form-label text-white">الايميل</label>
-                                <input type="email" class="form-control" id="nursery-email" name="email" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="nursery-description" class="form-label text-white">نبذه عن الحضانة</label>
-                                <textarea class="form-control" id="nursery-description" name="description" required></textarea>
-                            </div>
-                            <div class="mb-3">
-                                <label for="nursery-special-needs" class="form-label text-white">تقبل بذوي الاحتياجات الخاصة</label>
-                                <input type="checkbox" class="form-check-input" id="nursery-special-needs" name="accepts_special_needs">
-                            </div>
-                            <div class="mb-3">
-                                <label for="nursery-neighborhood" class="form-label text-white">الحي</label>
-                                <select class="form-control" id="nursery-neighborhood" name="neighborhood" required>
-                                    {% for neighborhood in neighborhoods %}
-                                        <option value="{{ neighborhood.id }}"> {{ neighborhood.city.name }},{{ neighborhood.name }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="commercial-registry" class="form-label text-white">السجل التجاري</label>
-                                <input type="file" class="form-control" id="commercial-registry" name="commercial_registry_file" required>
-                            </div>
 
-                            <div class="mb-3">
-                                <label for="license-file" class="form-label text-white">رخصة الحضانة</label>
-                                <input type="file" class="form-control" id="license-file" name="license_file" required>
-                            </div>
-                            <label for="min-age" class="form-label text-white">العمر الأدنى</label>
-                            <input type="number" class="form-control" id="min-age" name="min_age" required>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="min-age-years" name="min_age_years">
-                                <label class="form-check-label text-white" for="min-age-years">
-                                    بالسنوات
-                                </label>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="max-age" class="form-label text-white">العمر الأقصى</label>
-                            <input type="number" class="form-control" id="max-age" name="max_age" required>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="max-age-years" name="max_age_years">
-                                <label class="form-check-label text-white" for="max-age-years">
-                                    بالسنوات
-                                </label>
-                            </div>
-                        </div>
-                            <div class="mb-3">
-                                <button type="submit" class="btn btn-primary">أضف الحضانة</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+
+
+
+<!-- Modal for Adding Nursery -->
+<div class="modal fade" id="addNurseryModal" tabindex="-1" aria-labelledby="addNurseryModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+        <div class="modal-header justify-content-center">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <h5 class="modal-title text-pink ms-auto" id="addNurseryModalLabel">أضف حضانة</h5>
+          </div>
+          <div class="modal-body">
+              <form method="post" action="{% url 'nurseries:add_nursery' %}" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <div class="form-container text-end"> <!-- Align text to the right -->
+                      <div class="mb-3">
+                          <label for="nursery-name" class="form-label text-white">الأسم</label>
+                          <input type="text" class="form-control" id="nursery-name" name="name" required>
+                      </div>
+                      <div class="mb-3">
+                          <label for="nursery-main-image" class="form-label text-white">صورة</label>
+                          <input type="file" class="form-control" id="nursery-main-image" name="main_image" accept="image/*">
+                      </div>
+                      <div class="mb-3">
+                          <label for="nursery-address" class="form-label text-white">الموقع</label>
+                          <input type="text" class="form-control" id="nursery-address" name="address" required>
+                      </div>
+                      <div class="mb-3">
+                          <label for="nursery-contact" class="form-label text-white">رقم التواصل</label>
+                          <input type="text" class="form-control" id="nursery-contact" name="contact_number" required>
+                      </div>
+                      <div class="mb-3">
+                          <label for="nursery-email" class="form-label text-white">الايميل</label>
+                          <input type="email" class="form-control" id="nursery-email" name="email" required>
+                      </div>
+                      <div class="mb-3">
+                          <label for="nursery-description" class="form-label text-white">نبذه عن الحضانة</label>
+                          <textarea class="form-control" id="nursery-description" name="description" required></textarea>
+                      </div>
+                      <div class="mb-3">
+                          <label for="nursery-special-needs" class="form-label text-white">تقبل بذوي الاحتياجات الخاصة</label>
+                          <input type="checkbox" class="form-check-input" id="nursery-special-needs" name="accepts_special_needs">
+                      </div>
+                      <div class="mb-3">
+                          <label for="nursery-neighborhood" class="form-label text-white">الحي</label>
+                          <select class="form-control" id="nursery-neighborhood" name="neighborhood" required>
+                              {% for neighborhood in neighborhoods %}
+                                  <option value="{{ neighborhood.id }}"> {{ neighborhood.city.name }}, {{ neighborhood.name }}</option>
+                              {% endfor %}
+                          </select>
+                      </div>
+                      <div class="mb-3">
+                          <label for="commercial-registry" class="form-label text-white">السجل التجاري</label>
+                          <input type="file" class="form-control" id="commercial-registry" name="commercial_registry_file" required>
+                      </div>
+                      <div class="mb-3">
+                          <label for="license-file" class="form-label text-white">رخصة الحضانة</label>
+                          <input type="file" class="form-control" id="license-file" name="license_file" required>
+                      </div>
+                      <div class="mb-3">
+                          <label for="min-age" class="form-label text-white">العمر الأدنى</label>
+                          <input type="number" class="form-control" id="min-age" name="min_age" required>
+                          <div class="form-check">
+                              <input class="form-check-input" type="checkbox" id="min-age-years" name="min_age_years">
+                              <label class="form-check-label text-white" for="min-age-years">
+                                  بالسنوات
+                              </label>
+                          </div>
+                      </div>
+                      <div class="mb-3">
+                          <label for="max-age" class="form-label text-white">العمر الأقصى</label>
+                          <input type="number" class="form-control" id="max-age" name="max_age" required>
+                          <div class="form-check">
+                              <input class="form-check-input" type="checkbox" id="max-age-years" name="max_age_years">
+                              <label class="form-check-label text-white" for="max-age-years">
+                                  بالسنوات
+                              </label>
+                          </div>
+                      </div>
+                      <div class="mt-auto d-flex justify-content-center">
+                          <button type="submit" class="btn btn-dark rounded-pill">أضف الحضانة</button>
+                      </div>
+                  </div>
+              </form>
+          </div>
+      </div>
+  </div>
+</div>
+
 {% endblock %}
