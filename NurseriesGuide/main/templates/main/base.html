@@ -125,6 +125,7 @@ h1, h2, h3, h4, h5, h6, a, p, formlabel {
   opacity: 0.7;
 }
 
+
 </style>
 
 <body>
@@ -167,9 +168,9 @@ h1, h2, h3, h4, h5, h6, a, p, formlabel {
         </ul>
     </div>
     {% if request.user.is_authenticated and not request.user.is_superuser and not request.user.is_staff %}
-    <div class="d-flex gap-1 align-items-center">
+    <div class="d-flex align-items-center">
         <a class="nav-link {% if request.resolver_match.url_name == 'parent_profile' %}active{% endif %}" href="{%url 'parents:parent_profile'%}">
-            <span class="material-symbols-outlined">
+            <span class="material-symbols-outlined mt-3">
                 account_circle
             </span>
         </a>
@@ -201,9 +202,7 @@ h1, h2, h3, h4, h5, h6, a, p, formlabel {
     {% endif %}
     <!-- Dark Mode Toggle Button -->
     <div class="d-flex align-items-center px-5">
-        <button id="modeToggle" class="btn btn-secondary me-3">
-            <i id="modeIcon" class="fas fa-moon"></i>
-        </button>
+
 
     </div>
 </header>
@@ -227,14 +226,14 @@ h1, h2, h3, h4, h5, h6, a, p, formlabel {
                     <h2 class="text-white py-3 mb-3">{{user.first_name}} {{user.last_name}}</h2>
                     <div class="d-flex justify-content-center w-75">
 
-                        <span class="material-symbols-outlined px-3 mt-3 text-purp">
+                        <span class="material-symbols-outlined px-3 mt-3 text-pink">
                             alternate_email
                         </span>
                         <h5 class="text-white mt-3">{{user.username}}</h5>
                     </div>
                     <div class="d-flex justify-content-center w-75">
 
-                        <span class="material-symbols-outlined px-3 py-3 text-purp">
+                        <span class="material-symbols-outlined px-3 py-3 text-pink">
                             mail
                         </span>
                         <h5 class="text-white py-3">{{user.email}}</h5>
@@ -250,34 +249,34 @@ h1, h2, h3, h4, h5, h6, a, p, formlabel {
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                <h5 class="modal-title ms-auto" id="updateModalLabel-{{ request.user.first_name }}">تعديل بياناتك</h5>
+                <h5 class="modal-title ms-auto text-pink" id="updateModalLabel-{{ request.user.first_name }}">تعديل بياناتك</h5>
             </div>
             <div class="modal-body">
                 <form method="post" action="{%url 'parents:update_user'%}?next={{request.path}}">
                     {% csrf_token %}
                     <div class="form-container">
-                        <div class="mb-3">
+                        <div class="mb-3 text-end text-white">
                             <label for="child-first-name" class="form-label">الأسم الاول</label>
                             <input type="text" class="form-control" id="child-first-name" name="first_name" value="{{ request.user.first_name }}">
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-3 text-end text-white">
                             <label for="child-last-name" class="form-label">الأسم الثاني</label>
                             <input type="text" class="form-control" id="child-last-name" name="last_name" value="{{ request.user.last_name }}">
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-3 text-end text-white">
                             <label for="floatingInput">اسم المستخدم</label>
                             <input type="text" class="form-control" id="floatingInput" name="username" value="{{request.user.username}}">
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-3 text-end text-white">
                             <label for="floatingInput">البريد الالكتروني</label>
                             <input type="email" class="form-control" id="floatingInput" name="email" value="{{request.user.email}}">
                         </div>
                         {% if request.user.is_authenticated and not request.user.is_superuser and not request.user.is_staff %}
-                        <div class="mb-3">
+                        <div class="mb-3 text-end text-white">
                             <label for="floatingInput">رقم الهاتف</label>
                             <input type="text" value="{{request.user.parent.phone_number}}" class="form-control" id="floatingInput" name="phone_number" maxlength="10" minlength="10" required>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-3 text-end text-white">
                             <label for="floatingInput">رقم هاتف العمل</label>
                             <input type="text" value="{{request.user.parent.Work_number}}" class="form-control" id="floatingInput" name="Work_number" maxlength="10" minlength="10" required>
                         </div>

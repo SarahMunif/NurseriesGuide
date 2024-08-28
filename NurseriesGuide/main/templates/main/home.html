@@ -113,12 +113,12 @@
             {% elif request.user.is_superuser %}
             <h1 class="display-4 text-white mb-4">مرحبًا بك مجددًا في براعم!</h1>
             <div class="mt-5">
-              <a href="{% url 'nurseries:verify_nurseries' %}" class="btn btn-light rounded-pill btn-lg mx-2 mb-2">لوحة التحكم</a>
+              <a href="{% url 'nurseries:verify_nurseries' %}" class="btn btn-dark rounded-pill btn-lg mx-2 mb-2">لوحة التحكم</a>
             </div>
             {% elif request.user.is_staff %}
             <h1 class="display-4 text-white mb-4">مرحبًا بك مجددًا في براعم!</h1>
             <div class="mt-5">
-              <a href="{% url 'nurseries:nurseries_view' %}" class="btn btn-light rounded-pill btn-lg mx-2 mb-2">لوحة التحكم</a>
+              <a href="{% url 'nurseries:nurseries_view' %}" class="btn btn-dark rounded-pill btn-lg mx-2 mb-2">لوحة التحكم</a>
             </div>
             {% endif %}
           </div>
@@ -397,7 +397,7 @@
   <div id="map-container" style="width: 100%; height: 400px;">
       {% if nurseries %}
           <iframe
-              src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDE17S6j57r47Me9K5sBnNqiWojGfOnNn8&address={{ nurseries.0.location }}"
+              src="https://www.google.com/maps/embed/v1/place?key=************Ns&q=kingdow+tower"
               width="100%"
               height="100%"
               style="border:0;"
@@ -418,80 +418,79 @@
     {% if reviews %}
     <h3 class="py-5 mb-5 mt-5" style="text-align: center; margin-top: 5rem;">آراء أولياء الأمور</h3>
     <div class="row justify-content-center align-items-center">
-      <div class="col-auto">
-          <a class="mb-3" href="#reviewCarousel" role="button" data-bs-slide="prev">
-              <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
-                  <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>
-              </svg>
-          </a>
-      </div>
-      <div class="col-lg-8 ">
-          <div id="reviewCarousel" class="carousel slide" >
-              <div class="carousel-inner">
-                  {% for review in reviews %}
-                      {% if forloop.counter0|divisibleby:3 %}
-                          <div class="carousel-item {% if forloop.counter0 == 0 %}active{% endif %}">
-                              <div class="container">
-                                  <div class="row gap-1">
-                      {% endif %}
-                                      <div class="col-md-4 col-sm-6 mb-4">
-                                          <div class="card rounded-card">
-                                              <div class="card-body text-end">
-                                                  <h3 class="mb-1">
-                                                      {{ review.parent.user.first_name }} {{ review.parent.user.last_name }}
-                                                  </h3>
-                                                  <div class="d-flex justify-content-start flex-wrap" style="transform: translateY(-1rem); color:#F4BC74 ;">
-                                                      {% if review.rating == 1 %}
-                                                      <span class="material-symbols-outlined">star</span>
-                                                      {% elif review.rating == 2 %}
-                                                      <span class="material-symbols-outlined">star</span>
-                                                      <span class="material-symbols-outlined">star</span>
-                                                      {% elif review.rating == 3 %}
-                                                      <span class="material-symbols-outlined">star</span>
-                                                      <span class="material-symbols-outlined">star</span>
-                                                      <span class="material-symbols-outlined">star</span>
-                                                      {% elif review.rating == 4 %}
-                                                      <span class="material-symbols-outlined">star</span>
-                                                      <span class="material-symbols-outlined">star</span>
-                                                      <span class="material-symbols-outlined">star</span>
-                                                      <span class="material-symbols-outlined">star</span>
-                                                      {% elif review.rating == 5 %}
-                                                      <span class="material-symbols-outlined">star</span>
-                                                      <span class="material-symbols-outlined">star</span>
-                                                      <span class="material-symbols-outlined">star</span>
-                                                      <span class="material-symbols-outlined">star</span>
-                                                      <span class="material-symbols-outlined">star</span>
-                                                      {% endif %}
-                                                  </div>
-                                                  <div class="text-muted text-wrap" style="overflow-wrap: break-word;">
-                                                      {{ review.comment }}
-                                                  </div>
-                                              </div>
-                                          </div>
-                                      </div>
-                      {% if forloop.counter|divisibleby:3 or forloop.last %}
-                                  </div>
-                              </div>
-                          </div>
-                      {% endif %}
-                  {% endfor %}
-              </div>
-          </div>
-      </div>
-      <div class="col-auto">
-          <a class="mb-3" href="#reviewCarousel" role="button" data-bs-slide="next">
-              <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
-                  <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/>
-              </svg>
-          </a>
-      </div>
-  </div>
+        <div class="col-auto">
+            <a class="mb-3" href="#reviewCarousel" role="button" data-bs-slide="prev">
+                <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>
+                </svg>
+            </a>
+        </div>
+        <div class="col-lg-8">
+            <div id="reviewCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    {% for review in reviews %}
+                        {% if forloop.counter0|divisibleby:6 %}
+                            <div class="carousel-item {% if forloop.counter0 == 0 %}active{% endif %}">
+                                <div class="container">
+                                    <div class="row">
+                        {% endif %}
+                                        <div class="col-md-4 col-sm-6 mb-4">
+                                            <div class="card rounded-card">
+                                                <div class="card-body text-end">
+                                                    <h3 class="mb-1">
+                                                        {{ review.parent.user.first_name }} {{ review.parent.user.last_name }}
+                                                    </h3>
+                                                    <div class="d-flex justify-content-start flex-wrap" style="transform: translateY(-1rem); color:#F4BC74 ;">
+                                                        {% if review.rating == 1 %}
+                                                        <span class="material-symbols-outlined">star</span>
+                                                        {% elif review.rating == 2 %}
+                                                        <span class="material-symbols-outlined">star</span>
+                                                        <span class="material-symbols-outlined">star</span>
+                                                        {% elif review.rating == 3 %}
+                                                        <span class="material-symbols-outlined">star</span>
+                                                        <span class="material-symbols-outlined">star</span>
+                                                        <span class="material-symbols-outlined">star</span>
+                                                        {% elif review.rating == 4 %}
+                                                        <span class="material-symbols-outlined">star</span>
+                                                        <span class="material-symbols-outlined">star</span>
+                                                        <span class="material-symbols-outlined">star</span>
+                                                        <span class="material-symbols-outlined">star</span>
+                                                        {% elif review.rating == 5 %}
+                                                        <span class="material-symbols-outlined">star</span>
+                                                        <span class="material-symbols-outlined">star</span>
+                                                        <span class="material-symbols-outlined">star</span>
+                                                        <span class="material-symbols-outlined">star</span>
+                                                        <span class="material-symbols-outlined">star</span>
+                                                        {% endif %}
+                                                    </div>
+                                                    <div class="text-muted text-wrap" style="overflow-wrap: break-word;">
+                                                        {{ review.comment }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                        {% if forloop.counter|divisibleby:6 or forloop.last %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="col-auto">
+            <a class="mb-3" href="#reviewCarousel" role="button" data-bs-slide="next">
+                <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/>
+                </svg>
+            </a>
+        </div>
+    </div>
     {% else %}
     <h3 class="py-5 mt-5" style="text-align: center;">كن أول من يعبر عن رأيه!</h3>
     {% endif %}
     {% if request.user.is_authenticated %}
     {% if not request.user.is_superuser and not request.user.is_staff %}
-    <!-- Display the form for regular authenticated users -->
     <h4 class="py-3 mt-5 mb-3" style="text-align: center;">عبر عن رأيك</h4>
     <form method="post" action="{% url 'main:add_review' %}" style="display: flex; flex-direction: column; align-items: center; max-width: 500px; margin: auto;">
         {% csrf_token %}
@@ -507,19 +506,17 @@
         <input type="submit" class="btn rounded-pill mt-5" value="أضف تعليقك" style="background-color: #FFFFFF; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);"/>
     </form>
     {% else %}
-    <!-- Message for admins and staff -->
     <div class="p-3 mt-4 d-flex flex-column gap-2" style="text-align: center;">
         <h5 style="color: #FFFFFF;">فقط اولياء الامور يملكون صلاحية التعليق</h5>
     </div>
     {% endif %}
     {% else %}
-    <!-- Message for non-authenticated users -->
     <div class="p-3 mt-4 d-flex flex-column gap-2" style="text-align: center;">
         <h5 style="color: #FFFFFF;">فقط المسجلون يملكون صلاحية التعليق</h5>
     </div>
-    <div></div>
     {% endif %}
     <br><br>
     <div class="wave-bottom-p"></div>
 </section>
+
 {% endblock %}
