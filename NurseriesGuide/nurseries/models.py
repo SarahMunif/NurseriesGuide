@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+import re
 
 # City Model
 class City(models.Model):
@@ -45,7 +46,11 @@ class Nursery(models.Model):
     # min_age_unit = models.CharField(max_length=10, choices=(('months', 'أشهر'), ('years', 'سنوات')), default='years')
     main_image = models.ImageField(upload_to='images/', default="images/nursery_default.jpg")
 
-    
+    def get_lat_lng(self):
+        match = re.search(r'loc:([-\d.]+),([-\d.]+)', self.location)
+        if match:
+            return match.group(1), match.group(2)
+        return None, None
 
 
     def __str__(self):

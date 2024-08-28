@@ -7,13 +7,8 @@
 {% block hero %}
 
 <style>
-  .rounded-card {
-      border-radius: 1.5rem;
-      overflow: hidden;
-  }
-  .card-body {
-      background-color: #FFF3F4;
-  }
+  .rounded-card
+
 
   h1, h3, h4 ,h5,a{
       color:#12275A
@@ -21,159 +16,317 @@
   a{
       text-decoration: none;
   }
-  .gallery-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: start;
-  }
-  .gallery-item {
-      width: 100%;
-      padding: 5px;
-      box-sizing: border-box;
-  }
-  .responsive-img {
-      width: 100%;
-      height: 100px;
-      object-fit: cover;
-  }
+
+
+  .hero-section {
+    position:static;
+    width: 100%;
+    height: 100vh;
+    overflow:-moz-hidden-unscrollable;
+    padding-top: 1vh;
+}
+
+.carousel-item img {
+    object-fit: cover;
+    height: 100vh;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Smoky overlay */
+}
+
+.hero-content h1 {
+    color: #fff;
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+.btn-lg {
+    font-size: 1.25rem;
+    padding: 0.75rem 1.5rem;
+}
+
+@media (max-width: 768px) {
+    .hero-content h1 {
+        font-size: 2rem;
+    }
+
+    .btn-lg {
+        font-size: 1.1rem;
+        padding: 0.5rem 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .hero-content h1 {
+        font-size: 1.5rem;
+    }
+
+    .btn-lg {
+        font-size: 1rem;
+        padding: 0.5rem 0.75rem;
+    }
+}
+
+
+
+.wave-w-b {
+  position: absolute;
+  bottom: 0%;
+  left: 0;
+  width: 100%;
+  height: 160px;
+  background: url('/static/main/images/wave-w-t-c.svg') no-repeat;
+  background-size: cover;
+  z-index: 1;
+}
+
 </style>
 
 
 <section class="hero-section">
-  <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-      <ol class="carousel-indicators">
-          <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-          <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-          <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-      </ol>
-      <div class="carousel-inner">
-          <div class="carousel-item active">
-              <div class="hero-image d-block w-100" style="background-image: url('your-image-1.jpg'); height: 100vh; background-size: cover;">
-                  <div class="overlay">
-                      <div class="hero-content text-center">
-                          <h1>انضم إلينا</h1>
-                          <div class="mt-3">
-                              <button class="btn btn-primary">سجل كولي امر</button>
-                              <button class="btn btn-secondary">سجل كمالك حضانة</button>
-                          </div>
-                      </div>
-                  </div>
-              </div>
+  <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="/static/main/images/poster-1.png" class="d-block w-100" alt="Poster 1">
+        <div class="overlay d-flex flex-column align-items-center justify-content-center text-center">
+          <div class="container">
+            <h1 class="display-4 text-white mb-4">كن جزءًا من مجتمعنا</h1>
+            <div class="mt-5">
+              <a href="{% url 'parents:signup_parent' %}" class="btn btn-dark rounded-pill btn-lg mx-2 mb-2">سجل كولي امر</a>
+              <a href="{% url 'parents:signup_manager' %}" class="btn btn-dark rounded-pill btn-lg mx-2 mb-2">سجل كمالك حضانة</a>
+            </div>
           </div>
-          <div class="carousel-item">
-              <div class="hero-image d-block w-100" style="background-image: url('your-image-2.jpg'); height: 100vh; background-size: cover;">
-                  <div class="overlay">
-                      <div class="hero-content text-center">
-                          <h1>كن جزءًا من مجتمعنا</h1>
-                          <div class="mt-3">
-                              <button class="btn btn-primary">تعرف على المزيد</button>
-                          </div>
-                      </div>
-                  </div>
-              </div>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <img src="/static/main/images/poster-2.png" class="d-block w-100" alt="Poster 2">
+        <div class="overlay d-flex flex-column align-items-center justify-content-center text-center">
+          <div class="container">
+            <h1 class="display-4 mb-4">ابدأ رحلتك معنا</h1>
+            <div>
+              <a href="/learn-more" class="btn btn-primary btn-lg mx-2 mb-2">تعرف على المزيد</a>
+            </div>
           </div>
-          <div class="carousel-item">
-              <div class="hero-image d-block w-100" style="background-image: url('your-image-3.jpg'); height: 100vh; background-size: cover;">
-                  <div class="overlay">
-                      <div class="hero-content text-center">
-                          <h1>ابدأ رحلتك معنا</h1>
-                          <div class="mt-3">
-                              <button class="btn btn-primary">ابدأ الآن</button>
-                          </div>
-                      </div>
-                  </div>
-              </div>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <img src="/static/main/images/poster-3.png" class="d-block w-100" alt="Poster 3">
+        <div class="overlay d-flex flex-column align-items-center justify-content-center text-center">
+          <div class="container">
+            <h1 class="display-4 mb-4">انضم إلينا</h1>
+            <div>
+              <a href="/get-started" class="btn btn-primary btn-lg mx-2 mb-2">ابدأ الآن</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">السابق</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">التالي</span>
+    </button>
+  </div>
+
+  <!-- <div class="wave-w-b"></div> -->
+</section>
+
+
+
+
+<section class="stats-section">
+  <div class="container">
+      <div class="row">
+          <div class="col-md-4">
+              <h5>أكثر من {{nurseries_count}} حضانة !</h5>
+          </div>
+          <div class="col-md-4">
+              <h5>أكثر من {{cities_count}} مدينة !</h5>
+          </div>
+          <div class="col-md-4">
+              <h5>أكثر من {{parents_count}} مستخدم !</h5>
           </div>
       </div>
-      <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="sr-only">السابق</span>
-      </a>
-      <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="sr-only">التالي</span>
-      </a>
   </div>
+</section>
+
+
+
+<section class="ylo-section-wrapper d-flex justify-content-center text-center mt-5">
+  <div style="width: 70vw; padding-top: 5%; padding-bottom: 5%;">
+  <h3  class="py-5 px-lg-5">حضاناتنا</h3>
+  <br>
+  <p> حيث نضمن لكم جودة ومصداقية كل الحضانات المعروضة. نحرص دائماً على أن تكون الحضانات المدرجة في موقعنا مفحوصة ومؤكدة، لنوفر للأهالي بيئة آمنة ومحفزة لأطفالهم. الاختيار من بين حضاناتنا يعني الاطمئنان على مستقبل أطفالكم بين يدي أفضل المتخصصين في رعاية الطفولة المبكرة.</p>
+  <br>
+</div>
 </section>
 
 {% endblock %}
 
 {% block content %}
-<section class="stats-section">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4">
-                <h5>أكثر من {{nurseries_count}} حضانة !</h5>
-            </div>
-            <div class="col-md-4">
-                <h5>أكثر من {{cities_count}} مدينة !</h5>
-            </div>
-            <div class="col-md-4">
-                <h5>أكثر من {{parents_count}} مستخدم !</h5>
-            </div>
-        </div>
-    </div>
+
+<!-- Nursery Section Styles -->
+<style>
+  .nursery-section .card-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+  }
+  .nursery-section .testi {
+      width: 300px;
+      background: #fff;
+      padding: 30px;
+      text-align: center;
+      border-radius: 20px;
+      box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+      margin-bottom: 30px;
+  }
+  .nursery-section .img-area {
+      width: 150px;
+      height: 150px;
+      margin: 0 auto 20px;
+      overflow: hidden;
+      border-radius: 50%;
+      border: dotted 2px #343779;
+  }
+  .nursery-section .img-area img {
+      width: 100%;
+      height: 100%;
+      object-fit:contain;
+  }
+  .nursery-section h4 {
+      font-size: 22px;
+      margin: 15px 0;
+      color: #343779;
+  }
+  .nursery-section p {
+      color: #757585;
+      font-size: 16px;
+      line-height: 1.5;
+  }
+</style>
+
+<section class="nursery-section py-1">
+  <div class="container-fluid">
+
+      <div class="card-container">
+          {% for nursery in nurseries %}
+          <div class="testi">
+              <div class="img-area">
+                  <img src="{{ nursery.main_image.url }}" alt="{{ nursery.name }}">
+              </div>
+              <h4>{{ nursery.name }}</h4>
+              <p class="mb-1 mt-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#F28B82" class="bi bi-geo-alt mx-1" viewBox="0 0 16 16">
+                      <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A32 32 0 0 1 8 14.58a32 32 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10"/>
+                      <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4m0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                  </svg>
+                  {{ nursery.neighborhood }}
+              </p>
+              <p class="mb-3">
+                  <span class="material-symbols-outlined text-pink">child_care</span>
+                  {{ nursery.min_display }} - {{ nursery.max_display }} سنوات
+              </p>
+              {% if nursery.accepts_special_needs %}
+              <p>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#F28B82" class="bi bi-person-wheelchair" viewBox="0 0 16 16">
+                      <path d="M12 3a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3m-.663 2.146a1.5 1.5 0 0 0-.47-2.115l-2.5-1.508a1.5 1.5 0 0 0-1.676.086l-2.329 1.75a.866.866 0 0 0 1.051 1.375L7.361 3.37l.922.71-2.038 2.445A4.73 4.73 0 0 0 2.628 7.67l1.064 1.065a3.25 3.25 0 0 1 4.574 4.574l1.064 1.063a4.73 4.73 0 0 0 1.09-3.998l1.043-.292-.187 2.991a.872.872 0 1 0 1.741.098l.206-4.121A1 1 0 0 0 12.224 8h-2.79zM3.023 9.48a3.25 3.25 0 0 0 4.496 4.496l1.077 1.077a4.75 4.75 0 0 1-6.65-6.65z"/>
+                  </svg>
+                  يقبل أطفال ذوي الاحتياجات الخاصة
+              </p>
+              {% endif %}
+          </div>
+          {% endfor %}
+      </div>
+
+      <div class="text-center mt-4">
+          <a href="{% url 'nurseries:nurseries_list' %}" class="btn btn-dark rounded-pill">أكتشف المزيد</a>
+      </div>
+  </div>
 </section>
 
-<section class="nursery-section">
-    <h1>حضاناتنا</h1>
-    <br>
-    <p> حيث نضمن لكم جودة ومصداقية كل الحضانات المعروضة. نحرص دائماً على أن تكون الحضانات المدرجة في موقعنا مفحوصة ومؤكدة، لنوفر للأهالي بيئة آمنة ومحفزة لأطفالهم. الاختيار من بين حضاناتنا يعني الاطمئنان على مستقبل أطفالكم بين يدي أفضل المتخصصين في رعاية الطفولة المبكرة.</p>
-    <br>
-    <div class="container-fluid">
-        <div class="row mt-4">
-            {% for nursery in nurseries %}
-            <div class="col-md-4 col-sm-6 mb-4">
-                <div class="card shadow-lg rounded-card">
-                    <div class="card-body">
-                        <h5 class="card-title mb-3">
-                            <div class="gallery-container">
-                                <div class="gallery-item">
-                                    <img src="{{ nursery.main_image.url }} " alt="Gallery image" class="responsive-img mb-4">
 
 
-                            </div>
-                            <a class="align-items-start" href="{%url 'nurseries:nursery_detail' nursery.id %}">{{ nursery.name }}</a>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-patch-check" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M10.354 6.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708 0"/>
-                                <path d="m10.273 2.513-.921-.944.715-.698.622.637.89-.011a2.89 2.89 0 0 1 2.924 2.924l-.01.89.636.622a2.89 2.89 0 0 1 0 4.134l-.637.622.011.89a2.89 2.89 0 0 1-2.924 2.924l-.89-.01-.622.636a2.89 2.89 0 0 1-4.134 0l-.622-.637-.89.011a2.89 2.89 0 0 1-2.924-2.924l.01-.89-.636-.622a2.89 2.89 0 0 1 0-4.134l.637-.622-.011-.89a2.89 2.89 0 0 1 2.924-2.924l.89.01.622-.636a2.89 2.89 0 0 1 4.134 0l-.715.698a1.89 1.89 0 0 0-2.704 0l-.92.944-1.32-.016a1.89 1.89 0 0 0-1.911 1.912l.016 1.318-.944.921a1.89 1.89 0 0 0 0 2.704l.944.92-.016 1.32a1.89 1.89 0 0 0 1.912 1.911l1.318-.016.921.944a1.89 1.89 0 0 0 2.704 0l.92-.944 1.32.016a1.89 1.89 0 0 0 1.911-1.912l-.016-1.318.944-.921a1.89 1.89 0 0 0 0-2.704l-.944-.92.016-1.32a1.89 1.89 0 0 0-1.912-1.911z"/>
-                            </svg>
-                        </h5>
-                        <div class="container">
-                            <div class="row align-items-center mb-4">
-                                <div class="col-auto d-flex align-items-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt" viewBox="0 0 16 16">
-                                        <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A32 32 0 0 1 8 14.58a32 32 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10"/>
-                                        <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4m0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
-                                    </svg>
-                                    <h6 class="mb-0 mx-2">{{ nursery.neighborhood }}</h6>
-                                </div>
-                                <div class="col-auto d-flex align-items-center">
-                                    <span class="material-symbols-outlined">child_care</span>
-
-                                    <span>{{ nursery.min_display }} - {{ nursery.max_display }}</span>
-                                </div>
-                                {% if nursery.accepts_special_needs %}
-                                <div class="col-auto">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-wheelchair" viewBox="0 0 16 16">
-                                        <path d="M12 3a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3m-.663 2.146a1.5 1.5 0 0 0-.47-2.115l-2.5-1.508a1.5 1.5 0 0 0-1.676.086l-2.329 1.75a.866.866 0 0 0 1.051 1.375L7.361 3.37l.922.71-2.038 2.445A4.73 4.73 0 0 0 2.628 7.67l1.064 1.065a3.25 3.25 0 0 1 4.574 4.574l1.064 1.063a4.73 4.73 0 0 0 1.09-3.998l1.043-.292-.187 2.991a.872.872 0 1 0 1.741.098l.206-4.121A1 1 0 0 0 12.224 8h-2.79zM3.023 9.48a3.25 3.25 0 0 0 4.496 4.496l1.077 1.077a4.75 4.75 0 0 1-6.65-6.65z"/>
-                                    </svg>
-                                </div>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-        <br>
-        <a class="mt-4" href="{% url 'nurseries:nurseries_list' %}"><h3>أكتشف المزيد</h3></a>
-    </div>
-</section>
 {% endblock %}
 
+
+
+
+
+
 {% block reviews %}
+
+<style>
+.reviews-section .carousel-item {
+    transition: transform 0.8s ease;
+    display: flex;
+    justify-content: center;
+}
+
+.reviews-section .card {
+    border-radius: 20px;
+    padding: 20px;
+    background: rgba(255, 243, 244, 1.8);
+    width: 300px;
+
+}
+
+.reviews-section h3, .reviews-section p {
+    color: #12275A;
+
+}
+
+.reviews-section h3 {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+}
+
+.reviews-section p {
+    font-size: 1rem;
+    line-height: 1.4;
+}
+
+
+  </style>
+
+
+<section class="ylo-section-wrapper">
+
+  {% include "main/about_us_section.html" %}
+
+</section>
+
+<!-- map here -->
+
+<section class="map-section">
+  <div id="map-container" style="width: 100%; height: 400px;">
+      {% if nurseries %}
+          <iframe
+              src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDE17S6j57r47Me9K5sBnNqiWojGfOnNn8&q={{ nurseries.0.location }}"
+              width="100%"
+              height="100%"
+              style="border:0;"
+              allowfullscreen=""
+              loading="lazy">
+          </iframe>
+      {% else %}
+          <p>No nurseries available to display on the map.</p>
+      {% endif %}
+  </div>
+</section>
+
+
+
+
 <section class="reviews-section">
     <div class="wave-top"></div>
     {% if reviews %}
@@ -201,7 +354,7 @@
                                             <div class="d-flex justify-content-md-start">
                                                 <h3 class="mb-1">{{ review.parent.user.first_name }} {{ review.parent.user.last_name }}</h3>
                                             </div>
-                                            <div class="d-flex mt-2">
+                                            <div class="d-flex mb-2">
                                                 {% if review.rating == 1 %}
                                                 <span class="material-symbols-outlined">star</span>
                                                 {% elif review.rating == 2 %}
@@ -224,10 +377,10 @@
                                                 <span class="material-symbols-outlined">star</span>
                                                 {% endif %}
                                             </div>
-                                            <h5 class="card-title mb-1">
+                                            <p class="card-title mb-1">
                                                 <br>
                                                 <span class="text-muted"> {{ review.comment }} </span>
-                                            </h5>
+                                            </p>
                                         </div>
                                     </div>
                                 </div>

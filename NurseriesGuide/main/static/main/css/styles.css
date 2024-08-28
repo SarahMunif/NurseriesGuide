@@ -1,5 +1,6 @@
 body {
-  font-family: 'Cairo', sans-serif;
+  font-family: 'Markazi Text', sans-serif;
+  line-height: 1.8;
 }
 
 main {
@@ -34,7 +35,6 @@ main {
 }
 
 .hero-section {
-  background-image: url('/static/main/images/AI Image - Cover-5.png');
   background-size: cover;
   background-position: center;
   text-align: center;
@@ -47,7 +47,7 @@ main {
 
 .hero-image img {
   width: 100%;
-  height: 500px;
+  height: 50%;
   object-fit: cover;
 }
 
