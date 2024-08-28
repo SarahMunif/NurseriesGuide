@@ -9,10 +9,11 @@
 <style>
     .rounded-card {
         border-radius: 1.5rem;
-        overflow: hidden; 
+        overflow: hidden;
+        border: dotted 2px #ccc;
     }
     .card-body {
-        background-color: #FFF3F4;
+        background-color: #fdfdfd;
     }
     .form-section {
         margin-top: 20px;
@@ -20,46 +21,69 @@
     .action-link {
         color: #343779; 
         text-decoration: none;
+        font-weight: bold;
     }
+
     .action-link:hover {
-        color:blue;
-     }
+        color: #f28b82; 
+    }
+
+    .action-link.accept {
+        color: #28a745; 
+    }
+
+    .action-link.reject {
+        color: #dc3545; 
+    }
+
  
 </style>
 
-<h1 class="mt-4">حضانات تحتاج الى توثيق</h1>
+<h3 class="mt-4 text-end text-purp">حضانات تحتاج الى توثيق</h3>
+
 
 <div class="container-fluid mt-5">
     <div class="row mt-4">
         {% for nursery in unverified_nurseries %}
         <div class="col-md-4 col-sm-6 mb-4">
-            <div class="card shadow-lg rounded-card">
+            <div class="card rounded-card">
                 <div class="card-body">
-                    <h5 class="card-title mb-3">
+                    <h5 class="card-title mb-3 text-center text-purp">
                         <a href="{% url 'nurseries:nursery_detail' nursery.id %}">تفاصيل {{ nursery.name }}</a>
                     </h5>
-                    <h6>{{ nursery.neighborhood }}</h6>
-                    <div class="mb-3 mt-4">
-                        <a class="action-link " href="{{ nursery.commercial_registry_file.url }}" target="_blank">سجل تجاري</a>
-                        <a class="action-link me-3" href="{{ nursery.license_file.url }}"   target="_blank">رخصة</a>
+
+
+                    <div class="location-container d-flex justify-content-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#f28b82" class="bi bi-geo-alt location-icon" viewBox="0 0 16 16">
+                            <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A32 32 0 0 1 8 14.58a32 32 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10"/>
+                            <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4m0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                        </svg>
+                        <h6 class="text-center text-muted location-text">{{ nursery.neighborhood }}</h6>
                     </div>
-                    <div class="form-section">
+                    
+                    <div class="d-flex justify-content-center mb-3 mt-4">
+                        <a class="action-link" href="{{ nursery.commercial_registry_file.url }}" target="_blank">سجل تجاري</a>
+                        <a class="action-link me-3" href="{{ nursery.license_file.url }}" target="_blank">رخصة</a>
+                    </div>
+                    
+                    <div class="form-section d-flex justify-content-center">
                         <form method="post" action="{% url 'nurseries:verify_nurseries' %}">
                             {% csrf_token %}
                             <input type="hidden" name="nursery_id" value="{{ nursery.id }}">
-                            <a href="javascript:;" onclick="parentNode.submit();" class="action-link" name="action" value="verify">قبول</a>
-                            <a href="#" class="action-link me-3" data-toggle="modal" data-target="#rejectionModal-{{ nursery.id }}">رفض</a>
+                            <a href="javascript:;" onclick="parentNode.submit();" class="action-link accept" name="action" value="verify">قبول</a>
+                            <a href="#" class="action-link reject me-3" data-bs-toggle="modal" data-bs-target="#rejectionModal-{{ nursery.id }}">رفض</a>
                         </form>
                     </div>
                 </div>
             </div>
             <!-- Rejection Modal -->
             <div class="modal fade" id="rejectionModal-{{ nursery.id }}" tabindex="-1" role="dialog" aria-labelledby="rejectionModalLabel-{{ nursery.id }}" aria-hidden="true">
-                <div class="modal-dialog" role="document">
+                <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="rejectionModalLabel-{{ nursery.id }}"> سبب الرفض</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <h5 class="modal-title text-pink ms-auto" id="rejectionModalLabel-{{ nursery.id }}"> سبب الرفض</h5>
+
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
@@ -69,9 +93,9 @@
                                 <input type="hidden" name="nursery_id" value="{{ nursery.id }}">
                                 <textarea name="rejection_reason" placeholder="ادخل السبب" class="form-control"></textarea>
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">تراجع</button>
-                                <button type="submit" name="action" value="reject" class="btn btn-danger"> تأكيد الرفض</button>
+                                <div class="modal-footer justify-content-center">
+                                <button type="button" class="btn btn-warning rounded-pill" data-dismiss="modal">تراجع</button>
+                                <button type="submit" name="action" value="reject" class="btn btn-danger rounded-pill"> تأكيد الرفض</button>
                             </div>
                         </form>
                     </div>
