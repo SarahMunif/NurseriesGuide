@@ -379,8 +379,8 @@ def nurseries_list(request):
     city = request.GET.get('city', '')
     neighborhood = request.GET.get('neighborhood', '')
     special_needs = request.GET.get('special_needs', '')
-    min_rating = request.GET.get('min_rating', None)  # Retrieve the minimum rating from the request
-    age_range= request.GET.get('age_range', None)
+    min_rating = request.GET.get('min_rating', '')  # Retrieve the minimum rating from the request
+    age_range= request.GET.get('age_range', '')
     if city:
         nurseries = nurseries.filter(neighborhood__city__name=city)
     if neighborhood:
@@ -449,7 +449,7 @@ def nurseries_list(request):
     return render(request, 'nurseries/nurseries_list.html', context)
 
 
-stripe.api_key = ''
+stripe.api_key = 'sk_test_51PqVngP8jLmG3xUuIatGR7XDz6rs78kHUkJEsjuRcP6uWTgHfTO90A7K2eryyYVrgKng8DyThSmLzyzDigfSKcN100PEjWeSLg'
 
 
 
