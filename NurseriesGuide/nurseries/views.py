@@ -398,7 +398,7 @@ def nurseries_list(request):
     # Fetch distinct cities and neighborhoods for filtering options
     cities = Neighborhood.objects.values_list('city__name', flat=True).distinct()
     neighborhoods = Neighborhood.objects.values_list('name', flat=True).distinct()
-    
+    if city: neighborhoods = Neighborhood.objects.filter(city__name=city).values_list('name', flat=True).distinct()
     if age_range:
         age_min, age_max = map(int, age_range.split('-'))  # split the values in the html the first value is the min , the last is the max
         nurseries = nurseries.filter(min_age__lte=age_max, max_age__gte=age_min) # get the nurseries the have range between the min and max 
@@ -442,7 +442,7 @@ def nurseries_list(request):
     return render(request, 'nurseries/nurseries_list.html', context)
 
     
-stripe.api_key = ''
+stripe.api_key = 'sk_test_51PqVngP8jLmG3xUuIatGR7XDz6rs78kHUkJEsjuRcP6uWTgHfTO90A7K2eryyYVrgKng8DyThSmLzyzDigfSKcN100PEjWeSLg'
 
 
 
@@ -582,7 +582,8 @@ def admin_nursery_statistics(request):
     else:
         profit_difference = 0  # Default to 0 if not enough data
 
-
+    unverified_nurseries = Nursery.objects.filter(status='pending')
+    unverified_count=unverified_nurseries.count()
 
     # Calculate the number of new users per month using 'date_joined'
     user_stats = User.objects.annotate(
@@ -609,6 +610,7 @@ def admin_nursery_statistics(request):
         "user_months": user_months,
         "user_counts": user_counts,
         "user_count_difference": user_count_difference,
+        "unverified_count":unverified_count
 
     })
 ##
