@@ -36,7 +36,7 @@ hr {
                     </select>
                 </div>
                 <div class="dropdown">
-                    <select name="min_rating" class="form-select custom-select rounded-pill" onchange="this.form.submit()">
+                    <select name="min_rating" class="form-select custom-select rounded-pill"  onchange="this.form.submit()">
                         <option value="" {% if min_rating == "" %}selected{% endif %}>اختر الحد الأدنى للتقييم</option>
                         <option value="1" {% if min_rating == "1" %}selected{% endif %}>1 </option>
                         <option value="2" {% if min_rating == "2" %}selected{% endif %}>2 </option>
@@ -381,7 +381,7 @@ hr {
         <ul class="pagination justify-content-center">
             {% if nurseries.has_previous %}
             <li class="page-item">
-                <a class="page-link rounded-pill" href="?page={{ nurseries.previous_page_number }}" aria-label="Previous" onclick="loadPage('{{ nurseries.previous_page_number }}'); return false;">
+                <a class="page-link rounded-pill" href="?page={{ nurseries.previous_page_number }}&city={{ city }}&neighborhood={{ neighborhood }}&special_needs={{ special_needs }}&min_rating={{ min_rating }}&age_range={{ age_range }}&searched={{ search_term }}" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
@@ -390,12 +390,12 @@ hr {
                 {% if nurseries.number == num %}
                     <li class="page-item active"><span class="page-link rounded-pill">{{ num }}</span></li>
                 {% else %}
-                    <li class="page-item"><a class="page-link rounded-pill" href="?page={{ num }}" onclick="loadPage('{{ num }}'); return false;">{{ num }}</a></li>
+                    <li class="page-item"><a class="page-link rounded-pill" href="?page={{ num }}&city={{ city }}&neighborhood={{ neighborhood }}&special_needs={{ special_needs }}&min_rating={{ min_rating }}&age_range={{ age_range }}&searched={{ search_term }}" onclick="loadPage('{{ num }}'); return false;">{{ num }}</a></li>
                 {% endif %}
             {% endfor %}
             {% if nurseries.has_next %}
             <li class="page-item">
-                <a class="page-link rounded-pill" href="?page={{ nurseries.next_page_number }}" aria-label="Next" onclick="loadPage('{{ nurseries.next_page_number }}'); return false;">
+                <a class="page-link rounded-pill" href="?page={{ nurseries.next_page_number }}&city={{ city }}&neighborhood={{ neighborhood }}&special_needs={{ special_needs }}&min_rating={{ min_rating }}&age_range={{ age_range }}&searched={{ search_term }}" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>
