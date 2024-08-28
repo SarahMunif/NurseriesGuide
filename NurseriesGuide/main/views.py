@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.contrib import messages 
+from django.contrib import messages
 from django.shortcuts import render,redirect
 from django.db.models import Count,Min,Max
 from nurseries.models import Nursery,City,Activity,Gallery
@@ -13,7 +13,7 @@ from django.contrib import messages
 from .forms import Web_ReviewForm
 from registrations.models import Registration
 def home(request):
-     
+
     nurseries = Nursery.objects.filter(status='verified')[0:3]# only verfied nursires can be displayed
     nurseries_count = Nursery.objects.count()
     cities_count = City.objects.count()
@@ -21,7 +21,7 @@ def home(request):
     reviews=Web_Review.objects.all()
     for nursery in nurseries:
         nursery.gallery_items = Gallery.objects.filter(nursery=nursery)[:1]
- 
+
         min_age = nursery.min_age
         if min_age >= 12:
             min_age = int(min_age / 12)
@@ -67,7 +67,7 @@ def staff_dashboard(request):
         subscription__nursery__in=user_nurseries,
         status='reviewing'
     )
-    
+
     registrations_count = registrations_reviewing.count()
     return render(request, 'nurseries/nurseries_view.html',{"registrations_count":registrations_count})
 
@@ -77,12 +77,12 @@ def admin_dashboard(request):
         return redirect("main:home")
     unverified_nurseries = Nursery.objects.filter(status='pending')
     unverified_count=unverified_nurseries.count()
-    
+
     return render(request, 'nurseries/superuser_nurseries.html',{"unverified_count":unverified_count})
 
 
 def contact_view(request):
-    
+
     if request.method == "POST":
         print(f'this')
 
@@ -97,7 +97,7 @@ def contact_view(request):
         email_message.content_subtype = "html"
         email_message.send()
         messages.success(request, 'تم استلام رسالتك شكرا لتواصلك معنا',"alert-success")
-        return redirect('main:contact_view') 
+        return redirect('main:contact_view')
     return render(request, 'main/contact_us.html' )
 
 
@@ -110,7 +110,7 @@ def add_review(request):
         review_form = Web_ReviewForm(request.POST)
         if review_form.is_valid():
                 review = review_form.save(commit=False)
-                review.parent = request.user.parent  
+                review.parent = request.user.parent
                 review.save()
                 return redirect('main:home')
         else:
