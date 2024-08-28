@@ -157,11 +157,11 @@ h1, h2, h3, h4, h5, h6, a, p, formlabel {
             </li>
             {% if request.user.is_superuser %}
             <li class="nav-item">
-                <a class="nav-link {% if request.resolver_match.url_name == 'admin_dashboard' %}active{% endif %}" href="{%url 'main:admin_dashboard'%}">لوحة التحكم</a>
+                <a class="nav-link {% if request.resolver_match.url_name == 'admin_dashboard' %}active{% endif %}" href="{% url 'nurseries:verify_nurseries' %}">لوحة التحكم</a>
             </li>
             {% elif request.user.is_staff %}
             <li class="nav-item">
-                <a class="nav-link {% if request.resolver_match.url_name == 'staff_dashboard' %}active{% endif %}" href="{%url 'main:staff_dashboard'%}">لوحة التحكم</a>
+                <a class="nav-link {% if request.resolver_match.url_name == 'staff_dashboard' %}active{% endif %}" href="{% url 'nurseries:nurseries_view' %}">لوحة التحكم</a>
             </li>
             {% endif %}
         </ul>
