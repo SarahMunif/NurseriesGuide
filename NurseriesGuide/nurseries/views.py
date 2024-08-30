@@ -179,6 +179,8 @@ def detail_nursery(request:HttpRequest,nursery_id:int):
         min_unit="سنوات"
     else:
       min_unit="أشهر"
+    nursery.min_display = f"{min} {min_unit}"
+   
     max=nursery.max_age
     if max >= 12:
         max=int(max/12)

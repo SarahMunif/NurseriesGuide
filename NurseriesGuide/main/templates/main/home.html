@@ -106,17 +106,17 @@
             </div>
 
             {% elif request.user.is_authenticated and  not request.user.is_superuser and not request.user.is_staff %}
-            <h1 class="display-4 text-white mb-4">مرحبًا بك مجددًا في براعم!</h1>
+            <h1 class="display-4 text-white mb-4">{{user.first_name}} {{user.last_name}} مرحبًا بك مجددًا في براعم!</h1>
             <div class="mt-5">
               <a href="{% url 'parents:parent_profile' %}" class="btn btn-dark rounded-pill btn-lg mx-2 mb-2">عرض الملف الشخصي</a>
             </div>
             {% elif request.user.is_superuser %}
-            <h1 class="display-4 text-white mb-4">مرحبًا بك مجددًا في براعم!</h1>
+            <h1 class="display-4 text-white mb-4">{{user.first_name}} {{user.last_name}} مرحبًا بك مجددًا في براعم!</h1>
             <div class="mt-5">
               <a href="{% url 'nurseries:verify_nurseries' %}" class="btn btn-dark rounded-pill btn-lg mx-2 mb-2">لوحة التحكم</a>
             </div>
             {% elif request.user.is_staff %}
-            <h1 class="display-4 text-white mb-4">مرحبًا بك مجددًا في براعم!</h1>
+            <h1 class="display-4 text-white mb-4">{{user.first_name}} {{user.last_name}} مرحبًا بك مجددًا في براعم!</h1>
             <div class="mt-5">
               <a href="{% url 'nurseries:nurseries_view' %}" class="btn btn-dark rounded-pill btn-lg mx-2 mb-2">لوحة التحكم</a>
             </div>
@@ -165,7 +165,7 @@
 
 
 
-<section class="stats-section">
+<section class="stats-section mt-3">
   <div class="container">
     <div class="row text-center">
       <div class="col-md-4">

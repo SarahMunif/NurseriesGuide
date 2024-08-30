@@ -29,7 +29,7 @@
     }
 
     .action-link:hover {
-        color: #343779;
+        color: #f9b3ad;
     }
 
     .action-link.accept {
@@ -65,7 +65,7 @@
                 <div class="card-body">
 
                     <h5 class="card-title mb-3 d-flex justify-content-center action-link">
-                        <a href="{% url 'nurseries:nursery_detail' request.subscription.nursery.id %}">{{ request.subscription.nursery }}</a>
+                        <a class="action-link" href="{% url 'nurseries:nursery_detail' request.subscription.nursery.id %}">{{ request.subscription.nursery }}</a>
                     </h5>
 
                     <div class="row align-items-center">
@@ -74,7 +74,7 @@
                         </div>
                         <div class="col d-flex justify-content-center mb-3">
                             <h6 class="mb-0 text-purp ms-auto text-center"> الطفل:  </h6>
-                            <h6 class="text-purp">  {{ request.child.first_name }} {{ request.child.last_name }}</h6>
+                            <h6 class="mb-0 text-purp ms-auto text-center">  {{ request.child.first_name }} {{ request.child.last_name }}</h6>
                         </div>
                     </div>
 
